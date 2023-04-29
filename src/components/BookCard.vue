@@ -19,7 +19,7 @@ console.log("Оценка", props.book_grade);
 
 <template>
   <router-link to="/book" class="book-wrapper">
-    <v-card link class="rounded-xl mx-2 mb-4 book-card">
+    <v-card  link class="rounded-xl mx-2 mb-4 book-card">
       <v-img height="300px" cover :src="props.src"
         ><div v-if="props.book_grade" class="book-grade">
           {{ props.book_grade }}
@@ -42,8 +42,6 @@ console.log("Оценка", props.book_grade);
   padding: 0.5rem 1rem;
 }
 a.book-wrapper {
-  text-decoration: none !important;
-  border: none !important;
   width: 200px;
   display: block;
 }
@@ -58,9 +56,6 @@ a.book-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.book-card {
-  text-decoration: none;
 }
 .v-img__img {
   height: 120px;

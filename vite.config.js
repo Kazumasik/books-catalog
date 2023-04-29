@@ -17,7 +17,7 @@ export default defineConfig({
         enabled: true,
         filepath: './.eslintrc-auto-import.json',
       },
-      imports: ['vue', 'vue-router', 'vue-i18n', 'pinia'],
+      imports: ['vue', 'vue-router', 'vue-i18n', 'pinia', '@vueuse/core'],
       vueTemplate: true,
     }),
   ],
