@@ -1,6 +1,7 @@
-#Розробка веб-сайту перегляду книг та коміксів
-Кваліфікаційна робота на підтвердження ступеня фахового молодшого
-бакалавра ([ВСП «ППФК НТУ «ХПІ»](http://polytechnic.poltava.ua)).
-Керівник роботи – **Ковальова Наталія Володимирівна**.
-## Завдання до дипломної роботи
-Розроблений продукт має являти собою веб-сайт, який дозволяє користувачу переглядати книги, комікси, мангу і т.д. Веб-сайт повинен виконувати наступні функції: авторизація, можливість пошуку матеріалів за категоріями та жанрами, можливість перегляду по 1 сторінці або відразу все, можливість додавання матеріалів, можливість залишення коментарів та іншу. Використати: мову програмування JavaScript, використати фреймворки: Angular.js  та React.js. База даних- mongoDB
+# Vue 3 + Vite
+
+This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+
+## Recommended IDE Setup
+
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
