@@ -64,6 +64,6 @@ import CatalogFilter from "../components/CatalogFilter.vue";
   flex: 1 0 auto;
 }
 .book-placeholder {
-  width: 200px;
+  width: 170px;
 }
 </style>

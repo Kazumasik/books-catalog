@@ -4,7 +4,7 @@
 <template>
   <router-link to="/book" class="book-wrapper">
     <v-card link class="rounded-xl mx-2 mb-4 book-card">
-      <v-img height="300px" cover >
+      <v-img cover >
       </v-img>
       <v-card-title class="pb-0 text-body-1"></v-card-title>
       <v-card-subtitle class="text-caption">
@@ -23,7 +23,7 @@
 a.book-wrapper {
   text-decoration: none !important;
   border: none !important;
-  width: 200px;
+  width: 170px;
   display: block;
   opacity: 0;
 }
@@ -41,9 +41,6 @@ a.book-wrapper {
 }
 .book-card {
   text-decoration: none;
-}
-.v-img__img {
-  height: 120px;
 }
 .v-card-title {
   white-space: normal;

@@ -53,20 +53,51 @@ watch(vuetifyTheme.global.name, (val) => {
           variant="outlined"
           :hide-details="true"
         />
-        <VBtn
-          icon
-          variant="text"
-          color="default"
-          size="small"
-          class="ml-4"
-          @click="changeTheme"
-        >
-          <VIcon :icon="getThemeIcon" size="30" />
-        </VBtn>
+
         <VBtn class="ms-4" icon variant="text" color="default" size="small">
           <VIcon icon="mdi-bell-outline" size="25" />
         </VBtn>
-        <v-avatar class="ms-4" color="grey-darken-1" size="40"></v-avatar>
+        <VAvatar class="ms-4" style="cursor: pointer" color="primary" variant="tonal">
+          <!-- SECTION Menu -->
+          <VMenu
+            activator="parent"
+            width="230"
+            
+            location="bottom end"
+            offset="25px"
+          >
+            <VList>
+              <VListItem to="/user">
+                <template #prepend>
+                  <VListItemAction start>
+                    <VAvatar color="primary" size="40" variant="tonal">
+                      <VImg src="src/assets/geas.jpg" />
+                    </VAvatar>
+                  </VListItemAction>
+                </template>
+
+                <VListItemTitle class="font-weight-semibold">
+                  Maxim4ik
+                </VListItemTitle>
+              </VListItem>
+              <VListItem @click="changeTheme">
+                <template #prepend>
+                    <VIcon :icon="getThemeIcon" class="me-2" size="22" />
+                </template>
+
+                <VListItemTitle>Змінити тему</VListItemTitle>
+              </VListItem>
+              <VListItem @click="logout" >
+                <template #prepend>
+                  <VIcon class="me-2" icon="mdi-logout" size="22" />
+                </template>
+
+                <VListItemTitle>Вийти</VListItemTitle>
+              </VListItem>
+            </VList>
+          </VMenu>
+          <!-- !SECTION -->
+        </VAvatar>
       </v-container>
     </v-app-bar>
 
