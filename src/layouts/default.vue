@@ -10,7 +10,7 @@ const themes = [
     icon: "mdi-weather-night",
   },
 ];
-
+const dialog = ref(false);
 const vuetifyTheme = useTheme();
 const {
   state: currentTheme,
@@ -57,12 +57,27 @@ watch(vuetifyTheme.global.name, (val) => {
         <VBtn class="ms-4" icon variant="text" color="default" size="small">
           <VIcon icon="mdi-bell-outline" size="25" />
         </VBtn>
-        <VAvatar class="ms-4" style="cursor: pointer" color="primary" variant="tonal">
+        <v-btn class="ml-4" variant="flat">
+          Увійти
+          <v-dialog v-model="dialog" activator="parent" width="auto">
+            <v-card>
+              <v-card-text>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+        </v-btn>
+        <VAvatar
+          class="ms-4"
+          style="cursor: pointer"
+          color="primary"
+          variant="tonal"
+        >
           <!-- SECTION Menu -->
           <VMenu
             activator="parent"
             width="230"
-            
             location="bottom end"
             offset="25px"
           >
@@ -82,12 +97,12 @@ watch(vuetifyTheme.global.name, (val) => {
               </VListItem>
               <VListItem @click="changeTheme">
                 <template #prepend>
-                    <VIcon :icon="getThemeIcon" class="me-2" size="22" />
+                  <VIcon :icon="getThemeIcon" class="me-2" size="22" />
                 </template>
 
                 <VListItemTitle>Змінити тему</VListItemTitle>
               </VListItem>
-              <VListItem @click="logout" >
+              <VListItem>
                 <template #prepend>
                   <VIcon class="me-2" icon="mdi-logout" size="22" />
                 </template>

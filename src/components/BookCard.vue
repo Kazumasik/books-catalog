@@ -14,12 +14,11 @@ const props = defineProps({
     required: false,
   },
 });
-console.log("Оценка", props.book_grade);
 </script>
 
 <template>
   <router-link to="/book" class="book-wrapper">
-    <v-card  link class="rounded-xl mx-2 mb-4 book-card">
+    <v-card class="rounded-xl mx-2 mb-4 book-card">
       <v-img height="220px" cover :src="props.src"
         ><div v-if="props.book_grade" class="book-grade">
           {{ props.book_grade }}
