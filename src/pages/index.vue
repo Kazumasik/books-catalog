@@ -27,7 +27,7 @@ const onSlideChange = (swiper) => {
       ></book-card>
     </swiper-slide>
     <swiper-slide v-for="n in 18" :key="n">
-      <book-card book_name="Диктор" src="src/assets/index1.jpg"></book-card>
+      <book-card book_name="Диктор лялялялялялялялял" src="src/assets/index1.jpg"></book-card>
     </swiper-slide>
   </Swiper>
   <v-container>

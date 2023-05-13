@@ -57,6 +57,7 @@ a.book-wrapper {
   align-items: center;
 }
 .v-card-title {
+  height: 36px;
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;

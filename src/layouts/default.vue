@@ -1,39 +1,7 @@
 <script setup>
 import { useTheme } from "vuetify";
-const themes = [
-  {
-    name: "light",
-    icon: "mdi-weather-sunny",
-  },
-  {
-    name: "dark",
-    icon: "mdi-weather-night",
-  },
-];
-const dialog = ref(false);
-const vuetifyTheme = useTheme();
-const {
-  state: currentTheme,
-  next: getNextThemeName,
-  index: currentThemeIndex,
-} = useCycleList(
-  themes.map((t) => t.name),
-  { initialValue: vuetifyTheme.global.name.value }
-);
-const changeTheme = () => {
-  vuetifyTheme.global.name.value = getNextThemeName();
-};
-const getThemeIcon = computedWithControl(vuetifyTheme.global.name, () => {
-  const nextThemeIndex =
-    currentThemeIndex.value + 1 === themes.length
-      ? 0
-      : currentThemeIndex.value + 1;
-
-  return themes[nextThemeIndex].icon;
-});
-watch(vuetifyTheme.global.name, (val) => {
-  currentTheme.value = val;
-});
+import LoginButton from "../components/header/LoginButton.vue";
+import ProfileButton from "../components/header/ProfileButton.vue";
 </script>
 
 <template>
@@ -57,62 +25,8 @@ watch(vuetifyTheme.global.name, (val) => {
         <VBtn class="ms-4" icon variant="text" color="default" size="small">
           <VIcon icon="mdi-bell-outline" size="25" />
         </VBtn>
-        <v-btn class="ml-4" variant="flat">
-          Увійти
-          <v-dialog v-model="dialog" activator="parent" width="auto">
-            <v-card>
-              <v-card-text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-        </v-btn>
-        <VAvatar
-          class="ms-4"
-          style="cursor: pointer"
-          color="primary"
-          variant="tonal"
-        >
-          <!-- SECTION Menu -->
-          <VMenu
-            activator="parent"
-            width="230"
-            location="bottom end"
-            offset="25px"
-          >
-            <VList>
-              <VListItem to="/user">
-                <template #prepend>
-                  <VListItemAction start>
-                    <VAvatar color="primary" size="40" variant="tonal">
-                      <VImg src="src/assets/geas.jpg" />
-                    </VAvatar>
-                  </VListItemAction>
-                </template>
-
-                <VListItemTitle class="font-weight-semibold">
-                  Maxim4ik
-                </VListItemTitle>
-              </VListItem>
-              <VListItem @click="changeTheme">
-                <template #prepend>
-                  <VIcon :icon="getThemeIcon" class="me-2" size="22" />
-                </template>
-
-                <VListItemTitle>Змінити тему</VListItemTitle>
-              </VListItem>
-              <VListItem>
-                <template #prepend>
-                  <VIcon class="me-2" icon="mdi-logout" size="22" />
-                </template>
-
-                <VListItemTitle>Вийти</VListItemTitle>
-              </VListItem>
-            </VList>
-          </VMenu>
-          <!-- !SECTION -->
-        </VAvatar>
+        <LoginButton class="ml-4"/>
+        <ProfileButton class="ms-4"/>
       </v-container>
     </v-app-bar>
 
@@ -122,5 +36,4 @@ watch(vuetifyTheme.global.name, (val) => {
   </v-app>
 </template>
 
-<script setup></script>
 <style></style>
