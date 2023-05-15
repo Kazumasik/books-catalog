@@ -9,7 +9,7 @@ const tab = ref(null);
     <div class="profile-header mx-2">
       <div class="profile-avatar">
         <v-avatar size="120">
-          <v-img src="src/assets/geas.jpg"></v-img>
+          <v-img src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"></v-img>
         </v-avatar>
       </div>
       <div class="profile-header-content ml-4">

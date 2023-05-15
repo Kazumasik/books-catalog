@@ -37,6 +37,9 @@ watch(vuetifyTheme.global.name, (val) => {
 </script>
 <template>
   <VAvatar style="cursor: pointer" color="primary" variant="tonal">
+    <VImg
+      src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
+    />
     <!-- SECTION Menu -->
     <VMenu activator="parent" width="230" location="bottom end" offset="25px">
       <VList>
@@ -44,7 +47,9 @@ watch(vuetifyTheme.global.name, (val) => {
           <template #prepend>
             <VListItemAction start>
               <VAvatar color="primary" size="40" variant="tonal">
-                <VImg src="src/assets/geas.jpg" />
+                <VImg
+                  src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
+                />
               </VAvatar>
             </VListItemAction>
           </template>

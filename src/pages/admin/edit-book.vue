@@ -10,40 +10,27 @@ const genres = [
 </script>
 
 <template>
-    <v-container>
-      <v-sheet class="pa-4 rounded-lg">
-        <v-file-input
-          label="Обкладинка книги"
-          variant="outlined"
-        ></v-file-input>
-        <v-text-field
-          label="Назва українською"
-          variant="outlined"
-        ></v-text-field>
-        <v-text-field
-          label="Оригінальна назва"
-          variant="outlined"
-        ></v-text-field>
-        <v-textarea
-          count
-          no-resize
-          variant="outlined"
-          label="Опис"
-        ></v-textarea>
-        <v-select
-          class="filter-row mb-4"
-          multiple
-          chips
-          closable-chips
-          :items="genres"
-          label="Жанри"
-          variant="outlined"
-          :hide-details="true"
-        ></v-select>
-        <v-btn> Оновити інформацію </v-btn>
-        <v-btn class="ml-4" color="error"> Видалити книгу </v-btn>
-      </v-sheet>
-    </v-container>
+  <v-container>
+    <v-sheet class="pa-4 rounded-lg">
+      <v-file-input label="Обкладинка книги" variant="outlined"></v-file-input>
+      <v-text-field label="Назва українською" variant="outlined"></v-text-field>
+      <v-text-field label="Оригінальна назва" variant="outlined"></v-text-field>
+      <v-textarea count no-resize variant="outlined" label="Опис"></v-textarea>
+      <v-combobox
+        class="filter-row mb-4"
+        multiple
+        chips
+        closable-chips
+        :items="genres"
+        label="Жанри"
+        variant="outlined"
+        :hide-details="true"
+      >
+      </v-combobox>
+      <v-btn> Оновити інформацію </v-btn>
+      <v-btn class="ml-4" color="error"> Видалити книгу </v-btn>
+    </v-sheet>
+  </v-container>
 </template>
 
 <style lang="scss" scoped>
