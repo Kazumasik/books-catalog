@@ -14,7 +14,7 @@ import CatalogFilter from "../components/CatalogFilter.vue";
           :key="n"
           book_name="Эволюция убйцы богов"
           book_grade="9"
-          src="src/assets/index.jpg"
+          src="https://remanga.org/media/titles/godkilling-oresamas-strongest-angels-evolution-story/f4a794f52152e3630834aae8702a9fbf.jpg"
           class="catalog-item"
         ></book-card>
         <book-card
@@ -22,7 +22,7 @@ import CatalogFilter from "../components/CatalogFilter.vue";
           :key="n"
           book_name="Я – самый жестокий класс поддержки – ⌈Диктор⌋, и я создам самый сильный клан в мире!"
           book_grade="7"
-          src="src/assets/index1.jpg"
+          src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
           class="catalog-item"
         ></book-card>
         <book-card
@@ -30,7 +30,7 @@ import CatalogFilter from "../components/CatalogFilter.vue";
           :key="n"
           book_name="Король-нежить ~Авантюрист низкого класса эволюционирует силой монстров и становится несокрушимым~"
           :book_grade="5.3"
-          src="src/assets/index2.jpg"
+          src="https://remanga.org/media/titles/undead-king-an-adventurer-at-the-bottom-evolutionary-warriors-with-the-power-of-demons/691e549f4674e228c46a07cc2c3be1dd.jpg"
           class="catalog-item"
         ></book-card>
         <book-placeholder

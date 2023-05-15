@@ -34,7 +34,7 @@ const tab = ref(null);
             :key="n"
             book_name="Диктор"
             :book_grade="2"
-            src="src/assets/index1.jpg"
+            src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
             class="catalog-item"
           ></book-card>
           <book-placeholder
@@ -51,7 +51,7 @@ const tab = ref(null);
             :key="n"
             book_name="Нежить"
             :book_grade="2"
-            src="src/assets/index2.jpg"
+            src="https://remanga.org/media/titles/undead-king-an-adventurer-at-the-bottom-evolutionary-warriors-with-the-power-of-demons/691e549f4674e228c46a07cc2c3be1dd.jpg"
             class="catalog-item"
           ></book-card>
           <book-placeholder

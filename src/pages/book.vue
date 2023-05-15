@@ -38,7 +38,7 @@ const chapters = ref([
           <v-img
             class="rounded-xl mb-4"
             cover
-            src="src/assets/index1.jpg"
+            src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
           ></v-img>
           <v-btn class="mb-4"> Читати </v-btn>
           <v-select
