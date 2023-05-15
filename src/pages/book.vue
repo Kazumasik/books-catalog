@@ -49,8 +49,12 @@ const chapters = ref([
             :items="bookmarks"
             variant="solo"
           ></v-select>
-          <router-link to="admin/edit-book"><v-btn class="mb-4"> Редагувати </v-btn></router-link>
-          <router-link to="admin/add-chapters"><v-btn class="mb-4"> Додати главу </v-btn></router-link>
+          <router-link to="admin/edit-book"
+            ><v-btn class="mb-4"> Редагувати </v-btn></router-link
+          >
+          <router-link to="admin/add-chapters"
+            ><v-btn class="mb-4"> Додати главу </v-btn></router-link
+          >
         </div>
       </div>
       <div class="second-column ml-6">
@@ -125,7 +129,7 @@ const chapters = ref([
             </v-window-item>
             <v-window-item value="chapters" class="mt-2">
               <v-btn class="my-2" variant="text">Показати спочатку</v-btn>
-              <book-chapters :chapters="chapters" ></book-chapters>
+              <book-chapters :chapters="chapters"></book-chapters>
             </v-window-item>
           </v-window>
         </div>
