@@ -49,19 +49,8 @@ const chapters = ref([
             :items="bookmarks"
             variant="solo"
           ></v-select>
-          <div class="author-wrapper">
-            <p class="author mb-4">Автор</p>
-            <router-link to="/author">
-              <v-card variant="text">
-                <div class="d-flex">
-                  <v-avatar size="56" class="rounded-lg">
-                    <v-img cover src="src/assets/geas.jpg"></v-img>
-                  </v-avatar>
-                  <v-card-title class="d-flex"> Geas </v-card-title>
-                </div>
-              </v-card>
-            </router-link>
-          </div>
+          <router-link to="admin/edit-book"><v-btn class="mb-4"> Редагувати </v-btn></router-link>
+          <router-link to="admin/add-chapters"><v-btn class="mb-4"> Додати главу </v-btn></router-link>
         </div>
       </div>
       <div class="second-column ml-6">
