@@ -1,11 +1,11 @@
-const path = require('path');
+// const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const multer = require('multer');
+// const multer = require('multer');
 
-const feedRoutes = require('./routes/feed');
+// const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
 
 const app = express();
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/feed', feedRoutes);
+// app.use('/feed', feedRoutes);
 app.use('/auth', authRoutes);
 
 app.use((error, req, res, next) => {
@@ -58,11 +58,10 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: message, data: data });
 });
 
-mongoose
-  .connect(
-    'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/messages?retryWrites=true'
-  )
-  .then(result => {
-    app.listen(8080);
+mongoose.connect(
+    'mongodb+srv://maxim4ik:qSfI1yz2bti9bQ0W@cluster0.nyu4b6m.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true} 
+  ).then(result => {
+    app.listen(8000);
+    console.log('Server started succesfully!')
   })
   .catch(err => console.log(err));

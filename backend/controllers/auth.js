@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -26,7 +26,7 @@ exports.signup = (req, res, next) => {
       return user.save();
     })
     .then(result => {
-      res.status(201).json({ message: 'User created!', userId: result._id });
+      res.status(201).json(result);
     })
     .catch(err => {
       if (!err.statusCode) {
@@ -35,6 +35,7 @@ exports.signup = (req, res, next) => {
       next(err);
     });
 };
+
 
 exports.login = (req, res, next) => {
   const email = req.body.email;
@@ -61,8 +62,7 @@ exports.login = (req, res, next) => {
           email: loadedUser.email,
           userId: loadedUser._id.toString()
         },
-        'somesupersecretsecret',
-        { expiresIn: '1h' }
+        'superpupersecretcode'
       );
       res.status(200).json({ token: token, userId: loadedUser._id.toString() });
     })
