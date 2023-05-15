@@ -1,31 +1,12 @@
 <script setup>
-const props = defineProps({
-  src: {
-    type: String,
-    required: true,
-    default: "src/assets/index1.jpg",
-  },
-  book_name: {
-    type: String,
-    required: true,
-  },
-  book_grade: {
-    type: Number,
-    required: false,
-  },
-});
 </script>
 
 <template>
   <div class="book-wrapper">
     <v-card class="rounded-xl mx-2 mb-4 book-card">
-      <v-img height="220px" cover :src="props.src"
-        ><div v-if="props.book_grade" class="book-grade">
-          {{ props.book_grade }}
-        </div>
+      <v-img height="220px">
       </v-img>
       <v-card-title class="pb-0 text-body-1">
-        {{ props.book_name }}
       </v-card-title>
       <v-card-subtitle class="text-caption">
         <v-chip to="/categories/action" rounded variant="tonal" link>

@@ -1,27 +1,36 @@
 <script setup>
 import { reactive } from "vue";
-
+import { useUserStore } from '@/stores/user'
 const dialogRegister = ref(false);
 const dialogLogin = ref(false);
 const valid = ref(false);
-
+const userStore = useUserStore()
 const registrationData = reactive({
   nickname: "",
   email: "",
   password: "",
-  repeatPassword: "",
 });
 
 const loginData = reactive({
   email: "",
   password: "",
 });
+
 const isPasswordVisible = ref(false);
 
 const changeModal = () => {
   dialogRegister.value = !dialogRegister.value;
   dialogLogin.value = !dialogLogin.value;
 };
+
+const register = async ()=>{
+  try {
+      await userStore.register(registrationData)
+      dialogRegister.value=false
+    } catch(error) {
+      console.log(error)
+    }
+}
 </script>
 <template>
   <v-btn variant="flat" @click="dialogLogin=true"> Увійти </v-btn>
@@ -106,7 +115,7 @@ const changeModal = () => {
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               required
             ></v-text-field>
-            <v-btn type="submit" class="mt-2 w-100">Зареєструватись</v-btn>
+            <v-btn type="submit" class="mt-2 w-100" @click="register">Зареєструватись</v-btn>
             <VCol cols="12" class="text-center text-base mt-2 pa-0">
               <span>Уже є аккаунт?</span>
               <v-btn

@@ -13,7 +13,7 @@ import CatalogFilter from "../components/CatalogFilter.vue";
           v-for="n in 5"
           :key="n"
           book_name="Эволюция убйцы богов"
-          book_grade="9"
+          :book_grade="9"
           src="https://remanga.org/media/titles/godkilling-oresamas-strongest-angels-evolution-story/f4a794f52152e3630834aae8702a9fbf.jpg"
           class="catalog-item"
         ></book-card>
@@ -21,7 +21,7 @@ import CatalogFilter from "../components/CatalogFilter.vue";
           v-for="n in 5"
           :key="n"
           book_name="Я – самый жестокий класс поддержки – ⌈Диктор⌋, и я создам самый сильный клан в мире!"
-          book_grade="7"
+          :book_grade="7"
           src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
           class="catalog-item"
         ></book-card>
