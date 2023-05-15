@@ -40,7 +40,7 @@ const genres = [
           variant="outlined"
           :hide-details="true"
         ></v-select>
-        <v-btn class="w-100"> Оновити інформацію </v-btn>
+        <v-btn class="w-100"> Створити книгу </v-btn>
       </v-sheet>
     </v-container>
 

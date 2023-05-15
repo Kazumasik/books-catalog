@@ -36,7 +36,7 @@ watch(vuetifyTheme.global.name, (val) => {
 });
 </script>
 <template>
-  <VAvatar  style="cursor: pointer" color="primary" variant="tonal">
+  <VAvatar style="cursor: pointer" color="primary" variant="tonal">
     <!-- SECTION Menu -->
     <VMenu activator="parent" width="230" location="bottom end" offset="25px">
       <VList>
@@ -52,6 +52,13 @@ watch(vuetifyTheme.global.name, (val) => {
           <VListItemTitle class="font-weight-semibold">
             Maxim4ik
           </VListItemTitle>
+        </VListItem>
+        <VListItem to="admin/create-book">
+          <template #prepend>
+            <VIcon icon="mdi-book-plus" class="me-2" size="22" />
+          </template>
+
+          <VListItemTitle>Створити книгу</VListItemTitle>
         </VListItem>
         <VListItem @click="changeTheme">
           <template #prepend>
