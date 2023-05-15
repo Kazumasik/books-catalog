@@ -6,14 +6,18 @@ import bookChapters from "../components/book/bookChapters.vue";
 const bookmarks = ["Читаю", "Прочитав", "Буду читати"];
 const commentaries = ref([]);
 const publish = (e) => {
-  if (commentary_text.value) {
-    commentaries.value.unshift(commentary_text.value);
-    commentary_text.value = "";
+  if (commentaryData.text.trim()) {
+    commentaries.value.unshift(commentaryData.text);
+    commentaryData.text = "";
   }
 };
+
 const tab = ref(null);
 const sortedCommentaries = computed(() => commentaries.value.reverse);
-const commentary_text = ref("");
+const commentaryData = reactive({
+  text:'',
+  counter:0
+});
 const chapters = ref([
   {
     title: "1",
@@ -109,16 +113,18 @@ const chapters = ref([
               <div class="commentaries">
                 <h2 class="mb-4">Коментарі</h2>
                 <v-textarea
-                  v-model="commentary_text"
-                  variant="solo"
-                  hide-details
+                  persistent-counter
+                  maxLength="500"
+                  v-model="commentaryData.text"
+                  variant="outlined"
                   append-inner-icon="mdi-send-variant"
                   @click:appendInner="publish"
+                  @keyup.enter="publish"
                   auto-grow
                   :rows="1"
-                  :max-rows="6"
                   placeholder="Залиште свій коментар"
-                ></v-textarea>
+                >
+                </v-textarea>
                 <commentary
                   class="mt-4"
                   v-for="commentary in commentaries"

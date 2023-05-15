@@ -22,10 +22,10 @@ import ProfileButton from "../components/header/ProfileButton.vue";
           :hide-details="true"
         />
 
-        <VBtn class="ms-4" icon variant="text" color="default" size="small">
+        <VBtn class="mx-4" icon variant="text" color="default" size="small">
           <VIcon icon="mdi-bell-outline" size="25" />
         </VBtn>
-        <LoginButton class="ml-4"/>
+        <LoginButton/>
         <ProfileButton class="ms-4"/>
       </v-container>
     </v-app-bar>
