@@ -1,31 +1,51 @@
 <script setup>
+const props = defineProps({
+  src: {
+    type: String,
+    required: true,
+    default: "src/assets/index1.jpg",
+  },
+  book_name: {
+    type: String,
+    required: true,
+  },
+  book_grade: {
+    type: Number,
+    required: false,
+  },
+});
 </script>
 
 <template>
-  <router-link to="/book" class="book-wrapper">
-    <v-card link class="rounded-xl mx-2 mb-4 book-card">
-      <v-img cover >
+  <div class="book-wrapper">
+    <v-card class="rounded-xl mx-2 mb-4 book-card">
+      <v-img height="220px" cover :src="props.src"
+        ><div v-if="props.book_grade" class="book-grade">
+          {{ props.book_grade }}
+        </div>
       </v-img>
-      <v-card-title class="pb-0 text-body-1"></v-card-title>
+      <v-card-title class="pb-0 text-body-1">
+        {{ props.book_name }}
+      </v-card-title>
       <v-card-subtitle class="text-caption">
-          <v-chip to="/categories/action" rounded variant="tonal" link>
-            Боевик
-          </v-chip>
+        <v-chip to="/categories/action" rounded variant="tonal" link>
+          Боевик
+        </v-chip>
       </v-card-subtitle>
     </v-card>
-  </router-link>
+  </div>
 </template>
 
 <style scoped>
-.v-card-subtitle{
+*{
+  opacity: 0;
+}
+.v-card-subtitle {
   padding: 0.5rem 1rem;
 }
-a.book-wrapper {
-  text-decoration: none !important;
-  border: none !important;
-  width: 170px;
+.book-wrapper {
+  width: 180px;
   display: block;
-  opacity: 0;
 }
 .book-grade {
   position: absolute;
@@ -38,9 +58,6 @@ a.book-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.book-card {
-  text-decoration: none;
 }
 .v-card-title {
   white-space: normal;
