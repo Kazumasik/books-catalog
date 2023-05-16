@@ -9,14 +9,12 @@ const userStore = useUserStore();
 const route = useRoute();
 const user = ref({ nickname: "" });
 const isYourProfile = ref(route.params.id === userStore.getUser.id);
-const newNickname = user.value.nickname;
+const newNickname = ref("");
 const editMode = ref(false);
-const onEditMode = ()=>{
-    console.log(editMode.value)
-    editMode.value = true
-}
+
 onMounted(async () => {
   user.value = await userStore.findById(route.params.id);
+  newNickname.value = user.value.nickname;
 });
 </script>
 
@@ -31,19 +29,34 @@ onMounted(async () => {
         </v-avatar>
       </div>
       <div class="profile-header-content ml-4">
-        <h1 v-if="!editmode" class="mb-4">{{ user.nickname }}</h1>
-        <v-text-field
-          v-if="editmode"
-          v-model="newNickname"
-          label="Нікнейм"
-        ></v-text-field>
-        <v-btn
-          v-if="isYourProfile"
-          @click="onEditMode"
-          append-icon="mdi-pencil"
-        >
-          Налаштування
-        </v-btn>
+        <div v-if="!editMode">
+          <h1 class="mb-4">{{ user.nickname }}</h1>
+          <v-btn
+            v-if="isYourProfile"
+            @click="editMode = true"
+            append-icon="mdi-pencil"
+          >
+            Налаштування
+          </v-btn>
+        </div>
+        <div v-else>
+          <v-text-field variant="outlined" v-model="newNickname" label="Нікнейм" class="nickname-input"></v-text-field>
+          <v-btn
+            @click="editMode = false"
+            append-icon="mdi-check-bold"
+            color="success"
+          >
+            Зберегти
+          </v-btn>
+          <v-btn
+            @click="editMode = false"
+            append-icon="mdi-close-thick"
+            class="ml-4"
+            color="error"
+          >
+            Відмінити
+          </v-btn>
+        </div>
       </div>
     </div>
   </v-container>

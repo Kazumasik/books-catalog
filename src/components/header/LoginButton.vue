@@ -1,10 +1,10 @@
 <script setup>
 import { reactive } from "vue";
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from "@/stores/user";
 const dialogRegister = ref(false);
 const dialogLogin = ref(false);
 const valid = ref(false);
-const userStore = useUserStore()
+const userStore = useUserStore();
 const registrationData = reactive({
   nickname: "",
   email: "",
@@ -22,27 +22,33 @@ const changeModal = async () => {
   dialogRegister.value = !dialogRegister.value;
   dialogLogin.value = !dialogLogin.value;
 };
-
-const register = async ()=>{
+const loginRules = {
+  emailRules: [
+    (v) => !!v || "Пошта обов'язкова",
+    (v) => /.+@.+/.test(v) || "Некоректний запис пошти",
+  ],
+  passwordRules: [(v) => !!v || "Пароль обов'язковий"],
+};
+const register = async () => {
   try {
-      await userStore.register(registrationData)
-      dialogRegister.value=false
-    } catch(error) {
-      console.log(error)
-    }
-}
+    await userStore.register(registrationData);
+    dialogRegister.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-const login = async ()=>{
+const login = async () => {
   try {
-      await userStore.login(loginData)
-      dialogRegister.value=false
-    } catch(error) {
-      console.log(error)
-    }
-}
+    await userStore.login(loginData);
+    dialogRegister.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 <template>
-  <v-btn variant="flat" @click="dialogLogin=true"> Увійти </v-btn>
+  <v-btn variant="flat" @click="dialogLogin = true"> Увійти </v-btn>
   <v-dialog v-model="dialogLogin" max-width="600px">
     <v-card>
       <v-card-title class="text-h5">Вхід</v-card-title>
@@ -51,6 +57,7 @@ const login = async ()=>{
           <v-form @submit.prevent v-model="valid">
             <v-text-field
               variant="outlined"
+              :rules="loginRules.emailRules"
               v-model="loginData.email"
               label="Пошта"
               required
@@ -58,6 +65,8 @@ const login = async ()=>{
             >
             </v-text-field>
             <v-text-field
+              :rules="loginRules.passwordRules"
+              class="mt-2"
               variant="outlined"
               v-model="loginData.password"
               label="Пароль"
@@ -69,7 +78,9 @@ const login = async ()=>{
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               required
             ></v-text-field>
-            <v-btn type="submit" @click="login" class="mt-2 w-100">Увійти</v-btn>
+            <v-btn type="submit" @click="login" class="mt-2 w-100"
+              >Увійти</v-btn
+            >
             <VCol cols="12" class="text-center text-base mt-2 pa-0">
               <span>Ще немає аккаунту?</span>
               <v-btn
@@ -126,7 +137,9 @@ const login = async ()=>{
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               required
             ></v-text-field>
-            <v-btn type="submit" class="mt-2 w-100" @click="register">Зареєструватись</v-btn>
+            <v-btn type="submit" class="mt-2 w-100" @click="register"
+              >Зареєструватись</v-btn
+            >
             <VCol cols="12" class="text-center text-base mt-2 pa-0">
               <span>Уже є аккаунт?</span>
               <v-btn
