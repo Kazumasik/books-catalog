@@ -1,7 +1,10 @@
 <script setup>
 import { useTheme } from "vuetify";
+import { useUserStore } from '@/stores/user.js'
 import LoginButton from "../components/header/LoginButton.vue";
 import ProfileButton from "../components/header/ProfileButton.vue";
+const userStore = useUserStore()
+
 </script>
 
 <template>
@@ -25,8 +28,8 @@ import ProfileButton from "../components/header/ProfileButton.vue";
         <VBtn class="mx-4" icon variant="text" color="default" size="small">
           <VIcon icon="mdi-bell-outline" size="25" />
         </VBtn>
-        <LoginButton/>
-        <ProfileButton class="ms-4"/>
+        <ProfileButton v-if="userStore.getToken"/>
+        <LoginButton v-else />
       </v-container>
     </v-app-bar>
 

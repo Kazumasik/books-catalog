@@ -20,6 +20,10 @@ const getData = async (url) => {
     const response = await apiService.get(url)
     return response.data
   } catch (e) {
+    const message = e.response.data.message
+    if(message==='invalid token'){
+      localStorage.clear()
+    }
     return Promise.reject(e)
   }
 }

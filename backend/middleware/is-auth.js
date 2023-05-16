@@ -1,3 +1,4 @@
+const { containsProp } = require('@vueuse/core');
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
@@ -10,9 +11,9 @@ module.exports = (req, res, next) => {
   const token = authHeader.split(' ')[1];
   let decodedToken;
   try {
-    decodedToken = jwt.verify(token, 'somesupersecretsecret');
+    decodedToken = jwt.verify(token, 'superpupersecretcode');
   } catch (err) {
-    err.statusCode = 500;
+    err.statusCode = 498;
     throw err;
   }
   if (!decodedToken) {

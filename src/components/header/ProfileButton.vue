@@ -1,6 +1,11 @@
 <script setup>
 import { useTheme } from "vuetify";
-
+import { useUserStore } from '@/stores/user.js'
+const userStore = useUserStore()
+const logOut = () =>{
+  localStorage.clear()
+  userStore.logOut()
+}
 const themes = [
   {
     name: "light",
@@ -34,13 +39,13 @@ const getThemeIcon = computedWithControl(vuetifyTheme.global.name, () => {
 watch(vuetifyTheme.global.name, (val) => {
   currentTheme.value = val;
 });
+
 </script>
 <template>
   <VAvatar style="cursor: pointer" color="primary" variant="tonal">
     <VImg
       src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
     />
-    <!-- SECTION Menu -->
     <VMenu activator="parent" width="230" location="bottom end" offset="25px">
       <VList>
         <VListItem to="/user">
@@ -72,12 +77,12 @@ watch(vuetifyTheme.global.name, (val) => {
 
           <VListItemTitle>Змінити тему</VListItemTitle>
         </VListItem>
-        <VListItem>
+        <VListItem :active="false" @click='logOut' to="/">
           <template #prepend>
             <VIcon class="me-2" icon="mdi-logout" size="22" />
           </template>
 
-          <VListItemTitle>Вийти</VListItemTitle>
+          <VListItemTitle >Вийти</VListItemTitle>
         </VListItem>
       </VList>
     </VMenu>

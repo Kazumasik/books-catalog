@@ -18,7 +18,7 @@ const loginData = reactive({
 
 const isPasswordVisible = ref(false);
 
-const changeModal = () => {
+const changeModal = async () => {
   dialogRegister.value = !dialogRegister.value;
   dialogLogin.value = !dialogLogin.value;
 };
@@ -26,6 +26,15 @@ const changeModal = () => {
 const register = async ()=>{
   try {
       await userStore.register(registrationData)
+      dialogRegister.value=false
+    } catch(error) {
+      console.log(error)
+    }
+}
+
+const login = async ()=>{
+  try {
+      await userStore.login(loginData)
       dialogRegister.value=false
     } catch(error) {
       console.log(error)
@@ -45,6 +54,7 @@ const register = async ()=>{
               v-model="loginData.email"
               label="Пошта"
               required
+              autocomplete="on"
             >
             </v-text-field>
             <v-text-field
@@ -59,7 +69,7 @@ const register = async ()=>{
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               required
             ></v-text-field>
-            <v-btn type="submit" class="mt-2 w-100">Увійти</v-btn>
+            <v-btn type="submit" @click="login" class="mt-2 w-100">Увійти</v-btn>
             <VCol cols="12" class="text-center text-base mt-2 pa-0">
               <span>Ще немає аккаунту?</span>
               <v-btn

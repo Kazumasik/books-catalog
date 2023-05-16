@@ -9,5 +9,4 @@ const router = createRouter({
     return { top: 0 };
   },
 });
-console.log(router);
 export default router;

@@ -4,21 +4,12 @@ import UpdateCard from "../components/UpdateCard.vue";
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
-const onSwiper = (swiper) => {
-  console.log(swiper);
-};
-const onSlideChange = (swiper) => {
-  console.log("slide change");
-  console.log(swiper);
-};
 </script>
 
 <template>
   <Swiper
     slidesPerView="auto"
     :spaceBetween="5"
-    @swiper="onSwiper"
-    @slideChange="onSlideChange"
   >
     <swiper-slide v-for="n in 10" :key="n">
       <book-card
@@ -39,8 +30,6 @@ const onSlideChange = (swiper) => {
       class="mt-4"
       slidesPerView="auto"
       :spaceBetween="5"
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
     >
       <swiper-slide v-for="n in 5" :key="n">
         <book-card

@@ -16,3 +16,6 @@ exports.getUser = (req, res, next) => {
       next(error);
     });
 };
+exports.checkAuth = (req, res, next) => {
+  res.send(req.userId)
+}
