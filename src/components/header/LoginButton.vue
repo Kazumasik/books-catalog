@@ -51,6 +51,7 @@ const register = async ()=>{
               variant="outlined"
               v-model="loginData.password"
               label="Пароль"
+              autocomplete="on"
               :type="isPasswordVisible ? 'text' : 'password'"
               :append-inner-icon="
                 isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
