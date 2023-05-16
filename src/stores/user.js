@@ -11,6 +11,7 @@ export const useUserStore = defineStore({
 
   getters: {
     getToken: (state) => state.token,
+    getUser: (state) => state.user,
   },
 
   actions: {
@@ -21,6 +22,7 @@ export const useUserStore = defineStore({
     async login(payload) {
       const response = await postData("auth/login", payload);
       this.setToken(response.token);
+      this.user=response.user
     },
     async register(payload) {
       const response = await postData("auth/register", payload);
@@ -29,6 +31,14 @@ export const useUserStore = defineStore({
     async logout() {
       this.token = null;
       localStorage.clear();
+    },
+    async current() {
+      const response = await getData("user/current");
+      this.user=response
+    },
+    async findById(userId) {
+      const response = await getData("user/"+userId);
+      return response
     },
   },
 });

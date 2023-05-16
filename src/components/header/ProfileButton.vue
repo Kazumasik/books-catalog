@@ -1,10 +1,13 @@
 <script setup>
 import { useTheme } from "vuetify";
 import { useUserStore } from '@/stores/user.js'
+import router from '../../router'
 const userStore = useUserStore()
 const logOut = () =>{
-  localStorage.clear()
-  userStore.logOut()
+  userStore.logout()
+}
+const goToProfile = ()=>{
+  router.replace('/user/' +userStore.getUser.id)
 }
 const themes = [
   {
@@ -48,7 +51,7 @@ watch(vuetifyTheme.global.name, (val) => {
     />
     <VMenu activator="parent" width="230" location="bottom end" offset="25px">
       <VList>
-        <VListItem to="/user">
+        <VListItem @click="goToProfile">
           <template #prepend>
             <VListItemAction start>
               <VAvatar color="primary" size="40" variant="tonal">
@@ -60,7 +63,7 @@ watch(vuetifyTheme.global.name, (val) => {
           </template>
 
           <VListItemTitle class="font-weight-semibold">
-            Maxim4ik
+            {{userStore.getUser.nickname}}
           </VListItemTitle>
         </VListItem>
         <VListItem to="admin/create-book">

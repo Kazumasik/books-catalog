@@ -1,7 +1,23 @@
 <script setup>
-import BookCard from "../components/BookCard.vue";
-import BookPlaceholder from "../components/BookPlaceholder.vue";
+import { onMounted } from "vue";
+import BookCard from "../../components/BookCard.vue";
+import { useUserStore } from "@/stores/user.js";
+import { useRoute } from "vue-router";
+import BookPlaceholder from "../../components/BookPlaceholder.vue";
 const tab = ref(null);
+const userStore = useUserStore();
+const route = useRoute();
+const user = ref({ nickname: "" });
+const isYourProfile = ref(route.params.id === userStore.getUser.id);
+const newNickname = user.value.nickname;
+const editMode = ref(false);
+const onEditMode = ()=>{
+    console.log(editMode.value)
+    editMode.value = true
+}
+onMounted(async () => {
+  user.value = await userStore.findById(route.params.id);
+});
 </script>
 
 <template>
@@ -9,12 +25,25 @@ const tab = ref(null);
     <div class="profile-header mx-2">
       <div class="profile-avatar">
         <v-avatar size="120">
-          <v-img src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"></v-img>
+          <v-img
+            src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
+          ></v-img>
         </v-avatar>
       </div>
       <div class="profile-header-content ml-4">
-        <h1 class="mb-4">Maxim4ik</h1>
-        <v-btn append-icon="mdi-pencil"> Налаштування </v-btn>
+        <h1 v-if="!editmode" class="mb-4">{{ user.nickname }}</h1>
+        <v-text-field
+          v-if="editmode"
+          v-model="newNickname"
+          label="Нікнейм"
+        ></v-text-field>
+        <v-btn
+          v-if="isYourProfile"
+          @click="onEditMode"
+          append-icon="mdi-pencil"
+        >
+          Налаштування
+        </v-btn>
       </div>
     </div>
   </v-container>

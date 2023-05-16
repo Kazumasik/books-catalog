@@ -33,8 +33,14 @@ exports.signup = (req, res, next) => {
         },
         "superpupersecretcode"
       );
-      console.log(token)
-      res.status(201).json({user: result, token: token});
+      res.status(201).json({
+        token: token,
+        user: {
+          id: result._id,
+          nickname: result.nickname,
+          email: result.email,
+        },
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -71,7 +77,14 @@ exports.login = (req, res, next) => {
         },
         "superpupersecretcode"
       );
-      res.status(200).json({ token: token, userId: loadedUser._id.toString() });
+      res.status(200).json({
+        token: token,
+        user: {
+          id: loadedUser._id,
+          nickname: loadedUser.nickname,
+          email: loadedUser.email,
+        },
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {
