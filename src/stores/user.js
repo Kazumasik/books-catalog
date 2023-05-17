@@ -27,6 +27,7 @@ export const useUserStore = defineStore({
     async register(payload) {
       const response = await postData("auth/register", payload);
       this.setToken(response.token);
+      this.user=response.user
     },
     async logout() {
       this.token = null;

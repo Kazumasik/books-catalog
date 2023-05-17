@@ -29,6 +29,21 @@ const loginRules = {
   ],
   passwordRules: [(v) => !!v || "Пароль обов'язковий"],
 };
+
+const registerRules = {
+  nicknameRules: [(v) => !!v || "Нікнейм обов'язковий"],
+  emailRules: [
+    (v) => !!v || "Пошта обов'язкова",
+    (v) => /.+@.+/.test(v) || "Некоректний запис пошти",
+  ],
+  passwordRules: [
+    (v) => !!v || "Пароль обов'язковий",
+    (v) => v.length >= 5 || "Пароль повинен містити хоча б 5 символів",
+  ],
+  repeatPasswordRules: [
+    (v) => v === registrationData.password || "Паролі повинні співпадати",
+  ],
+};
 const register = async () => {
   try {
     await userStore.register(registrationData);
@@ -103,19 +118,23 @@ const login = async () => {
         <VContainer class="pt-0">
           <v-form @submit.prevent v-model="valid">
             <v-text-field
+              :rules="registerRules.nicknameRules"
               variant="outlined"
               v-model="registrationData.nickname"
               label="Нікнейм"
               required
             ></v-text-field>
             <v-text-field
+              :rules="registerRules.emailRules"
               variant="outlined"
               v-model="registrationData.email"
               label="Пошта"
               required
+              class="mt-2"
             >
             </v-text-field>
             <v-text-field
+              :rules="registerRules.passwordRules"
               variant="outlined"
               v-model="registrationData.password"
               label="Пароль"
@@ -125,16 +144,18 @@ const login = async () => {
               "
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               required
+              class="mt-2"
             ></v-text-field>
             <v-text-field
+              :rules="registerRules.repeatPasswordRules"
               variant="outlined"
-              v-model="registrationData.repeatPassword"
               label="Повторіть пароль"
               :type="isPasswordVisible ? 'text' : 'password'"
               :append-inner-icon="
                 isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
               "
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
+              class="mt-2"
               required
             ></v-text-field>
             <v-btn type="submit" class="mt-2 w-100" @click="register"
