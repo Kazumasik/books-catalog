@@ -23,9 +23,10 @@ const userStore = useUserStore()
           density="compact"
           variant="outlined"
           :hide-details="true"
+          class="mr-4"
         />
 
-        <VBtn class="mx-4" icon variant="text" color="default" size="small">
+        <VBtn v-if="userStore.getToken" class="mr-4" icon variant="text" color="default" size="small">
           <VIcon icon="mdi-bell-outline" size="25" />
         </VBtn>
         <ProfileButton v-if="userStore.getToken"/>

@@ -66,7 +66,7 @@ watch(vuetifyTheme.global.name, (val) => {
             {{userStore.getUser.nickname}}
           </VListItemTitle>
         </VListItem>
-        <VListItem to="admin/create-book">
+        <VListItem to="/admin/create-book">
           <template #prepend>
             <VIcon icon="mdi-book-plus" class="me-2" size="22" />
           </template>

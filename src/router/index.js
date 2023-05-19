@@ -13,7 +13,7 @@ const router = createRouter({
 
 router.beforeEach(function (to, from, next) {
   const userStore = useUserStore();
-  if(!userStore.getUser.nickname){
+  if(!userStore.getUser.nickname && localStorage.getItem('token')){
     userStore.current();
   }
   next()

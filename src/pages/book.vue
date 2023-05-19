@@ -15,8 +15,8 @@ const publish = (e) => {
 const tab = ref(null);
 const sortedCommentaries = computed(() => commentaries.value.reverse);
 const commentaryData = reactive({
-  text:'',
-  counter:0
+  text: "",
+  counter: 0,
 });
 const chapters = ref([
   {
@@ -83,61 +83,48 @@ const chapters = ref([
               В процесі
             </v-btn>
           </div>
-          <v-tabs v-model="tab">
-            <v-tab value="description">Опис</v-tab>
-            <v-tab value="chapters">Глави</v-tab>
-          </v-tabs>
-
-          <v-window v-model="tab">
-            <v-window-item value="description">
-              <p class="my-4">
-                Главный герой, Ноэль, хладнокровен и умён. В детстве он
-                восхищался своим дедом - могущественным авантюристом, которого
-                другие называли "Бессмертным". Ноэль хотел стать таким же, как и
-                его дедушка, поэтому усиленно тренировался. Однако оказалось,
-                что его квалификация - диктор, слабейший класс по личным боевым
-                показателям. Несмотря на это Ноэль не сдаётся и продолжает
-                упорно тренироваться. Однажды на его родную деревню нападают
-                монстры и в неравном бою дедушка Ноэля погибает. Оставшись
-                совсем один, Ноэль отправляется в жестокий мир, который полон
-                обмана и предательства, чтоб стать сильнейшим авантюристом.
-              </p>
-              <v-chip-group class="mb-4">
-                <router-link to="/action">
-                  <v-chip rounded>Бойовик</v-chip>
-                </router-link>
-                <router-link to="/fantasy">
-                  <v-chip rounded>Фентезі</v-chip>
-                </router-link>
-              </v-chip-group>
-              <div class="commentaries">
-                <h2 class="mb-4">Коментарі</h2>
-                <v-textarea
-                  persistent-counter
-                  maxLength="500"
-                  v-model="commentaryData.text"
-                  variant="outlined"
-                  append-inner-icon="mdi-send-variant"
-                  @click:appendInner="publish"
-                  @keyup.enter="publish"
-                  auto-grow
-                  :rows="1"
-                  placeholder="Залиште свій коментар"
-                >
-                </v-textarea>
-                <commentary
-                  class="mt-4"
-                  v-for="commentary in commentaries"
-                  :key="commentary"
-                  :commentary_text="commentary"
-                ></commentary>
-              </div>
-            </v-window-item>
-            <v-window-item value="chapters" class="mt-2">
-              <v-btn class="my-2" variant="text">Показати спочатку</v-btn>
-              <book-chapters :chapters="chapters"></book-chapters>
-            </v-window-item>
-          </v-window>
+          <p class="my-4">
+            Главный герой, Ноэль, хладнокровен и умён. В детстве он восхищался
+            своим дедом - могущественным авантюристом, которого другие называли
+            "Бессмертным". Ноэль хотел стать таким же, как и его дедушка,
+            поэтому усиленно тренировался. Однако оказалось, что его
+            квалификация - диктор, слабейший класс по личным боевым показателям.
+            Несмотря на это Ноэль не сдаётся и продолжает упорно тренироваться.
+            Однажды на его родную деревню нападают монстры и в неравном бою
+            дедушка Ноэля погибает. Оставшись совсем один, Ноэль отправляется в
+            жестокий мир, который полон обмана и предательства, чтоб стать
+            сильнейшим авантюристом.
+          </p>
+          <v-chip-group class="mb-4">
+            <router-link to="/action">
+              <v-chip rounded>Бойовик</v-chip>
+            </router-link>
+            <router-link to="/fantasy">
+              <v-chip rounded>Фентезі</v-chip>
+            </router-link>
+          </v-chip-group>
+          <div class="commentaries">
+            <h2 class="mb-4">Коментарі</h2>
+            <v-textarea
+              persistent-counter
+              maxLength="500"
+              v-model="commentaryData.text"
+              variant="outlined"
+              append-inner-icon="mdi-send-variant"
+              @click:appendInner="publish"
+              @keyup.enter="publish"
+              auto-grow
+              :rows="1"
+              placeholder="Залиште свій коментар"
+            >
+            </v-textarea>
+            <commentary
+              class="mt-4"
+              v-for="commentary in commentaries"
+              :key="commentary"
+              :commentary_text="commentary"
+            ></commentary>
+          </div>
         </div>
       </div>
     </div>
