@@ -7,26 +7,31 @@ const bookSchema = new Schema(
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-    },
-    imageUrl: {
+    origTitle: {
       type: String,
       required: true,
     },
-    // genres: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Genre",
-    //   },
-    // ],
-    // comments: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Comment",
-    //   },
-    // ],
+    description: {
+      type: String,
+    },
+    // imageUrl: {
+    //   type: String,
+    //   required: true,
+    // },
+    genres: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Genre",
+      },
+    ],
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Book", bookSchema);

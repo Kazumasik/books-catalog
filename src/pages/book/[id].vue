@@ -1,37 +1,27 @@
 <script setup>
-import BookCard from "../components/BookCard.vue";
-import CatalogFilter from "../components/CatalogFilter.vue";
-import commentary from "../components/book/commentary.vue";
-import bookChapters from "../components/book/bookChapters.vue";
+import BookCard from "../../components/BookCard.vue";
+import commentary from "../../components/book/commentary.vue";
+import { useBookStore } from "@/stores/book.js";
 const bookmarks = ["Читаю", "Прочитав", "Буду читати"];
 const commentaries = ref([]);
+const bookStore = useBookStore();
+const book = ref({});
+const route = useRoute();
+onMounted(async () => {
+  book.value = await bookStore.findById(route.params.id);
+  console.log(book.value);
+});
+
 const publish = (e) => {
   if (commentaryData.text.trim()) {
     commentaries.value.unshift(commentaryData.text);
     commentaryData.text = "";
   }
 };
-
-const tab = ref(null);
-const sortedCommentaries = computed(() => commentaries.value.reverse);
 const commentaryData = reactive({
   text: "",
   counter: 0,
 });
-const chapters = ref([
-  {
-    title: "1",
-    value: 1,
-  },
-  {
-    title: "2",
-    value: 2,
-  },
-  {
-    title: "3",
-    value: 3,
-  },
-]);
 </script>
 
 <template>
@@ -44,7 +34,9 @@ const chapters = ref([
             cover
             src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
           ></v-img>
-          <v-btn class="mb-4"> Читати </v-btn>
+          <router-link to="/chapter">
+            <v-btn class="mb-4"> Читати </v-btn>
+          </router-link>
           <v-select
             class="elevation-0 mb-4"
             hide-details
@@ -62,10 +54,14 @@ const chapters = ref([
         </div>
       </div>
       <div class="second-column ml-6">
-        <div class="book-content">
-          <div class="book-header text-h4 mb-4 font-weight-bold">
-            Я – самый жестокий класс поддержки – ⌈Диктор⌋, и я создам самый
-            сильный клан в мире!
+        <div class="book-content flex-grow-1">
+          <div class="book-header mb-4">
+            <h1 class="text-h4 font-weight-bold">
+              {{book.title}}
+            </h1>
+            <h4 class="text-medium-emphasis font-weight-medium">
+              {{book.origTitle}}
+            </h4>
           </div>
           <div class="statistic d-flex mb-4">
             <v-btn variant="tonal" prepend-icon="mdi-star" size="default">
@@ -79,28 +75,13 @@ const chapters = ref([
             >
               333
             </v-btn>
-            <v-btn variant="tonal" class="ml-2" size="default">
-              В процесі
-            </v-btn>
           </div>
           <p class="my-4">
-            Главный герой, Ноэль, хладнокровен и умён. В детстве он восхищался
-            своим дедом - могущественным авантюристом, которого другие называли
-            "Бессмертным". Ноэль хотел стать таким же, как и его дедушка,
-            поэтому усиленно тренировался. Однако оказалось, что его
-            квалификация - диктор, слабейший класс по личным боевым показателям.
-            Несмотря на это Ноэль не сдаётся и продолжает упорно тренироваться.
-            Однажды на его родную деревню нападают монстры и в неравном бою
-            дедушка Ноэля погибает. Оставшись совсем один, Ноэль отправляется в
-            жестокий мир, который полон обмана и предательства, чтоб стать
-            сильнейшим авантюристом.
+            {{book.description}}
           </p>
-          <v-chip-group class="mb-4">
-            <router-link to="/action">
-              <v-chip rounded>Бойовик</v-chip>
-            </router-link>
-            <router-link to="/fantasy">
-              <v-chip rounded>Фентезі</v-chip>
+          <v-chip-group class="mb-4 pa-0">
+            <router-link v-for="genre in book.genres" :key="genre._id" to="/action">
+              <v-chip rounded>{{genre.name}}</v-chip>
             </router-link>
           </v-chip-group>
           <div class="commentaries">
