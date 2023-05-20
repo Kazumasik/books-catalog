@@ -28,15 +28,17 @@ exports.getBookById = (req, res, next) => {
   const bookId = req.params.bookId;
   Book.findById(bookId)
     .populate("genres")
-    .populate({
-      path: "comments",
-      select: "-book",
-      populate: {
-        path: "user",
-        model: "User",
-        select: "-password -email",
-      },
-    })
+    .select("-comments")
+    // .populate({
+    //   path: "comments",
+    //   select: "-book",
+    //   options: { sort: { createdAt: -1 } },
+    //   populate: {
+    //     path: "user",
+    //     model: "User",
+    //     select: "-password -email",
+    //   },
+    // })
     .then((book) => {
       res.status(200).send(book);
     })

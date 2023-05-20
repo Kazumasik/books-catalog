@@ -11,6 +11,8 @@ router.post('/create',  bookController.postBook);
 
 router.post('/:bookId/comment', commentController.createComment);
 
+router.get('/:bookId/comment', commentController.getComments);
+
 router.get('/:bookId',  bookController.getBookById);
 
 

@@ -1,26 +1,27 @@
 <script setup>
 import BookCard from "../../components/BookCard.vue";
 import commentary from "../../components/book/commentary.vue";
+import { useUserStore } from "@/stores/user.js";
 import { useBookStore } from "@/stores/book.js";
 const bookmarks = ["Читаю", "Прочитав", "Буду читати"];
-const commentaries = ref([]);
 const bookStore = useBookStore();
+const userStore = useUserStore();
 const book = ref({});
+const commentaries = ref({});
 const route = useRoute();
 onMounted(async () => {
   book.value = await bookStore.findById(route.params.id);
-  console.log(book.value);
+  commentaries.value = await bookStore.fetchAllComments(route.params.id);
 });
 
-const publish = (e) => {
-  if (commentaryData.text.trim()) {
-    commentaries.value.unshift(commentaryData.text);
-    commentaryData.text = "";
-  }
+const publish = async () => {
+  await bookStore.createComment(route.params.id, commentaryData)
+  commentaries.value = await bookStore.fetchAllComments(route.params.id);
+  commentaryData.content=""
 };
 const commentaryData = reactive({
-  text: "",
-  counter: 0,
+  user: userStore.getUser.id,
+  content: "",
 });
 </script>
 
@@ -89,7 +90,7 @@ const commentaryData = reactive({
             <v-textarea
               persistent-counter
               maxLength="500"
-              v-model="commentaryData.text"
+              v-model="commentaryData.content"
               variant="outlined"
               append-inner-icon="mdi-send-variant"
               @click:appendInner="publish"
@@ -102,8 +103,10 @@ const commentaryData = reactive({
             <commentary
               class="mt-4"
               v-for="commentary in commentaries"
-              :key="commentary"
-              :commentary_text="commentary"
+              :key="commentary._id"
+              :date="commentary.createdAt"
+              :commentary_text="commentary.content"
+              :user="commentary.user"
             ></commentary>
           </div>
         </div>

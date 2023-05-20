@@ -17,5 +17,13 @@ export const useBookStore = defineStore({
       const response = await getData("book/" + bookId);
       return response
     },
+    async createComment(bookId, payload) {
+      const response = await postData(`book/${bookId}/comment`, payload);
+      return response
+    },
+    async fetchAllComments(bookId) {
+      const response = await getData(`book/${bookId}/comment`);
+      return response
+    },
   },
 });

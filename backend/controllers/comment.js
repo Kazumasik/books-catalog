@@ -1,7 +1,8 @@
 // commentController.js
 
-const Book = require('../models/book');
-const Comment = require('../models/comment');
+const Book = require("../models/book");
+const Comment = require("../models/comment");
+const User = require("../models/user");
 
 // Контроллер для создания комментария
 exports.createComment = async (req, res) => {
@@ -12,25 +13,57 @@ exports.createComment = async (req, res) => {
     const book = await Book.findById(bookId);
 
     if (!book) {
-      return res.status(404).json({ error: 'Книга не найдена' });
+      return res.status(404).json({ error: "Book with this id does not exist" });
     }
 
+    const userObj = await User.findById(user).select('-password -email');;
+
+    if (!userObj) {
+      return res.status(404).json({ error: "User with this id does not exist" });
+    }
     const newComment = new Comment({
       book: bookId,
-      user,
+      user: userObj,
       content,
     });
 
     const savedComment = await newComment.save();
 
     book.comments.push(savedComment._id);
-    await book.save();
 
-    res.status(201).json(savedComment);
+    await book.save()
+    res.send(savedComment)
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 };
+
+exports.getComments = (req, res, next) => {
+  const bookId = req.params.bookId;
+  Book.findById(bookId)
+    .select("comments")
+    .populate({
+        path: "comments",
+        select: "-book",
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: "user",
+          model: "User",
+          select: "-password -email",
+        },
+      })
+    .then((book) => {
+      res.status(200).send([...book.comments]);
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 404;
+        error.message = "Book with this id does not exist.";
+      }
+      next(error);
+    });
+};
+
 
 // Контроллер для редактирования комментария
 // exports.updateComment = async (req, res) => {
