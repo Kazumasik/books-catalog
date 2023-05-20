@@ -10,8 +10,7 @@ export const useBookStore = defineStore({
 
   actions: {
     async fetchBooks(page) {
-      const route = useRoute();
-      const response = await getData(`book?page=${page}"`);
+      const response = await getData(`book?page=${page}`);
       return response;
     },
     async createBook(payload) {
@@ -31,6 +30,15 @@ export const useBookStore = defineStore({
     async createComment(bookId, payload) {
       const response = await postData(`book/${bookId}/comment`, payload);
       return response;
+    },
+    async deleteComment(commentId) {
+      const response = await deleteData(`book/comment/${commentId}`);
+    },
+    async editComment(commentId, payload) {
+      const editedComment={
+        content:payload
+      }
+      const response = await editData(`book/comment/${commentId}`, editedComment);
     },
     async fetchAllComments(bookId) {
       const response = await getData(`book/${bookId}/comment`);

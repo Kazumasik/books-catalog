@@ -39,7 +39,13 @@ const cancelEdit = ()=>{
   emit('setEditMode', null)
   newCommentaryText.value = props.commentary_text;
 }
+const requestDelete = ()=>{
+  emit('delete', props.commentary_id)
+}
 
+const requestEdit = ()=>{
+  emit('edit', props.commentary_id, newCommentaryText.value)
+}
 const createdDate = moment(props.date).locale("uk").fromNow();
 </script>
 <template>
@@ -90,9 +96,10 @@ const createdDate = moment(props.date).locale("uk").fromNow();
           color="red-lighten-1"
           variant="text"
           icon="mdi-trash-can"
+          @click="requestDelete"
         ></v-btn>
         <v-spacer></v-spacer>
-        <v-btn size="small" color="green-lighten-1" variant="text"
+        <v-btn @click="requestEdit" size="small" color="green-lighten-1" variant="text"
           >Зберегти</v-btn
         >
 

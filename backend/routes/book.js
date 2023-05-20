@@ -6,20 +6,27 @@ const commentController = require("../controllers/comment");
 
 const router = express.Router();
 
-router.post('/create', isAuth,  bookController.postBook);
+router.post("/create", isAuth, bookController.postBook);
 
-router.post('/:bookId/comment', isAuth, commentController.createComment);
+router.post(
+  "/:bookId/comment",
+  isAuth,
+  [body("content").trim().not().isEmpty()],
+  commentController.createComment
+);
 
-router.get('/:bookId/comment', commentController.getComments);
+router.get("/:bookId/comment", commentController.getComments);
 
-router.delete('/comment/:commentId', commentController.deleteComment);
+router.delete("/comment/:commentId", isAuth, commentController.deleteComment);
 
-router.put('/:bookId', isAuth,  bookController.updateBook);
+router.put("/comment/:commentId", isAuth, commentController.updateComment);
 
-router.delete('/:bookId', isAuth,  bookController.deleteBook);
+router.put("/:bookId", isAuth, bookController.updateBook);
 
-router.get('/:bookId',  bookController.getBookById);
+router.delete("/:bookId", isAuth, bookController.deleteBook);
 
-router.get('/',  bookController.getBooks);
+router.get("/:bookId", bookController.getBookById);
+
+router.get("/", bookController.getBooks);
 
 module.exports = router;

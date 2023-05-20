@@ -10,12 +10,12 @@ const book = ref({});
 const commentaries = ref({});
 const route = useRoute();
 
-const editId = ref(null)
+const editId = ref(null);
 
-const changeEditMode = (comentId)=>{
-  console.log(comentId)
-  editId.value=comentId
-}
+const changeEditMode = (comentId) => {
+  console.log(comentId);
+  editId.value = comentId;
+};
 
 onMounted(async () => {
   book.value = await bookStore.findById(route.params.id);
@@ -32,9 +32,16 @@ const commentaryData = reactive({
   content: "",
 });
 
-const deleteComment = (commentId)=>{
-
-}
+const deleteComment = async (commentId) => {
+  await bookStore.deleteComment(commentId);
+  commentaries.value = await bookStore.fetchAllComments(route.params.id);
+  editId.value=null
+};
+const editComment = async (commentId, payload) => {
+  await bookStore.editComment(commentId, payload);
+  commentaries.value = await bookStore.fetchAllComments(route.params.id);
+  editId.value=null
+};
 </script>
 
 <template>
@@ -115,6 +122,7 @@ const deleteComment = (commentId)=>{
             </v-textarea>
             <commentary
               class="mt-4"
+              @edit="editComment"
               @setEditMode="changeEditMode"
               @delete="deleteComment"
               v-for="commentary in commentaries"
@@ -123,7 +131,7 @@ const deleteComment = (commentId)=>{
               :date="commentary.createdAt"
               :commentary_text="commentary.content"
               :user="commentary.user"
-              :editMode="commentary._id===editId"
+              :editMode="commentary._id === editId"
             ></commentary>
           </div>
         </div>

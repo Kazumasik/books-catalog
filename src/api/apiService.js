@@ -19,14 +19,15 @@ apiService.interceptors.response.use(
   },
   (error) => {
     {
-      router.replace("/404");
       switch (error.response.status) {
         case 404:
           router.replace("/404");
           break;
         case 401:
-          localStorage.clear()
-          router.replace("/")
+          localStorage.clear();
+          router.replace("/");
+          break;
+        default:
           break;
       }
     }

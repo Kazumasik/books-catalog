@@ -1,11 +1,11 @@
 // commentController.js
-
+const { validationResult } = require("express-validator");
 const Book = require("../models/book");
 const Comment = require("../models/comment");
 const User = require("../models/user");
 
 // Контроллер для создания комментария
-exports.createComment = async (req, res) => {
+exports.createComment = async (req, res, next) => {
   try {
     const { bookId } = req.params;
     const { user, content } = req.body;
@@ -13,13 +13,17 @@ exports.createComment = async (req, res) => {
     const book = await Book.findById(bookId);
 
     if (!book) {
-      return res.status(404).json({ error: "Book with this id does not exist" });
+      return res
+        .status(404)
+        .json({ error: "Book with this id does not exist" });
     }
 
-    const userObj = await User.findById(user).select('-password -email');;
+    const userObj = await User.findById(user).select("-password -email");
 
     if (!userObj) {
-      return res.status(404).json({ error: "User with this id does not exist" });
+      return res
+        .status(404)
+        .json({ error: "User with this id does not exist" });
     }
     const newComment = new Comment({
       book: bookId,
@@ -31,8 +35,8 @@ exports.createComment = async (req, res) => {
 
     book.comments.push(savedComment._id);
 
-    await book.save()
-    res.send(savedComment)
+    await book.save();
+    res.send(savedComment);
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
@@ -43,15 +47,15 @@ exports.getComments = (req, res, next) => {
   Book.findById(bookId)
     .select("comments")
     .populate({
-        path: "comments",
-        select: "-book",
-        options: { sort: { createdAt: -1 } },
-        populate: {
-          path: "user",
-          model: "User",
-          select: "-password -email",
-        },
-      })
+      path: "comments",
+      select: "-book",
+      options: { sort: { createdAt: -1 } },
+      populate: {
+        path: "user",
+        model: "User",
+        select: "-password -email",
+      },
+    })
     .then((book) => {
       res.status(200).send([...book.comments]);
     })
@@ -64,46 +68,76 @@ exports.getComments = (req, res, next) => {
     });
 };
 
-
 // Контроллер для редактирования комментария
-// exports.updateComment = async (req, res) => {
-//   try {
-//     const { bookId, commentId } = req.params;
-//     const { content } = req.body;
+exports.updateComment = (req, res, next) => {
+  const commentId = req.params.commentId;
+  const userId = req.userId; // Идентификатор текущего пользователя
+  const updatedContent = req.body.content;
 
-//     // Поиск комментария по идентификатору
-//     const comment = await Comment.findById(commentId);
+  Comment.findById(commentId)
+    .then((comment) => {
+      if (!comment) {
+        return res.status(404).json({ message: "Comment not found" });
+      }
 
-//     // Если комментарий не найден
-//     if (!comment) {
-//       return res.status(404).json({ error: 'Комментарий не найден' });
-//     }
+      // Проверка, что комментарий принадлежит текущему пользователю
+      if (comment.user.toString() !== userId) {
+        return res
+          .status(403)
+          .json({ message: "You are not authorized to update this comment" });
+      }
 
-//     // Обновление содержимого комментария
-//     comment.content = content;
-//     await comment.save();
+      comment.content = updatedContent;
 
-//     res.status(200).json(comment);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Ошибка сервера при редактировании комментария' });
-//   }
-// };
-
+      comment
+        .save()
+        .then((result) => {
+          res.json({
+            message: "Comment updated successfully",
+            comment: result,
+          });
+        })
+        .catch((error) => {
+          next(error);
+        });
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
 // Контроллер для удаления комментария
 exports.deleteComment = (req, res, next) => {
   const commentId = req.params.commentId;
+  const userId = req.userId; // Идентификатор текущего пользователя
 
-  Comment.findByIdAndRemove(commentId)
-    .then((result) => {
-      if (!result) {
-        return res.status(404).json({ message: 'Comment not found' });
+  Comment.findById(commentId)
+    .then((comment) => {
+      if (!comment) {
+        return res.status(404).json({ message: "Comment not found" });
       }
 
-      // Удаление идентификатора комментария из массива комментариев книги
-      const bookId = result.book;
-      Book.findByIdAndUpdate(bookId, { $pull: { comments: commentId } })
-        .then(() => {
-          res.json({ message: 'Comment deleted successfully' });
+      // Проверка, что комментарий принадлежит текущему пользователю
+      if (comment.user.toString() !== userId) {
+        return res
+          .status(403)
+          .json({ message: "You are not authorized to delete this comment" });
+      }
+
+      Comment.findByIdAndRemove(commentId)
+        .then((result) => {
+          if (!result) {
+            return res.status(404).json({ message: "Comment not found" });
+          }
+
+          // Удаление идентификатора комментария из массива комментариев книги
+          const bookId = result.book;
+          Book.findByIdAndUpdate(bookId, { $pull: { comments: commentId } })
+            .then(() => {
+              res.json({ message: "Comment deleted successfully" });
+            })
+            .catch((error) => {
+              next(error);
+            });
         })
         .catch((error) => {
           next(error);
