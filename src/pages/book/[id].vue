@@ -9,6 +9,14 @@ const userStore = useUserStore();
 const book = ref({});
 const commentaries = ref({});
 const route = useRoute();
+
+const editId = ref(null)
+
+const changeEditMode = (comentId)=>{
+  console.log(comentId)
+  editId.value=comentId
+}
+
 onMounted(async () => {
   book.value = await bookStore.findById(route.params.id);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
@@ -16,8 +24,8 @@ onMounted(async () => {
 
 const publish = async () => {
   await bookStore.createComment(route.params.id, commentaryData);
-  commentaries.value = await bookStore.fetchAllComments(route.params.id);
   commentaryData.content = "";
+  commentaries.value = await bookStore.fetchAllComments(route.params.id);
 };
 const commentaryData = reactive({
   user: userStore.getUser.id,
@@ -95,7 +103,7 @@ const commentaryData = reactive({
               variant="outlined"
               append-inner-icon="mdi-send-variant"
               @click:appendInner="publish"
-              @keyup.enter="publish"
+              @keydown.enter.prevent="publish"
               auto-grow
               :rows="1"
               placeholder="Залиште свій коментар"
@@ -103,11 +111,14 @@ const commentaryData = reactive({
             </v-textarea>
             <commentary
               class="mt-4"
+              @setEditMode="changeEditMode"
               v-for="commentary in commentaries"
+              :commentary_id="commentary._id"
               :key="commentary._id"
               :date="commentary.createdAt"
               :commentary_text="commentary.content"
               :user="commentary.user"
+              :editMode="commentary._id===editId"
             ></commentary>
           </div>
         </div>

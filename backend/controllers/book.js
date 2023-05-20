@@ -1,26 +1,34 @@
 const Book = require("../models/book");
 const Comment = require("../models/comment");
 
-exports.getBooks = (req, res, next) => {
-  const page = parseInt(req.query.page) || 1; // Номер страницы
-  const limit = 30; // Количество книг на странице
+exports.getBooks = async (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 2;
+  const skip = (page - 1) * limit;
 
-  const skip = (page - 1) * limit; // Количество пропускаемых книг
+  try {
+    const [totalBooksCount, books] = await Promise.all([
+      Book.countDocuments(),
+      Book.find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select("-comments")
+        .populate("genres")
+        .lean(),
+    ]);
 
-  Book.find()
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(limit)
-    .select("-comments")
-    .exec()
-    .then((books) => {
-      res.send(books);
-    })
-    .catch((error) => {
-      next(error);
+    const totalPages = Math.ceil(totalBooksCount / limit);
+
+    res.send({
+      books,
+      totalPages,
+      page,
     });
+  } catch (error) {
+    next(error);
+  }
 };
-
 exports.postBook = (req, res, next) => {
   // const imageUrl = req.file.path;
   const title = req.body.title;

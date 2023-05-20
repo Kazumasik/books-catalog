@@ -6,9 +6,7 @@ const userStore = useUserStore()
 const logOut = () =>{
   userStore.logout()
 }
-const goToProfile = ()=>{
-  router.replace('/user/' +userStore.getUser.id)
-}
+const userId = userStore.getUser.id
 const themes = [
   {
     name: "light",
@@ -51,7 +49,7 @@ watch(vuetifyTheme.global.name, (val) => {
     />
     <VMenu activator="parent" width="230" location="bottom end" offset="25px">
       <VList>
-        <VListItem @click="goToProfile">
+        <VListItem :to="`/user/${userId}`">
           <template #prepend>
             <VListItemAction start>
               <VAvatar color="primary" size="40" variant="tonal">

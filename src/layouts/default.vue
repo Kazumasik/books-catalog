@@ -14,7 +14,7 @@ const userStore = useUserStore()
         <router-link to="/">
           <v-avatar class="me-5" color="grey-darken-1" size="40"></v-avatar>
         </router-link>
-        <router-link to="/catalog">
+        <router-link to="/book">
           <v-btn variant="text"> Каталог </v-btn>
         </router-link>
         <v-spacer></v-spacer>

@@ -7,7 +7,7 @@ import "swiper/css";
 </script>
 
 <template>
-  <Swiper
+  <!-- <Swiper
     slidesPerView="auto"
     :spaceBetween="5"
   >
@@ -23,10 +23,10 @@ import "swiper/css";
         src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
       ></book-card>
     </swiper-slide>
-  </Swiper>
+  </Swiper> -->
   <v-container>
     <h4 class="text-h4">Горячі новинки</h4>
-    <Swiper
+    <!-- <Swiper
       class="mt-4"
       slidesPerView="auto"
       :spaceBetween="5"
@@ -46,7 +46,7 @@ import "swiper/css";
       <swiper-slide v-for="n in 5" :key="n">
         <book-card book_name="Диктор" src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"></book-card>
       </swiper-slide>
-    </Swiper>
+    </Swiper> -->
     <h4 class="text-h4 mt-4">Останні оновлення</h4>
     <update-card v-for="n in 10" :key="n" class="mt-4"></update-card>
   </v-container>

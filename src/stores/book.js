@@ -1,6 +1,6 @@
 import { editData, getData, postData, deleteData } from "@/api/apiService";
 import { defineStore } from "pinia";
-
+import { useRoute } from "vue-router";
 export const useBookStore = defineStore({
   id: "book",
 
@@ -9,6 +9,11 @@ export const useBookStore = defineStore({
   getters: {},
 
   actions: {
+    async fetchBooks(page) {
+      const route = useRoute();
+      const response = await getData(`book?page=${page}"`);
+      return response;
+    },
     async createBook(payload) {
       const response = await postData("book/create", payload);
       return response;

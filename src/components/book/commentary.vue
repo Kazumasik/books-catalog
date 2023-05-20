@@ -5,6 +5,10 @@ import { useUserStore } from "@/stores/user.js";
 const userStore = useUserStore();
 
 const props = defineProps({
+  commentary_id: {
+    type: String,
+    required: true,
+  },
   commentary_text: {
     type: String,
     required: true,
@@ -17,14 +21,18 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  editMode:{
+  editMode: {
     type: Boolean,
     required: true,
-  }
+  },
 });
 
+const isYourProfile = computed(() => userStore.getUser.id === props.user._id);
 
-const isYourProfile = computed(() => userStore.getUser.id===props.user._id)
+const editing = computed(() => {
+  return isYourProfile && props.editMode;
+});
+const newCommentaryText = ref(props.commentary_text);
 
 const createdDate = moment(props.date).locale("uk").fromNow();
 </script>
@@ -49,10 +57,33 @@ const createdDate = moment(props.date).locale("uk").fromNow();
             {{ createdDate }}
           </v-card-subtitle>
         </div>
-        <v-btn v-if="isYourProfile" size="small" variant="text" icon="mdi-pencil"></v-btn>
+        <v-btn
+          @click="$emit('setEditMode', props.commentary_id)"
+          v-if="!editing"
+          size="small"
+          variant="text"
+          icon="mdi-pencil"
+        ></v-btn>
+        <v-btn
+          v-else-if="editing"
+          size="small"
+          color="red-lighten-1"
+          variant="text"
+          icon="mdi-trash-can"
+        ></v-btn>
       </div>
       <v-card-text>
-        <p>{{ props.commentary_text }}</p>
+        <p v-if="!editing">{{ props.commentary_text }}</p>
+        <v-textarea
+          v-else-if="editing"
+          persistent-counter
+          maxLength="500"
+          v-model="newCommentaryText"
+          variant="outlined"
+          auto-grow
+          :rows="1"
+        >
+        </v-textarea>
       </v-card-text>
     </v-card>
   </div>

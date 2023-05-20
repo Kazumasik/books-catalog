@@ -5,7 +5,11 @@ const props = defineProps({
     required: true,
     default: "src/assets/index1.jpg",
   },
-  book_name: {
+  title: {
+    type: String,
+    required: true,
+  },
+  url: {
     type: String,
     required: true,
   },
@@ -13,23 +17,27 @@ const props = defineProps({
     type: Number,
     required: false,
   },
+  genre: {
+    type: Object,
+    required: false,
+  },
 });
 </script>
 
 <template>
-  <router-link to="/book" class="book-wrapper">
+  <router-link :to="`/book/${props.url}`" class="book-wrapper">
     <v-card class="rounded-xl mx-2 mb-4 book-card">
-      <v-img height="220px" cover :src="props.src"
+      <v-img cover :src="props.src"
         ><div v-if="props.book_grade" class="book-grade">
           {{ props.book_grade }}
         </div>
       </v-img>
       <v-card-title class="pb-0 text-body-1">
-        {{ props.book_name }}
+        {{ props.title }}
       </v-card-title>
       <v-card-subtitle class="text-caption">
         <v-chip to="/categories/action" rounded variant="tonal" link>
-          Боевик
+          {{ props.genre.name }}
         </v-chip>
       </v-card-subtitle>
     </v-card>
@@ -41,7 +49,6 @@ const props = defineProps({
   padding: 0.5rem 1rem;
 }
 a.book-wrapper {
-  width: 180px;
   display: block;
 }
 .book-grade {

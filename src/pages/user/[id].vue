@@ -68,7 +68,7 @@ onMounted(async () => {
       <v-tab value="will-read">Буду читати</v-tab>
     </v-tabs>
 
-    <v-window v-model="tab">
+    <!-- <v-window v-model="tab">
       <v-window-item value="reading">
         <div class="catalog-wrapper">
           <book-card
@@ -102,8 +102,8 @@ onMounted(async () => {
             class="catalog-item"
           ></book-placeholder></div
       ></v-window-item>
-      <v-window-item value="will-read"> </v-window-item>
-    </v-window>
+      <v-window-item value="will-read"> </v-window-item> 
+    </v-window> -->
   </v-container>
 </template>
 
