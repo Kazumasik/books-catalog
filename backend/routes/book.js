@@ -6,6 +6,8 @@ const commentController = require("../controllers/comment");
 
 const router = express.Router();
 
+router.get("/search", bookController.searchBooksByTitle);
+
 router.post("/create", isAuth, bookController.postBook);
 
 router.post(

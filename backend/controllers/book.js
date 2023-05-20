@@ -111,3 +111,20 @@ exports.deleteBook = (req, res, next) => {
       next(error);
     });
 };
+
+exports.searchBooksByTitle = (req, res, next) => {
+  const searchTerm = req.query.title;
+
+  Book.find({
+    $or: [
+      { title: { $regex: searchTerm, $options: "i" } },
+      { origTitle: { $regex: searchTerm, $options: "i" } },
+    ],
+  })
+    .then((books) => {
+      res.json(books);
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
