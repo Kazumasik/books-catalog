@@ -31,6 +31,7 @@ export const useUserStore = defineStore({
     },
     async logout() {
       this.token = null;
+      this.user = null;
       localStorage.clear();
     },
     async current() {

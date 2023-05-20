@@ -1,4 +1,4 @@
-import { editData, getData, postData } from "@/api/apiService";
+import { editData, getData, postData, deleteData } from "@/api/apiService";
 import { defineStore } from "pinia";
 
 export const useBookStore = defineStore({
@@ -11,19 +11,25 @@ export const useBookStore = defineStore({
   actions: {
     async createBook(payload) {
       const response = await postData("book/create", payload);
-      return response
+      return response;
+    },
+    async updateBook(bookId, payload) {
+      await editData(`book/${bookId}`, payload);
+    },
+    async deleteBook(bookId) {
+      await deleteData(`book/${bookId}`);
     },
     async findById(bookId) {
       const response = await getData("book/" + bookId);
-      return response
+      return response;
     },
     async createComment(bookId, payload) {
       const response = await postData(`book/${bookId}/comment`, payload);
-      return response
+      return response;
     },
     async fetchAllComments(bookId) {
       const response = await getData(`book/${bookId}/comment`);
-      return response
+      return response;
     },
   },
 });

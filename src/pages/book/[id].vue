@@ -15,9 +15,9 @@ onMounted(async () => {
 });
 
 const publish = async () => {
-  await bookStore.createComment(route.params.id, commentaryData)
+  await bookStore.createComment(route.params.id, commentaryData);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
-  commentaryData.content=""
+  commentaryData.content = "";
 };
 const commentaryData = reactive({
   user: userStore.getUser.id,
@@ -46,22 +46,19 @@ const commentaryData = reactive({
             :items="bookmarks"
             variant="solo"
           ></v-select>
-          <router-link to="admin/edit-book"
-            ><v-btn class="mb-4"> Редагувати </v-btn></router-link
-          >
-          <router-link to="admin/add-chapters"
-            ><v-btn class="mb-4"> Додати главу </v-btn></router-link
-          >
+          <router-link :to="`/admin/edit-book/${book._id}`">
+            <v-btn class="mb-4"> Редагувати </v-btn>
+          </router-link>
         </div>
       </div>
       <div class="second-column ml-6">
         <div class="book-content flex-grow-1">
           <div class="book-header mb-4">
             <h1 class="text-h4 font-weight-bold">
-              {{book.title}}
+              {{ book.title }}
             </h1>
             <h4 class="text-medium-emphasis font-weight-medium">
-              {{book.origTitle}}
+              {{ book.origTitle }}
             </h4>
           </div>
           <div class="statistic d-flex mb-4">
@@ -78,11 +75,15 @@ const commentaryData = reactive({
             </v-btn>
           </div>
           <p class="my-4">
-            {{book.description}}
+            {{ book.description }}
           </p>
           <v-chip-group class="mb-4 pa-0">
-            <router-link v-for="genre in book.genres" :key="genre._id" to="/action">
-              <v-chip rounded>{{genre.name}}</v-chip>
+            <router-link
+              v-for="genre in book.genres"
+              :key="genre._id"
+              to="/action"
+            >
+              <v-chip rounded>{{ genre.name }}</v-chip>
             </router-link>
           </v-chip-group>
           <div class="commentaries">

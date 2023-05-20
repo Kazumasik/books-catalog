@@ -13,6 +13,12 @@ router.post('/:bookId/comment', commentController.createComment);
 
 router.get('/:bookId/comment', commentController.getComments);
 
+router.put('/:bookId',  bookController.updateBook);
+
+router.delete('/:bookId',  bookController.deleteBook);
+
+router.get('/',  bookController.getBooks);
+
 router.get('/:bookId',  bookController.getBookById);
 
 
