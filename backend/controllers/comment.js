@@ -90,27 +90,26 @@ exports.getComments = (req, res, next) => {
 // };
 
 // Контроллер для удаления комментария
-// exports.deleteComment = async (req, res) => {
-//   try {
-//     const { bookId, commentId } = req.params;
+exports.deleteComment = (req, res, next) => {
+  const commentId = req.params.commentId;
 
-//     // Поиск книги по идентификатору
-//     const book = await Book.findById(bookId);
+  Comment.findByIdAndRemove(commentId)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).json({ message: 'Comment not found' });
+      }
 
-//     // Если книга не найдена
-//     if (!book) {
-//       return res.status(404).json({ error: 'Книга не найдена' });
-//     }
-
-//     // Поиск и удаление комментария
-//     await Comment.findByIdAndRemove(commentId);
-
-//     // Удаление комментария из списка комментариев книги
-//     book.comments = book.comments.filter((comment) => comment.toString() !== commentId);
-//     await book.save();
-
-//     res.status(200).json({ message: 'Комментарий успешно удален' });
-//   } catch (error) {
-//     res.status(500).json({ error: 'Ошибка сервера при удалении комментария' });
-//   }
-// };
+      // Удаление идентификатора комментария из массива комментариев книги
+      const bookId = result.book;
+      Book.findByIdAndUpdate(bookId, { $pull: { comments: commentId } })
+        .then(() => {
+          res.json({ message: 'Comment deleted successfully' });
+        })
+        .catch((error) => {
+          next(error);
+        });
+    })
+    .catch((error) => {
+      next(error);
+    });
+};

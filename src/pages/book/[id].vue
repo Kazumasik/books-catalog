@@ -31,6 +31,10 @@ const commentaryData = reactive({
   user: userStore.getUser.id,
   content: "",
 });
+
+const deleteComment = (commentId)=>{
+
+}
 </script>
 
 <template>
@@ -112,6 +116,7 @@ const commentaryData = reactive({
             <commentary
               class="mt-4"
               @setEditMode="changeEditMode"
+              @delete="deleteComment"
               v-for="commentary in commentaries"
               :commentary_id="commentary._id"
               :key="commentary._id"

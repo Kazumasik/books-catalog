@@ -18,7 +18,7 @@ onMounted(async () => {
 });
 
 watch(page, async (newValue, oldValue) => {
-  
+  router.push({query: { page: newValue}, replace: false });
   const response = await bookStore.fetchBooks(newValue);
   books.value = response.books;
   totalPages.value = response.totalPages;

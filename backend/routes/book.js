@@ -12,6 +12,8 @@ router.post('/:bookId/comment', isAuth, commentController.createComment);
 
 router.get('/:bookId/comment', commentController.getComments);
 
+router.delete('/comment/:commentId', commentController.deleteComment);
+
 router.put('/:bookId', isAuth,  bookController.updateBook);
 
 router.delete('/:bookId', isAuth,  bookController.deleteBook);

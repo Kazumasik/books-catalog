@@ -1,9 +1,10 @@
 <script setup>
 import moment from "moment";
+import {defineEmits} from 'vue';
 import "../../utils/moment-locale";
 import { useUserStore } from "@/stores/user.js";
 const userStore = useUserStore();
-
+const emit = defineEmits(['setEditMode', 'delete'])
 const props = defineProps({
   commentary_id: {
     type: String,
@@ -33,6 +34,11 @@ const editing = computed(() => {
   return isYourProfile && props.editMode;
 });
 const newCommentaryText = ref(props.commentary_text);
+
+const cancelEdit = ()=>{
+  emit('setEditMode', null)
+  newCommentaryText.value = props.commentary_text;
+}
 
 const createdDate = moment(props.date).locale("uk").fromNow();
 </script>
@@ -64,13 +70,6 @@ const createdDate = moment(props.date).locale("uk").fromNow();
           variant="text"
           icon="mdi-pencil"
         ></v-btn>
-        <v-btn
-          v-else-if="editing"
-          size="small"
-          color="red-lighten-1"
-          variant="text"
-          icon="mdi-trash-can"
-        ></v-btn>
       </div>
       <v-card-text>
         <p v-if="!editing">{{ props.commentary_text }}</p>
@@ -85,6 +84,20 @@ const createdDate = moment(props.date).locale("uk").fromNow();
         >
         </v-textarea>
       </v-card-text>
+      <v-card-actions v-if="editing">
+        <v-btn
+          size="small"
+          color="red-lighten-1"
+          variant="text"
+          icon="mdi-trash-can"
+        ></v-btn>
+        <v-spacer></v-spacer>
+        <v-btn size="small" color="green-lighten-1" variant="text"
+          >Зберегти</v-btn
+        >
+
+        <v-btn size="small" @click="cancelEdit" color="red-lighten-1" variant="text">Відміна</v-btn>
+      </v-card-actions>
     </v-card>
   </div>
 </template>
