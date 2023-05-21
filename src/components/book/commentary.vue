@@ -1,6 +1,5 @@
 <script setup>
 import moment from "moment";
-import {defineEmits} from 'vue';
 import "../../utils/moment-locale";
 import { useUserStore } from "@/stores/user.js";
 const userStore = useUserStore();

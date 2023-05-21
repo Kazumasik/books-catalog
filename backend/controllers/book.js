@@ -3,13 +3,21 @@ const Comment = require("../models/comment");
 
 exports.getBooks = async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = 2;
+  const limit = 10;
   const skip = (page - 1) * limit;
+  const genreIds = req.query.genre; // Получаем значения параметра жанров из запроса
 
   try {
+    let query = Book.find();
+
+    if (genreIds) {
+      const genreIdArray = Array.isArray(genreIds) ? genreIds : [genreIds]; // Преобразуем значения жанров в массив, если передано только одно значение
+      query = query.where("genres").all(genreIdArray); // Фильтруем книги по указанным жанрам
+    }
+
     const [totalBooksCount, books] = await Promise.all([
-      Book.countDocuments(),
-      Book.find()
+      Book.countDocuments(query),
+      query
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -103,7 +111,7 @@ exports.deleteBook = (req, res, next) => {
       if (!deletedBook) {
         return res
           .status(404)
-          .json({ error: "Book with this id does not exist/" });
+          .json({ error: "Book with this id does not exist" });
       }
       res.send({ message: "Book successfully deleted." });
     })
@@ -121,6 +129,7 @@ exports.searchBooksByTitle = (req, res, next) => {
       { origTitle: { $regex: searchTerm, $options: "i" } },
     ],
   })
+    .populate(["genres"])
     .then((books) => {
       res.json(books);
     })

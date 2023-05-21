@@ -3,26 +3,46 @@ import BookCard from "../../components/BookCard.vue";
 import BookPlaceholder from "../../components/BookPlaceholder.vue";
 import CatalogFilter from "../../components/CatalogFilter.vue";
 import { useBookStore } from "@/stores/book.js";
+import { useGenreStore } from "@/stores/genre.js";
 import { useRoute } from "vue-router";
 import router from "../../router";
+import { ref } from "vue";
 const bookStore = useBookStore();
+const genreStore = useGenreStore();
 const books = ref([]);
 const route = useRoute();
 const totalPages = ref(1);
-const page = ref(+route.query.page);
-onMounted(async () => {
-  const response = await bookStore.fetchBooks(page);
+const genres = ref([]);
+console.log(route.query.genre)
+const queryGenres = ref(route.query.genre ? route.query.genre.map((id) =>({_id: id})) : []);
+console.log(queryGenres.value)
+const page = ref(+route.query.page || 1);
+const fetchData = async (pageValue, selectedGenres = []) => {
+  const response = await bookStore.fetchBooks(pageValue, selectedGenres);
   books.value = response.books;
   totalPages.value = response.totalPages;
-  page.value = response.page;
+};
+
+onMounted(async () => {
+  await fetchData(page.value, route.query.genre);
+  genres.value = await genreStore.fetchAll();
 });
 
 watch(page, async (newValue, oldValue) => {
-  router.push({query: { page: newValue}, replace: false });
-  const response = await bookStore.fetchBooks(newValue);
-  books.value = response.books;
-  totalPages.value = response.totalPages;
+  router.push({ name: "book", query: { ...route.query, page: newValue }, replace: false });
+  await fetchData(newValue, route.query.genre);
 });
+
+const changeGenres = async (selectedGenres) => {
+  selectedGenres = selectedGenres.map((genre) => genre._id);
+  router.push({
+    name: "book",
+    query: { ...route.query, genre: [...selectedGenres]},
+    replace: false,
+  });
+  console.log(selectedGenres);
+  await fetchData(page.value, selectedGenres);
+};
 </script>
 
 <template>
@@ -48,13 +68,18 @@ watch(page, async (newValue, oldValue) => {
           rounded="circle"
         ></v-pagination>
       </div>
-      <CatalogFilter class="filter"></CatalogFilter>
+      <CatalogFilter
+        :queryGenres="queryGenres"
+        @changeGenres="changeGenres"
+        :genres="genres"
+        class="filter"
+      ></CatalogFilter>
     </div>
   </v-container>
 </template>
 
 <style scoped>
-.catalog-wrapper{
+.catalog-wrapper {
   flex-grow: 1;
 }
 .page-wrapper {
@@ -69,7 +94,7 @@ watch(page, async (newValue, oldValue) => {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 15px;
+  gap: 0px 5px;
   grid-auto-flow: row;
   grid-template-areas:
     ". . . . . . ."
@@ -127,9 +152,5 @@ watch(page, async (newValue, oldValue) => {
       ". . ."
       ". . .";
   }
-}
-.catalog-item,
-.book-placeholder {
-  flex: 1 0 auto;
 }
 </style>

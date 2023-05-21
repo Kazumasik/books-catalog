@@ -1,10 +1,17 @@
 <script setup>
 import { useTheme } from "vuetify";
-import { useUserStore } from '@/stores/user.js'
+import { useUserStore } from "@/stores/user.js";
+import { useBookStore } from "@/stores/book.js";
 import LoginButton from "../components/header/LoginButton.vue";
 import ProfileButton from "../components/header/ProfileButton.vue";
-const userStore = useUserStore()
-
+import router from "../router";
+const userStore = useUserStore();
+const bookStore = useBookStore();
+const searchQuery = ref("");
+const searchBook = async () => {
+  router.replace(`/search?title=${searchQuery.value}`)
+  searchQuery.value=""
+};
 </script>
 
 <template>
@@ -19,13 +26,15 @@ const userStore = useUserStore()
         </router-link>
         <v-spacer></v-spacer>
         <VTextField
+          v-model="searchQuery"
           prepend-inner-icon="mdi-magnify"
           density="compact"
           variant="outlined"
+          @keydown.enter.prevent="searchBook"
           :hide-details="true"
           class="mr-4"
         />
-        <ProfileButton v-if="userStore.getToken"/>
+        <ProfileButton v-if="userStore.getToken" />
         <LoginButton v-else />
       </v-container>
     </v-app-bar>
