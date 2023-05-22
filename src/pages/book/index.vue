@@ -5,14 +5,18 @@ import { useBookStore } from "@/stores/book.js";
 import { useGenreStore } from "@/stores/genre.js";
 import { useRoute } from "vue-router";
 import router from "../../router";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 const bookStore = useBookStore();
 const genreStore = useGenreStore();
 const books = ref([]);
 const route = useRoute();
 const totalPages = ref(1);
 const genres = ref(genreStore.getGenres);
-const queryGenres = Array.isArray(route.query.genre) ? route.query.genre.map((id) => ({ _id: id })) : (route.query.genre ? [{ _id: route.query.genre }] : []);
+const queryGenres = Array.isArray(route.query.genre)
+  ? route.query.genre.map((id) => ({ _id: id }))
+  : route.query.genre
+  ? [{ _id: route.query.genre }]
+  : [];
 const page = ref(+route.query.page || 1);
 const fetchData = async (pageValue, selectedGenres = []) => {
   const response = await bookStore.fetchBooks(pageValue, selectedGenres);
@@ -33,7 +37,6 @@ watch(page, async (newValue, oldValue) => {
   await fetchData(newValue, route.query.genre);
 });
 
-
 const changeGenres = async (selectedGenres) => {
   selectedGenres = selectedGenres.map((genre) => genre._id);
   router.push({
@@ -43,6 +46,7 @@ const changeGenres = async (selectedGenres) => {
   });
   await fetchData(page.value, selectedGenres);
 };
+
 </script>
 
 <template>
@@ -58,7 +62,7 @@ const changeGenres = async (selectedGenres) => {
             :book_grade="9"
             :url="book._id"
             :genre="book.genres[0]"
-            src="https://remanga.org/media/titles/godkilling-oresamas-strongest-angels-evolution-story/f4a794f52152e3630834aae8702a9fbf.jpg"
+            :src="book"
             class="catalog-item"
           ></book-card>
         </div>

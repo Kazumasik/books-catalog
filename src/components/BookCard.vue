@@ -1,9 +1,8 @@
 <script setup>
 const props = defineProps({
   src: {
-    type: String,
+    type: Object,
     required: true,
-    default: "src/assets/index1.jpg",
   },
   title: {
     type: String,
@@ -22,12 +21,13 @@ const props = defineProps({
     required: false,
   },
 });
+
+const imageUrl = import.meta.env.VITE_BASE_URL +"/"+props.src.imageUrl
 </script>
 
 <template>
-  <router-link :to="`/book/${props.url}`" class="book-wrapper">
-    <v-card class="rounded-xl book-card">
-      <v-img cover :src="props.src"
+    <v-card :to="`/book/${props.url}`" class="rounded-xl book-card">
+      <v-img cover :src="imageUrl"
         ><div v-if="props.book_grade" class="book-grade">
           {{ props.book_grade }}
         </div>
@@ -41,15 +41,11 @@ const props = defineProps({
         </v-chip>
       </v-card-subtitle>
     </v-card>
-  </router-link>
 </template>
 
 <style scoped>
 .v-card-subtitle {
   padding: 0.5rem 1rem;
-}
-a.book-wrapper {
-  display: block;
 }
 .book-grade {
   position: absolute;

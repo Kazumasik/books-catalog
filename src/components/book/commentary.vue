@@ -68,7 +68,7 @@ const createdDate = moment(props.date).locale("uk").fromNow();
         </div>
         <v-btn
           @click="$emit('setEditMode', props.commentary_id)"
-          v-if="!editing && isYourProfile"
+          v-if="!editing"
           size="small"
           variant="text"
           icon="mdi-pencil"

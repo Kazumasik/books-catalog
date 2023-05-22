@@ -26,8 +26,9 @@ export const useBookStore = defineStore({
       const formData = new FormData();
       formData.append("title", payload.title);
       formData.append("origTitle", payload.origTitle);
+      formData.append("description", payload.description);
+      formData.append("genres", JSON.stringify(payload.genres));
       formData.append("image", payload.image[0]);
-      console.log("fgdsgdsf")
       return await postData("book/create", formData);
     },
     async updateBook(bookId, payload) {

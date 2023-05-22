@@ -13,14 +13,13 @@ const route = useRoute();
 const editId = ref(null);
 const imageSrc = ref("");
 const changeEditMode = (comentId) => {
-  console.log(comentId);
   editId.value = comentId;
 };
 
 onMounted(async () => {
   book.value = await bookStore.findById(route.params.id);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
-  imageSrc.value = "http://localhost:5000/" + book.value.imageUrl;
+  imageSrc.value = import.meta.env.VITE_BASE_URL +"/"+ book.value.imageUrl;
 });
 
 const publish = async () => {
@@ -43,7 +42,6 @@ const editComment = async (commentId, payload) => {
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
   editId.value = null;
 };
-console.log(import.meta.env.VITE_SOME_KEY)
 </script>
 
 <template>

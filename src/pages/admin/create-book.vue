@@ -18,7 +18,7 @@ const newBook = reactive({
 const createBook = async () => {
   const response = await bookStore.createBook(newBook);
   console.log(response);
-  // router.replace('/book/'+ response._id)
+  router.replace('/book/'+ response._id)
 };
 </script>
 
