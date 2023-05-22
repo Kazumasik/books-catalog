@@ -5,11 +5,11 @@ const bookSchema = new Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: false,
     },
     origTitle: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,

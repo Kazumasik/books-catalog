@@ -8,7 +8,8 @@ const User = require("../models/user");
 exports.createComment = async (req, res, next) => {
   try {
     const { bookId } = req.params;
-    const { user, content } = req.body;
+    const { content } = req.body;
+    const user = req.userId
 
     const book = await Book.findById(bookId);
 

@@ -12,6 +12,8 @@ const bookRoutes = require("./routes/book");
 const genreRoutes = require("./routes/genre");
 const app = express();
 app.use(bodyParser.json());
+
+
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");

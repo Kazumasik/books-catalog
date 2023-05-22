@@ -4,14 +4,17 @@ import { defineStore } from "pinia";
 export const useGenreStore = defineStore({
   id: "genre",
 
-  state: () => ({}),
+  state: () => ({
+    genres:[]
+  }),
 
-  getters: {},
+  getters: {
+    getGenres: (state) => state.genres,
+  },
 
   actions: {
     async fetchAll() {
-      const response = await getData("genre/all");
-      return response;
+      this.genres = await getData("genre/all");
     },
   },
 });

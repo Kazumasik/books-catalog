@@ -43,13 +43,20 @@ const getData = async (url) => {
     return Promise.reject(e);
   }
 };
+
 const postData = async (url, payload) => {
   try {
-    const response = await apiService.post(url, { ...payload });
+    const response = await apiService.post(url, payload);
     return response.data;
   } catch (e) {
     return Promise.reject(e);
   }
+  // try {
+  //   const response = await apiService.post(url, payload);
+  //   return response.data;
+  // } catch (e) {
+  //   return Promise.reject(e);
+  // }
 };
 const deleteData = async (url) => {
   try {

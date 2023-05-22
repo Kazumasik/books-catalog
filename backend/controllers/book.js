@@ -1,6 +1,6 @@
 const Book = require("../models/book");
 const Comment = require("../models/comment");
-
+const path = require("path");
 exports.getBooks = async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 10;

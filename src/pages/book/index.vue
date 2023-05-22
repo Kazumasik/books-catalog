@@ -11,9 +11,8 @@ const genreStore = useGenreStore();
 const books = ref([]);
 const route = useRoute();
 const totalPages = ref(1);
-const genres = ref([]);
-console.log(route.query.genre);
-const queryGenres = route.query.genre ? route.query.genre.map((id) => ({ _id: id })) : []
+const genres = ref(genreStore.getGenres);
+const queryGenres = Array.isArray(route.query.genre) ? route.query.genre.map((id) => ({ _id: id })) : (route.query.genre ? [{ _id: route.query.genre }] : []);
 const page = ref(+route.query.page || 1);
 const fetchData = async (pageValue, selectedGenres = []) => {
   const response = await bookStore.fetchBooks(pageValue, selectedGenres);
@@ -23,7 +22,6 @@ const fetchData = async (pageValue, selectedGenres = []) => {
 
 onMounted(async () => {
   await fetchData(page.value, route.query.genre);
-  genres.value = await genreStore.fetchAll();
 });
 
 watch(page, async (newValue, oldValue) => {
@@ -35,6 +33,7 @@ watch(page, async (newValue, oldValue) => {
   await fetchData(newValue, route.query.genre);
 });
 
+
 const changeGenres = async (selectedGenres) => {
   selectedGenres = selectedGenres.map((genre) => genre._id);
   router.push({
@@ -42,7 +41,6 @@ const changeGenres = async (selectedGenres) => {
     query: { ...route.query, genre: [...selectedGenres] },
     replace: false,
   });
-  console.log(selectedGenres);
   await fetchData(page.value, selectedGenres);
 };
 </script>

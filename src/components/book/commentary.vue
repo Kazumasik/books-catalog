@@ -26,12 +26,10 @@ const props = defineProps({
     required: true,
   },
 });
+const isYourProfile = computed(() => userStore.getUserId === props.user._id);
 
-const isYourProfile = computed(() => userStore.getUser.id === props.user._id);
+const editing = ref(props.editMode);
 
-const editing = computed(() => {
-  return isYourProfile && props.editMode;
-});
 const newCommentaryText = ref(props.commentary_text);
 
 const cancelEdit = () => {
@@ -70,7 +68,7 @@ const createdDate = moment(props.date).locale("uk").fromNow();
         </div>
         <v-btn
           @click="$emit('setEditMode', props.commentary_id)"
-          v-if="!editing"
+          v-if="!editing && isYourProfile"
           size="small"
           variant="text"
           icon="mdi-pencil"
@@ -121,7 +119,7 @@ const createdDate = moment(props.date).locale("uk").fromNow();
 </template>
 
 <style scoped>
-.v-card-actions{
+.v-card-actions {
   min-height: 0%;
 }
 .commentary-header {

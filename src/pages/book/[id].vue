@@ -11,7 +11,7 @@ const commentaries = ref({});
 const route = useRoute();
 
 const editId = ref(null);
-
+const imageSrc = ref("");
 const changeEditMode = (comentId) => {
   console.log(comentId);
   editId.value = comentId;
@@ -20,6 +20,7 @@ const changeEditMode = (comentId) => {
 onMounted(async () => {
   book.value = await bookStore.findById(route.params.id);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
+  imageSrc.value = "http://localhost:5000/" + book.value.imageUrl;
 });
 
 const publish = async () => {
@@ -42,6 +43,7 @@ const editComment = async (commentId, payload) => {
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
   editId.value = null;
 };
+console.log(import.meta.env.VITE_SOME_KEY)
 </script>
 
 <template>
@@ -49,11 +51,7 @@ const editComment = async (commentId, payload) => {
     <div class="book-wrapper">
       <div class="first-column">
         <div class="first-column-wrapper">
-          <v-img
-            class="rounded-xl mb-4"
-            cover
-            src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
-          ></v-img>
+          <v-img class="rounded-xl mb-4" cover :src="imageSrc"></v-img>
           <router-link to="/chapter">
             <v-btn class="mb-4"> Читати </v-btn>
           </router-link>
@@ -100,7 +98,7 @@ const editComment = async (commentId, payload) => {
             <router-link
               v-for="genre in book.genres"
               :key="genre._id"
-              to="/action"
+              :to="`/book?page=1&genre=${genre._id}`"
             >
               <v-chip rounded>{{ genre.name }}</v-chip>
             </router-link>
@@ -118,7 +116,12 @@ const editComment = async (commentId, payload) => {
               auto-grow
               counter="500"
               :rows="1"
-              placeholder="Залиште свій коментар"
+              :disabled="!userStore.isAuth"
+              :placeholder="
+                userStore.isAuth
+                  ? 'Залиште свій коментар'
+                  : 'Авторизуйтеся, щоб залишити коментар'
+              "
             >
             </v-textarea>
             <commentary
