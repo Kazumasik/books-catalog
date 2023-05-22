@@ -11,36 +11,39 @@ const userRoutes = require("./routes/user");
 const bookRoutes = require("./routes/book");
 const genreRoutes = require("./routes/genre");
 const app = express();
-
-// const fileStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'images');
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, new Date().toISOString() + '-' + file.originalname);
-//   }
-// });
-
-// const fileFilter = (req, file, cb) => {
-//   if (
-//     file.mimetype === 'image/png' ||
-//     file.mimetype === 'image/jpg' ||
-//     file.mimetype === 'image/jpeg'
-//   ) {
-//     cb(null, true);
-//   } else {
-//     cb(null, false);
-//   }
-// };
-// const limits ={
-//   fileSize: 1024*1024*5
-// }
-
 app.use(bodyParser.json());
-// app.use(
-//   multer({ storage: fileStorage, fileFilter: fileFilter, limits: limits}).single('image')
-// );
-// app.use('/images', express.static(path.join(__dirname, 'images')));
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+const limits = {
+  fileSize: 1024 * 1024 * 5,
+};
+
+app.use(
+  multer({
+    storage: fileStorage,
+    fileFilter: fileFilter,
+    limits: limits,
+  }).single("image")
+);
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -72,7 +75,7 @@ mongoose
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
   )
   .then((result) => {
-    app.listen(8000);
+    app.listen(5000);
     console.log("Server started succesfully!");
   })
   .catch((err) => console.log(err));

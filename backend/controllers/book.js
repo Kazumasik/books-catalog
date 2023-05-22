@@ -38,7 +38,7 @@ exports.getBooks = async (req, res, next) => {
   }
 };
 exports.postBook = (req, res, next) => {
-  // const imageUrl = req.file.path;
+  const imageUrl = req.file.path;
   const title = req.body.title;
   const origTitle = req.body.origTitle;
   const description = req.body.description;
@@ -49,6 +49,7 @@ exports.postBook = (req, res, next) => {
     origTitle: origTitle,
     description: description,
     genres: genres,
+    imageUrl,
   });
   book
     .save()
@@ -122,7 +123,9 @@ exports.deleteBook = (req, res, next) => {
 
 exports.searchBooksByTitle = (req, res, next) => {
   const searchTerm = req.query.title;
-
+  if (!searchTerm) {
+    return res.json([]);
+  }
   Book.find({
     $or: [
       { title: { $regex: searchTerm, $options: "i" } },

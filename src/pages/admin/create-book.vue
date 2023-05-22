@@ -11,6 +11,7 @@ onMounted(async () => {
 });
 
 const newBook = reactive({
+  image: "",
   title: "",
   origTitle: "",
   description: "",
@@ -18,6 +19,7 @@ const newBook = reactive({
 });
 
 const createBook = async () => {
+  console.log(newBook)
   const response = await bookStore.createBook(newBook);
   console.log(response)
   router.replace('/book/'+ response._id)
@@ -27,7 +29,7 @@ const createBook = async () => {
 <template>
   <v-container>
     <v-sheet class="pa-4 rounded-lg">
-      <v-file-input label="Обкладинка книги" variant="outlined"></v-file-input>
+      <v-file-input accept="image/*" show-size v-model="newBook.image" label="Обкладинка книги" variant="outlined"></v-file-input>
       <v-text-field
         label="Назва українською"
         variant="outlined"

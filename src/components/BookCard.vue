@@ -26,7 +26,7 @@ const props = defineProps({
 
 <template>
   <router-link :to="`/book/${props.url}`" class="book-wrapper">
-    <v-card class="rounded-xl mx-2 mb-4 book-card">
+    <v-card class="rounded-xl book-card">
       <v-img cover :src="props.src"
         ><div v-if="props.book_grade" class="book-grade">
           {{ props.book_grade }}
@@ -64,6 +64,7 @@ a.book-wrapper {
   align-items: center;
 }
 .v-card-title {
+  height: 46px;
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;

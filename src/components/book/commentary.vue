@@ -3,7 +3,7 @@ import moment from "moment";
 import "../../utils/moment-locale";
 import { useUserStore } from "@/stores/user.js";
 const userStore = useUserStore();
-const emit = defineEmits(['setEditMode', 'delete'])
+const emit = defineEmits(["setEditMode", "delete"]);
 const props = defineProps({
   commentary_id: {
     type: String,
@@ -34,17 +34,17 @@ const editing = computed(() => {
 });
 const newCommentaryText = ref(props.commentary_text);
 
-const cancelEdit = ()=>{
-  emit('setEditMode', null)
+const cancelEdit = () => {
+  emit("setEditMode", null);
   newCommentaryText.value = props.commentary_text;
-}
-const requestDelete = ()=>{
-  emit('delete', props.commentary_id)
-}
+};
+const requestDelete = () => {
+  emit("delete", props.commentary_id);
+};
 
-const requestEdit = ()=>{
-  emit('edit', props.commentary_id, newCommentaryText.value)
-}
+const requestEdit = () => {
+  emit("edit", props.commentary_id, newCommentaryText.value);
+};
 const createdDate = moment(props.date).locale("uk").fromNow();
 </script>
 <template>
@@ -81,6 +81,7 @@ const createdDate = moment(props.date).locale("uk").fromNow();
         <v-textarea
           v-else-if="editing"
           persistent-counter
+          counter="500"
           maxLength="500"
           v-model="newCommentaryText"
           variant="outlined"
@@ -98,17 +99,31 @@ const createdDate = moment(props.date).locale("uk").fromNow();
           @click="requestDelete"
         ></v-btn>
         <v-spacer></v-spacer>
-        <v-btn @click="requestEdit" size="small" color="green-lighten-1" variant="text"
-          >Зберегти</v-btn
+        <v-btn
+          @click="requestEdit"
+          size="small"
+          color="green-lighten-1"
+          variant="text"
+        >
+          Зберегти</v-btn
         >
 
-        <v-btn size="small" @click="cancelEdit" color="red-lighten-1" variant="text">Відміна</v-btn>
+        <v-btn
+          size="small"
+          @click="cancelEdit"
+          color="red-lighten-1"
+          variant="text"
+          >Відміна</v-btn
+        >
       </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <style scoped>
+.v-card-actions{
+  min-height: 0%;
+}
 .commentary-header {
   display: flex;
   align-items: center;

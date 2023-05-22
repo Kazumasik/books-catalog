@@ -2,6 +2,7 @@
 import { useBookStore } from "@/stores/book.js";
 import BookCard from "../components/BookCard.vue";
 import { useRoute } from "vue-router";
+import router from "../router";
 const route = useRoute();
 const bookStore = useBookStore();
 const title = ref(route.query.title || " ");
@@ -12,6 +13,11 @@ onMounted(async () => {
   }
 });
 const searchBook = async () => {
+  router.push({
+    name: "search",
+    query: { title: title.value },
+    replace: false,
+  });
   books.value = await bookStore.searchBook(title.value);
 };
 </script>
@@ -19,13 +25,13 @@ const searchBook = async () => {
 <template>
   <v-container>
     <VTextField
+      placeholder="Що шукаєте?"
       v-model="title"
       prepend-inner-icon="mdi-magnify"
       density="compact"
       variant="outlined"
       @keydown.enter.prevent="searchBook"
       :hide-details="true"
-      class="mr-4"
     />
     <div class="mt-4 search-results-wrapper">
       <book-card
@@ -45,13 +51,8 @@ const searchBook = async () => {
 <style scoped>
 .search-results-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 5px;
-  grid-template-areas:
-    ". . . . ."
-    ". . . . ."
-    ". . . . .";
+  gap: 0.7rem;
+  grid-template-columns: repeat(6, minmax(0px, 1fr));
 }
 @media (min-width: 1920px) {
   .v-container {

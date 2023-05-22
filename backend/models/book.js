@@ -14,10 +14,10 @@ const bookSchema = new Schema(
     description: {
       type: String,
     },
-    // imageUrl: {
-    //   type: String,
-    //   required: true,
-    // },
+    imageUrl: {
+      type: String,
+      required: false,
+    },
     genres: [
       {
         type: mongoose.Schema.Types.ObjectId,

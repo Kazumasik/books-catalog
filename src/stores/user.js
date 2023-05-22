@@ -42,5 +42,12 @@ export const useUserStore = defineStore({
       const response = await getData("user/"+userId);
       return response
     },
+    async changeName(newName) {
+      const payload={
+        nickname: newName
+      }
+      const response = await editData("user/", payload);
+      return response
+    },
   },
 });

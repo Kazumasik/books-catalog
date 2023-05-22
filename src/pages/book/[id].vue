@@ -35,12 +35,12 @@ const commentaryData = reactive({
 const deleteComment = async (commentId) => {
   await bookStore.deleteComment(commentId);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
-  editId.value=null
+  editId.value = null;
 };
 const editComment = async (commentId, payload) => {
   await bookStore.editComment(commentId, payload);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
-  editId.value=null
+  editId.value = null;
 };
 </script>
 
@@ -116,6 +116,7 @@ const editComment = async (commentId, payload) => {
               @click:appendInner="publish"
               @keydown.enter.prevent="publish"
               auto-grow
+              counter="500"
               :rows="1"
               placeholder="Залиште свій коментар"
             >

@@ -1,6 +1,5 @@
 <script setup>
 import BookCard from "../../components/BookCard.vue";
-import BookPlaceholder from "../../components/BookPlaceholder.vue";
 import CatalogFilter from "../../components/CatalogFilter.vue";
 import { useBookStore } from "@/stores/book.js";
 import { useGenreStore } from "@/stores/genre.js";
@@ -13,9 +12,8 @@ const books = ref([]);
 const route = useRoute();
 const totalPages = ref(1);
 const genres = ref([]);
-console.log(route.query.genre)
-const queryGenres = ref(route.query.genre ? route.query.genre.map((id) =>({_id: id})) : []);
-console.log(queryGenres.value)
+console.log(route.query.genre);
+const queryGenres = route.query.genre ? route.query.genre.map((id) => ({ _id: id })) : []
 const page = ref(+route.query.page || 1);
 const fetchData = async (pageValue, selectedGenres = []) => {
   const response = await bookStore.fetchBooks(pageValue, selectedGenres);
@@ -29,7 +27,11 @@ onMounted(async () => {
 });
 
 watch(page, async (newValue, oldValue) => {
-  router.push({ name: "book", query: { ...route.query, page: newValue }, replace: false });
+  router.push({
+    name: "book",
+    query: { ...route.query, page: newValue },
+    replace: false,
+  });
   await fetchData(newValue, route.query.genre);
 });
 
@@ -37,7 +39,7 @@ const changeGenres = async (selectedGenres) => {
   selectedGenres = selectedGenres.map((genre) => genre._id);
   router.push({
     name: "book",
-    query: { ...route.query, genre: [...selectedGenres]},
+    query: { ...route.query, genre: [...selectedGenres] },
     replace: false,
   });
   console.log(selectedGenres);
@@ -63,6 +65,7 @@ const changeGenres = async (selectedGenres) => {
           ></book-card>
         </div>
         <v-pagination
+          class="mt-4"
           v-model="page"
           :length="totalPages"
           rounded="circle"
@@ -90,67 +93,41 @@ const changeGenres = async (selectedGenres) => {
 }
 
 .books-wrapper {
-  flex-grow: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 5px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    ". . . . . . ."
-    ". . . . . . ."
-    ". . . . . . .";
+  gap: 0.7rem;
+  grid-template-columns: repeat(5, minmax(0px, 1fr));
 }
+
 @media (max-width: 1919px) {
   .books-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 0px 5px;
-    grid-template-areas:
-      ". . . . ."
-      ". . . . ."
-      ". . . . .";
+    grid-template-columns: repeat(5, minmax(0px, 1fr));
   }
 }
+
 @media (max-width: 1279px) {
   .books-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 0px 5px;
-    grid-template-areas:
-      ". . ."
-      ". . ."
-      ". . .";
+    grid-template-columns: repeat(3, minmax(0px, 1fr));
   }
 }
 
 @media (max-width: 799px) {
   .books-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 0px 5px;
-    grid-template-areas:
-      ". ."
-      ". ."
-      ". .";
+    grid-template-columns: repeat(2, minmax(0px, 1fr));
   }
 }
+
 @media (max-width: 649px) {
   .filter {
     display: none;
   }
   .books-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 0px 5px;
-    grid-template-areas:
-      ". . ."
-      ". . ."
-      ". . .";
+    grid-template-columns: repeat(3, minmax(0px, 1fr));
+  }
+}
+
+@media (min-width: 1920px) {
+  .v-container {
+    max-width: 1200px;
   }
 }
 </style>

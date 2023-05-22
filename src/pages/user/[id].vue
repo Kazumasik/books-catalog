@@ -3,15 +3,25 @@ import { onMounted } from "vue";
 import BookCard from "../../components/BookCard.vue";
 import { useUserStore } from "@/stores/user.js";
 import { useRoute } from "vue-router";
-import BookPlaceholder from "../../components/BookPlaceholder.vue";
 const tab = ref(null);
 const userStore = useUserStore();
 const route = useRoute();
-const user = ref({ nickname: "" });
+const user = ref({});
 const isYourProfile = ref(route.params.id === userStore.getUser.id);
 const newNickname = ref("");
 const editMode = ref(false);
 
+const changeName = async () => {
+  editMode.value=false;
+  const response = await userStore.changeName(newNickname.value)
+  console.log("РЕСПОНС",response)
+  user.value.nickname = response.nickname
+}
+
+const cancelEditing=()=>{
+  newNickname.value = user.value.nickname;
+  editMode.value=false;
+}
 onMounted(async () => {
   user.value = await userStore.findById(route.params.id);
   newNickname.value = user.value.nickname;
@@ -40,16 +50,21 @@ onMounted(async () => {
           </v-btn>
         </div>
         <div v-else>
-          <v-text-field variant="outlined" v-model="newNickname" label="Нікнейм" class="nickname-input"></v-text-field>
+          <v-text-field
+            variant="outlined"
+            v-model="newNickname"
+            label="Нікнейм"
+            class="nickname-input"
+          ></v-text-field>
           <v-btn
-            @click="editMode = false"
+            @click="changeName"
             append-icon="mdi-check-bold"
             color="success"
           >
             Зберегти
           </v-btn>
           <v-btn
-            @click="editMode = false"
+            @click="cancelEditing"
             append-icon="mdi-close-thick"
             class="ml-4"
             color="error"
@@ -95,12 +110,7 @@ onMounted(async () => {
             :book_grade="2"
             src="https://remanga.org/media/titles/undead-king-an-adventurer-at-the-bottom-evolutionary-warriors-with-the-power-of-demons/691e549f4674e228c46a07cc2c3be1dd.jpg"
             class="catalog-item"
-          ></book-card>
-          <book-placeholder
-            v-for="n in 10"
-            :key="n"
-            class="catalog-item"
-          ></book-placeholder></div
+          ></book-card></div
       ></v-window-item>
       <v-window-item value="will-read"> </v-window-item> 
     </v-window> -->

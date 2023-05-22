@@ -12,8 +12,8 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(['changeGenres'])
-const selectedGenres = ref(unref(props.queryGenres))
-console.log(selectedGenres)
+const selectedGenres = ref(JSON.parse(JSON.stringify(props.queryGenres)))
+console.log(selectedGenres.value)
 watch(selectedGenres, (newValue, oldValue) => {
   emit('changeGenres', JSON.parse(JSON.stringify(newValue)))
 });
