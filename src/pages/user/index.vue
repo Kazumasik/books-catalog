@@ -3,7 +3,6 @@ import { onMounted } from "vue";
 import BookCard from "../../components/BookCard.vue";
 import { useUserStore } from "@/stores/user.js";
 import { useRoute } from "vue-router";
-import BookPlaceholder from "../../components/BookPlaceholder.vue";
 const tab = ref(null);
 const userStore = useUserStore();
 const route = useRoute();
@@ -31,15 +30,17 @@ onMounted(async () => {
       <div class="profile-header-content ml-4">
         <div v-if="!editMode">
           <h1 class="mb-4">Maxim4ik</h1>
-          <v-btn
-            @click="editMode = true"
-            append-icon="mdi-pencil"
-          >
+          <v-btn @click="editMode = true" append-icon="mdi-pencil">
             Налаштування
           </v-btn>
         </div>
         <div v-else>
-          <v-text-field variant="outlined" v-model="newNickname" label="Нікнейм" class="nickname-input"></v-text-field>
+          <v-text-field
+            variant="outlined"
+            v-model="newNickname"
+            label="Нікнейм"
+            class="nickname-input"
+          ></v-text-field>
           <v-btn
             @click="editMode = false"
             append-icon="mdi-check-bold"
@@ -78,11 +79,6 @@ onMounted(async () => {
             src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
             class="catalog-item"
           ></book-card>
-          <book-placeholder
-            v-for="n in 10"
-            :key="n"
-            class="catalog-item"
-          ></book-placeholder>
         </div>
       </v-window-item>
       <v-window-item value="read">
@@ -94,12 +90,7 @@ onMounted(async () => {
             :book_grade="2"
             src="https://remanga.org/media/titles/undead-king-an-adventurer-at-the-bottom-evolutionary-warriors-with-the-power-of-demons/691e549f4674e228c46a07cc2c3be1dd.jpg"
             class="catalog-item"
-          ></book-card>
-          <book-placeholder
-            v-for="n in 10"
-            :key="n"
-            class="catalog-item"
-          ></book-placeholder></div
+          ></book-card></div
       ></v-window-item>
       <v-window-item value="will-read"> </v-window-item>
     </v-window>
@@ -125,12 +116,5 @@ onMounted(async () => {
   box-sizing: border-box;
   flex-wrap: wrap;
   box-sizing: border-box;
-}
-.catalog-item,
-.book-placeholder {
-  flex: 1 0 auto;
-}
-.book-placeholder {
-  width: 200px;
 }
 </style>
