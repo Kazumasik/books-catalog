@@ -1,20 +1,36 @@
 <script setup>
 import { watch } from "vue";
-
+import { useGenreStore } from "@/stores/genre.js";
+const genreStore = useGenreStore();
 const props = defineProps({
   genres: {
     type: Array,
     required: true,
   },
-   queryGenres: {
+  queryGenres: {
     type: Array,
     required: true,
   },
 });
-const emit = defineEmits(['changeGenres'])
-const selectedGenres = ref(JSON.parse(JSON.stringify(props.queryGenres)))
+const transformGenres = (idArray) => {
+  return idArray.map((obj) => {
+    const categoryId = obj._id;
+    const categoryObj = genreStore.getGenres.find(
+      (category) => category._id === categoryId
+    );
+    const categoryName = categoryObj.name;
+
+    return {
+      _id: categoryId,
+      name: categoryName,
+      __v: 0,
+    };
+  });
+};
+const emit = defineEmits(["changeGenres"]);
+const selectedGenres = ref(transformGenres(props.queryGenres));
 watch(selectedGenres, (newValue, oldValue) => {
-  emit('changeGenres', JSON.parse(JSON.stringify(newValue)))
+  emit("changeGenres", JSON.parse(JSON.stringify(newValue)));
 });
 </script>
 
@@ -34,23 +50,6 @@ watch(selectedGenres, (newValue, oldValue) => {
       v-model="selectedGenres"
       :hide-details="true"
     ></v-combobox>
-    <h4 class="mb-4">Рік випуску</h4>
-    <div class="d-flex publish-year mb-4">
-      <v-text-field
-        class="mr-2"
-        :hide-details="true"
-        label="Від"
-        variant="outlined"
-      >
-      </v-text-field>
-      <v-text-field
-        class="ml-2"
-        :hide-details="true"
-        label="До"
-        variant="outlined"
-      >
-      </v-text-field>
-    </div>
   </div>
 </template>
 <style scoped>

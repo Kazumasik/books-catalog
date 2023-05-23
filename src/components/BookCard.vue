@@ -36,7 +36,7 @@ const imageUrl = import.meta.env.VITE_BASE_URL +"/"+props.src.imageUrl
         {{ props.title }}
       </v-card-title>
       <v-card-subtitle class="text-caption">
-        <v-chip :to="`/book?page=1&genre=${props.genre._id}`" rounded variant="tonal" link>
+        <v-chip rounded variant="tonal" link>
           {{ props.genre.name }}
         </v-chip>
       </v-card-subtitle>

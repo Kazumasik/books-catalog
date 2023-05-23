@@ -95,3 +95,7 @@ const deleteBook = async () => {
   }
 }
 </style>
+<route lang='yaml'>
+meta:
+  requiresAdmin: true
+</route>

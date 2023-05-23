@@ -68,16 +68,16 @@ const createdDate = moment(props.date).locale("uk").fromNow();
         </div>
         <v-btn
           @click="$emit('setEditMode', props.commentary_id)"
-          v-if="!editing"
+          v-if="!props.editMode && isYourProfile"
           size="small"
           variant="text"
           icon="mdi-pencil"
         ></v-btn>
       </div>
       <v-card-text>
-        <p v-if="!editing">{{ props.commentary_text }}</p>
+        <p v-if="!props.editMode">{{ props.commentary_text }}</p>
         <v-textarea
-          v-else-if="editing"
+          v-else-if="props.editMode"
           persistent-counter
           counter="500"
           maxLength="500"
@@ -88,7 +88,7 @@ const createdDate = moment(props.date).locale("uk").fromNow();
         >
         </v-textarea>
       </v-card-text>
-      <v-card-actions v-if="editing">
+      <v-card-actions v-if="props.editMode">
         <v-btn
           size="small"
           color="red-lighten-1"

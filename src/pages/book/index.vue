@@ -5,7 +5,7 @@ import { useBookStore } from "@/stores/book.js";
 import { useGenreStore } from "@/stores/genre.js";
 import { useRoute } from "vue-router";
 import router from "../../router";
-import { computed, ref } from "vue";
+import { computed, onUpdated, ref } from "vue";
 const bookStore = useBookStore();
 const genreStore = useGenreStore();
 const books = ref([]);
@@ -27,6 +27,9 @@ const fetchData = async (pageValue, selectedGenres = []) => {
 onMounted(async () => {
   await fetchData(page.value, route.query.genre);
 });
+// watch(route.query, async (newValue, oldValue) => {
+//   await fetchData(page.value, route.query.genre);
+// });
 
 watch(page, async (newValue, oldValue) => {
   router.push({

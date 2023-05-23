@@ -17,9 +17,11 @@ router.beforeEach(function (to, from, next) {
   if(!userStore.getUser.nickname && localStorage.getItem('token')){
     userStore.current();
   }
-  console.log(genreStore.getGenres.length)
   if(!genreStore.getGenres.length){
     genreStore.fetchAll();
+  }
+  if(to.meta.requiresAdmin && userStore.getUser.role !== "admin"){
+    next('/')
   }
   next()
 });

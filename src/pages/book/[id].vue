@@ -15,11 +15,11 @@ const imageSrc = ref("");
 const changeEditMode = (comentId) => {
   editId.value = comentId;
 };
-
+const isAdmin = ref(userStore.getUser.role === "admin");
 onMounted(async () => {
   book.value = await bookStore.findById(route.params.id);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
-  imageSrc.value = import.meta.env.VITE_BASE_URL +"/"+ book.value.imageUrl;
+  imageSrc.value = import.meta.env.VITE_BASE_URL + "/" + book.value.imageUrl;
 });
 
 const publish = async () => {
@@ -50,9 +50,8 @@ const editComment = async (commentId, payload) => {
       <div class="first-column">
         <div class="first-column-wrapper">
           <v-img class="rounded-xl mb-4" cover :src="imageSrc"></v-img>
-          <router-link to="/chapter">
-            <v-btn class="mb-4"> Читати </v-btn>
-          </router-link>
+          <v-btn to="/chapter" class="mb-4"> Читати </v-btn>
+          <v-btn class="mb-4" append-icon="mdi-download"> Завантажити </v-btn>
           <v-select
             class="elevation-0 mb-4"
             hide-details
@@ -61,9 +60,9 @@ const editComment = async (commentId, payload) => {
             :items="bookmarks"
             variant="solo"
           ></v-select>
-          <router-link :to="`/admin/edit-book/${book._id}`">
-            <v-btn class="mb-4"> Редагувати </v-btn>
-          </router-link>
+          <v-btn v-if="isAdmin" :to="`/admin/edit-book/${book._id}`" class="mb-4">
+            Редагувати
+          </v-btn>
         </div>
       </div>
       <div class="second-column ml-6">

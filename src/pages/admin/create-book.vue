@@ -15,10 +15,16 @@ const newBook = reactive({
   genres: [],
 });
 
+const createRules = {
+  titleRules: [(v) => !!v || "Назва обов'язкова"],
+  origTitleRules: [(v) => !!v || "Оригінальна назва обов'язкова"],
+  genreRules: [(v) => !!v.length || "Жанр обов'язковий"],
+  coverRules: [(v) => !!v || "Обкладинка обов'язкова"],
+};
 const createBook = async () => {
   const response = await bookStore.createBook(newBook);
   console.log(response);
-  router.replace('/book/'+ response._id)
+  router.replace("/book/" + response._id);
 };
 </script>
 
@@ -27,6 +33,7 @@ const createBook = async () => {
     <v-sheet class="pa-4 rounded-lg">
       <v-form @submit.prevent.stop="createBook">
         <v-file-input
+          :rules="createRules.coverRules"
           accept="image/*"
           show-size
           v-model="newBook.image"
@@ -34,24 +41,29 @@ const createBook = async () => {
           variant="outlined"
         ></v-file-input>
         <v-text-field
+          :rules="createRules.titleRules"
           label="Назва українською"
           variant="outlined"
           v-model="newBook.title"
         ></v-text-field>
         <v-text-field
+          :rules="createRules.origTitleRules"
           label="Оригінальна назва"
           variant="outlined"
           v-model="newBook.origTitle"
         ></v-text-field>
         <v-textarea
-          count
-          no-resize
+          persistent-counter
+          maxLength="1000"
+          auto-grow
+          counter="1000"
           variant="outlined"
           label="Опис"
           v-model="newBook.description"
         ></v-textarea>
         <v-combobox
-          class="filter-row mb-4"
+          :rules="createRules.genreRules"
+          class="filter-row mt-4 mb-6"
           multiple
           chips
           closable-chips
@@ -63,9 +75,15 @@ const createBook = async () => {
           :hide-details="true"
           v-model="newBook.genres"
         ></v-combobox>
-        <v-btn type="submit" class="w-100">
-          Створити книгу
-        </v-btn>
+        <v-file-input
+          :rules="createRules.coverRules"
+          accept=".doc,.docx"
+          show-size
+          v-model="newBook.content"
+          label="Контент"
+          variant="outlined"
+        ></v-file-input>
+        <v-btn type="submit" class="w-100"> Створити книгу </v-btn>
       </v-form>
     </v-sheet>
   </v-container>
@@ -78,3 +96,7 @@ const createBook = async () => {
   }
 }
 </style>
+<route lang='yaml'>
+meta:
+  requiresAdmin: true
+</route>

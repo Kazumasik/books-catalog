@@ -6,6 +6,9 @@ const userStore = useUserStore()
 const logOut = () =>{
   userStore.logout()
 }
+
+const isAdmin = ref(userStore.getUser.role === "admin")
+
 const userId = userStore.getUser.id
 const themes = [
   {
@@ -64,7 +67,7 @@ watch(vuetifyTheme.global.name, (val) => {
             {{userStore.getUser.nickname}}
           </VListItemTitle>
         </VListItem>
-        <VListItem to="/admin/create-book">
+        <VListItem  v-if="isAdmin" to="/admin/create-book">
           <template #prepend>
             <VIcon icon="mdi-book-plus" class="me-2" size="22" />
           </template>
