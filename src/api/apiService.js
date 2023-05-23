@@ -51,12 +51,6 @@ const postData = async (url, payload) => {
   } catch (e) {
     return Promise.reject(e);
   }
-  // try {
-  //   const response = await apiService.post(url, payload);
-  //   return response.data;
-  // } catch (e) {
-  //   return Promise.reject(e);
-  // }
 };
 const deleteData = async (url) => {
   try {
@@ -75,4 +69,27 @@ const editData = async (url, payload) => {
   }
 };
 
-export { getData, postData, deleteData, editData, apiService };
+const getFile = async (url) => {
+  try {
+    const response = await apiService.get(url, {
+      responseType: 'blob', 
+    });
+
+    const downloadLink = document.createElement('a');
+    const contentType = response.headers['content-type'];
+    const blob = new Blob([response.data], { type: contentType });
+    const objectUrl = URL.createObjectURL(blob);
+
+    downloadLink.href = objectUrl;
+    downloadLink.click();
+
+    URL.revokeObjectURL(objectUrl);
+
+    return true;
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+
+
+export { getData, postData, deleteData, editData, getFile, apiService };

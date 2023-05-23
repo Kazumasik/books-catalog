@@ -55,6 +55,10 @@ const changeRating = () => {
     dialogRating.value = true;
   }
 };
+
+const downloadBook=async ()=>{
+  await bookStore.downloadBook(route.params.id);
+}
 </script>
 
 <template>
@@ -64,7 +68,7 @@ const changeRating = () => {
         <div class="first-column-wrapper">
           <v-img class="rounded-xl mb-4" cover :src="imageSrc"></v-img>
           <v-btn to="/chapter" class="mb-4"> Читати </v-btn>
-          <v-btn class="mb-4" append-icon="mdi-download"> Завантажити </v-btn>
+          <v-btn class="mb-4" @click="downloadBook" append-icon="mdi-download"> Завантажити </v-btn>
           <v-select
             class="elevation-0 mb-4"
             hide-details
