@@ -30,7 +30,7 @@ const deleteBook = async () => {
 <template>
   <v-container>
     <v-sheet class="pa-4 rounded-lg">
-      <v-file-input label="Обкладинка книги" variant="outlined"></v-file-input>
+      <v-file-input v-model="updatedBook.image" label="Обкладинка книги" variant="outlined"></v-file-input>
       <v-text-field
         v-model="updatedBook.title"
         label="Назва українською"

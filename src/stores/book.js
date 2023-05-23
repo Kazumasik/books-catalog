@@ -28,11 +28,22 @@ export const useBookStore = defineStore({
       formData.append("origTitle", payload.origTitle);
       formData.append("description", payload.description);
       formData.append("genres", JSON.stringify(payload.genres));
-      formData.append("image", payload.image[0]);
+      if(payload.image){
+        formData.append("image", payload.image[0]);
+      }
       return await postData("book/create", formData);
     },
     async updateBook(bookId, payload) {
-      await editData(`book/${bookId}`, payload);
+      console.log(payload)
+      const formData = new FormData();
+      formData.append("title", payload.title);
+      formData.append("origTitle", payload.origTitle);
+      formData.append("description", payload.description);
+      formData.append("genres", JSON.stringify(payload.genres));
+      if(payload.image){
+        formData.append("image", payload.image[0]);
+      }
+      await editData(`book/${bookId}`, formData);
     },
     async deleteBook(bookId) {
       await deleteData(`book/${bookId}`);
@@ -63,6 +74,13 @@ export const useBookStore = defineStore({
     },
     async fetchAllComments(bookId) {
       const response = await getData(`book/${bookId}/comment`);
+      return response;
+    },
+    async addRating(bookId, rating) {
+      const payload={
+        rating,
+      }
+      const response = await postData(`book/${bookId}/rating`, payload);
       return response;
     },
   },

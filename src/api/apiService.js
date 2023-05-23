@@ -68,7 +68,7 @@ const deleteData = async (url) => {
 };
 const editData = async (url, payload) => {
   try {
-    const response = await apiService.put(url, { ...payload });
+    const response = await apiService.put(url, payload);
     return response.data;
   } catch (e) {
     return Promise.reject(e);

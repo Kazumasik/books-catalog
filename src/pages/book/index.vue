@@ -49,7 +49,6 @@ const changeGenres = async (selectedGenres) => {
   });
   await fetchData(page.value, selectedGenres);
 };
-
 </script>
 
 <template>
@@ -62,7 +61,7 @@ const changeGenres = async (selectedGenres) => {
             v-for="book in books"
             :key="book._id"
             :title="book.title"
-            :book_grade="9"
+            :book_grade="book.averageRating"
             :url="book._id"
             :genre="book.genres[0]"
             :src="book"
@@ -84,6 +83,7 @@ const changeGenres = async (selectedGenres) => {
       ></CatalogFilter>
     </div>
   </v-container>
+
 </template>
 
 <style scoped>
@@ -129,7 +129,11 @@ const changeGenres = async (selectedGenres) => {
     grid-template-columns: repeat(3, minmax(0px, 1fr));
   }
 }
-
+@media (max-width: 400px) {
+  .books-wrapper {
+    grid-template-columns: repeat(2, minmax(0px, 1fr));
+  }
+}
 @media (min-width: 1920px) {
   .v-container {
     max-width: 1200px;

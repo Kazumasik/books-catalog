@@ -3,15 +3,22 @@ import BookCard from "../../components/BookCard.vue";
 import commentary from "../../components/book/commentary.vue";
 import { useUserStore } from "@/stores/user.js";
 import { useBookStore } from "@/stores/book.js";
+import { watch } from "vue";
 const bookmarks = ["Читаю", "Прочитав", "Буду читати"];
 const bookStore = useBookStore();
 const userStore = useUserStore();
 const book = ref({});
 const commentaries = ref({});
 const route = useRoute();
-
+const dialogRating = ref(false);
 const editId = ref(null);
 const imageSrc = ref("");
+const rating = ref(0);
+watch(rating, async (newValue, oldValue) => {
+  const response = await bookStore.addRating(route.params.id, newValue);
+  book.value.averageRating = response.averageRating;
+  book.value.totalRatings = response.totalRatings;
+});
 const changeEditMode = (comentId) => {
   editId.value = comentId;
 };
@@ -42,6 +49,12 @@ const editComment = async (commentId, payload) => {
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
   editId.value = null;
 };
+
+const changeRating = () => {
+  if (localStorage.getItem("token")) {
+    dialogRating.value = true;
+  }
+};
 </script>
 
 <template>
@@ -60,7 +73,11 @@ const editComment = async (commentId, payload) => {
             :items="bookmarks"
             variant="solo"
           ></v-select>
-          <v-btn v-if="isAdmin" :to="`/admin/edit-book/${book._id}`" class="mb-4">
+          <v-btn
+            v-if="isAdmin"
+            :to="`/admin/edit-book/${book._id}`"
+            class="mb-4"
+          >
             Редагувати
           </v-btn>
         </div>
@@ -76,8 +93,13 @@ const editComment = async (commentId, payload) => {
             </h4>
           </div>
           <div class="statistic d-flex mb-4">
-            <v-btn variant="tonal" prepend-icon="mdi-star" size="default">
-              7.8
+            <v-btn
+              variant="tonal"
+              @click="changeRating"
+              prepend-icon="mdi-star-four-points"
+              size="default"
+            >
+              {{ book.averageRating }} ({{ book.totalRatings }})
             </v-btn>
             <v-btn
               variant="tonal"
@@ -139,6 +161,25 @@ const editComment = async (commentId, payload) => {
       </div>
     </div>
   </v-container>
+  <v-dialog v-model="dialogRating" max-width="600px">
+    <v-card>
+      <v-card-title class="text-h5 text-center"
+        >Поставте свою оцінку цій книзі.</v-card-title
+      >
+      <VContainer class="pt-0 d-flex justify-center">
+        <v-rating
+          v-model="rating"
+          color="white"
+          active-color="primary"
+          hover
+          size="25"
+          length="10"
+          empty-icon="mdi-star-four-points-outline"
+          full-icon="mdi-star-four-points"
+        ></v-rating>
+      </VContainer>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

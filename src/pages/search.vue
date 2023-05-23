@@ -41,7 +41,7 @@ const searchBook = async () => {
         :book_grade="9"
         :url="book._id"
         :genre="book.genres[0]"
-        src="https://remanga.org/media/titles/godkilling-oresamas-strongest-angels-evolution-story/f4a794f52152e3630834aae8702a9fbf.jpg"
+        :src="book"
         class="catalog-item"
       ></book-card>
     </div>

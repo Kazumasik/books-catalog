@@ -59,6 +59,11 @@ const imageUrl = import.meta.env.VITE_BASE_URL +"/"+props.src.imageUrl
   justify-content: center;
   align-items: center;
 }
+.v-img {
+  height: 0;
+  padding-top: 140%; /* Задает высоту в зависимости от ширины родительского элемента */
+  position: relative;
+}
 .v-card-title {
   height: 46px;
   white-space: normal;
