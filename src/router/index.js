@@ -11,16 +11,16 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(function (to, from, next) {
+router.beforeEach(async function (to, from, next) {
   const userStore = useUserStore();
   const genreStore = useGenreStore();
   if(!userStore.getUser.nickname && localStorage.getItem('token')){
-    userStore.current();
+    await userStore.current();
   }
   if(!genreStore.getGenres.length){
-    genreStore.fetchAll();
+    await genreStore.fetchAll();
   }
-  if(to.meta.requiresAdmin && userStore.getUser.role !== "admin"){
+  if(to.meta.requiresAdmin && userStore.getUserRole !== "admin"){
     next('/')
   }
   next()

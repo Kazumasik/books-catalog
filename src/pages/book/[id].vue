@@ -169,7 +169,7 @@ const changeRating = () => {
       <VContainer class="pt-0 d-flex justify-center">
         <v-rating
           v-model="rating"
-          color="white"
+          color="grey"
           active-color="primary"
           hover
           size="25"

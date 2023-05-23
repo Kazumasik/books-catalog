@@ -7,9 +7,9 @@ const logOut = () =>{
   userStore.logout()
 }
 
-const isAdmin = ref(userStore.getUser.role === "admin")
+const isAdmin = ref(userStore.getUserRole === "admin")
 
-const userId = userStore.getUser.id
+const userId = ref(userStore.getUserId)
 const themes = [
   {
     name: "light",
