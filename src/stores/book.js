@@ -23,24 +23,24 @@ export const useBookStore = defineStore({
       return response;
     },
     async createBook(payload) {
-      const formData = new FormData();
-      formData.append("title", payload.title);
-      formData.append("origTitle", payload.origTitle);
-      formData.append("description", payload.description);
-      formData.append("genres", JSON.stringify(payload.genres));
-      if(payload.image){
-        formData.append("image", payload.image[0]);
-      }
-      return await postData("book/create", formData);
-    },
-    async updateBook(bookId, payload) {
       console.log(payload)
       const formData = new FormData();
       formData.append("title", payload.title);
       formData.append("origTitle", payload.origTitle);
       formData.append("description", payload.description);
       formData.append("genres", JSON.stringify(payload.genres));
-      if(payload.image){
+      formData.append("image", payload.image[0]);
+      formData.append("content", payload.content[0]);
+      return await postData("book/create", formData);
+    },
+    async updateBook(bookId, payload) {
+      console.log(payload);
+      const formData = new FormData();
+      formData.append("title", payload.title);
+      formData.append("origTitle", payload.origTitle);
+      formData.append("description", payload.description);
+      formData.append("genres", JSON.stringify(payload.genres));
+      if (payload.image) {
         formData.append("image", payload.image[0]);
       }
       await editData(`book/${bookId}`, formData);
@@ -77,9 +77,9 @@ export const useBookStore = defineStore({
       return response;
     },
     async addRating(bookId, rating) {
-      const payload={
+      const payload = {
         rating,
-      }
+      };
       const response = await postData(`book/${bookId}/rating`, payload);
       return response;
     },

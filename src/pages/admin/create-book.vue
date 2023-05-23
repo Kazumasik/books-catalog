@@ -8,11 +8,12 @@ const bookStore = useBookStore();
 const genres = ref(genreStore.getGenres);
 
 const newBook = reactive({
-  image: "",
+  image: [],
   title: "",
   origTitle: "",
   description: "",
   genres: [],
+  content:[]
 });
 
 const createRules = {
