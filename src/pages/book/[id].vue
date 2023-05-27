@@ -22,7 +22,7 @@ watch(rating, async (newValue, oldValue) => {
 const changeEditMode = (comentId) => {
   editId.value = comentId;
 };
-const isAdmin = ref(userStore.getUser.role === "admin");
+const isAdmin = ref(userStore.getUserRole === "admin");
 onMounted(async () => {
   book.value = await bookStore.findById(route.params.id);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
@@ -57,7 +57,7 @@ const changeRating = () => {
 };
 
 const downloadBook=async ()=>{
-  await bookStore.downloadBook(route.params.id);
+  await bookStore.downloadBook(route.params.id, book.value.title);
 }
 </script>
 
@@ -67,7 +67,7 @@ const downloadBook=async ()=>{
       <div class="first-column">
         <div class="first-column-wrapper">
           <v-img class="rounded-xl mb-4" cover :src="imageSrc"></v-img>
-          <v-btn to="/chapter" class="mb-4"> Читати </v-btn>
+          <v-btn :to="`/book/${book._id}/content?page=1`" class="mb-4"> Читати </v-btn>
           <v-btn class="mb-4" @click="downloadBook" append-icon="mdi-download"> Завантажити </v-btn>
           <v-select
             class="elevation-0 mb-4"

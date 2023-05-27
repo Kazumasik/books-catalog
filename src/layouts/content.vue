@@ -5,16 +5,28 @@ import { useBookStore } from "@/stores/book.js";
 import LoginButton from "../components/header/LoginButton.vue";
 import ProfileButton from "../components/header/ProfileButton.vue";
 import router from "../router";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router"
 const userStore = useUserStore();
-const route = useRoute();
 const bookStore = useBookStore();
-const searchQuery = ref("");
-const searchBook = async () => {
-  router.replace(`/search?title=${searchQuery.value}`)
-  searchQuery.value=""
-};
-const isSearch = ref(route.name === "search")
+const props = ref(null);
+const route = useRoute();
+const infiniteMode = ref(route.query.page ? false : true)
+
+watch(infiniteMode, async (newValue, oldValue) => {
+  if (newValue) {
+    router.push({
+      name: "book-contentId-content",
+      replace: false,
+    });
+  } else if (!newValue) {
+    router.push({
+      name: "book-contentId-content",
+      query: { page: 1 },
+      replace: false,
+    });
+  }
+});
 </script>
 
 <template>
@@ -28,17 +40,9 @@ const isSearch = ref(route.name === "search")
           <v-btn variant="text"> Каталог </v-btn>
         </router-link>
         <v-spacer></v-spacer>
-        <VTextField
-          v-model="searchQuery"
-          prepend-inner-icon="mdi-magnify"
-          density="compact"
-          variant="outlined"
-          @keydown.enter.prevent="searchBook"
-          :hide-details="true"
-          class="mr-4"
-        />
-        <ProfileButton v-if="userStore.getToken" />
-        <LoginButton v-else />
+        <v-switch v-model="infiniteMode" class="read-mode mr-4" hide-details label="Все одразу"></v-switch>
+        <ProfileButton  v-if="userStore.getToken" />
+        <LoginButton  v-else />
       </v-container>
     </v-app-bar>
 
@@ -53,5 +57,8 @@ const isSearch = ref(route.name === "search")
   .v-container {
     max-width: 1200px;
   }
+}
+.read-mode{
+  flex: inherit !important;
 }
 </style>

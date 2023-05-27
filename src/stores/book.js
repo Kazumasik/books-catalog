@@ -1,4 +1,10 @@
-import { editData, getData, postData, deleteData, getFile } from "@/api/apiService";
+import {
+  editData,
+  getData,
+  postData,
+  deleteData,
+  getFile,
+} from "@/api/apiService";
 import { defineStore } from "pinia";
 import { useRoute } from "vue-router";
 export const useBookStore = defineStore({
@@ -23,7 +29,7 @@ export const useBookStore = defineStore({
       return response;
     },
     async createBook(payload) {
-      console.log(payload)
+      console.log(payload);
       const formData = new FormData();
       formData.append("title", payload.title);
       formData.append("origTitle", payload.origTitle);
@@ -83,8 +89,15 @@ export const useBookStore = defineStore({
       const response = await postData(`book/${bookId}/rating`, payload);
       return response;
     },
-    async downloadBook(bookId){
-      await getFile(`book/${bookId}/download`);
-    }
+    async downloadBook(bookId, bookName) {
+      await getFile(`book/${bookId}/download`, bookName);
+    },
+    async getBookContent(bookId, page) {
+      let url = `book/${bookId}/content`
+      if(page){
+        url+=`?page=${page}`
+      }
+      return await getData(url);
+    },
   },
 });

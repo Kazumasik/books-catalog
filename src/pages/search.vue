@@ -5,7 +5,7 @@ import { useRoute } from "vue-router";
 import router from "../router";
 const route = useRoute();
 const bookStore = useBookStore();
-const title = ref(route.query.title || " ");
+const title = ref(route.query.title || "");
 const books = ref({});
 onMounted(async () => {
   if (route.query.title) {
@@ -33,7 +33,7 @@ const searchBook = async () => {
       @keydown.enter.prevent="searchBook"
       :hide-details="true"
     />
-    <div class="mt-4 search-results-wrapper">
+    <div v-if="books.length" class="mt-4 search-results-wrapper">
       <book-card
         v-for="book in books"
         :key="book._id"
@@ -45,6 +45,7 @@ const searchBook = async () => {
         class="catalog-item"
       ></book-card>
     </div>
+    <h2 class="mt-4 text-center" v-else-if="title">Нічого не знайдено</h2>
   </v-container>
 </template>
 

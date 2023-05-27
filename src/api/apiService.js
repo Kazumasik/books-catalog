@@ -69,11 +69,14 @@ const editData = async (url, payload) => {
   }
 };
 
-const getFile = async (url) => {
+const getFile = async (url, name) => {
   try {
     const response = await apiService.get(url, {
-      responseType: 'blob', 
+      responseType: 'blob',
     });
+
+    const disposition = response.headers['content-disposition'];
+    let fileName = name; // Имя файла по умолчанию
 
     const downloadLink = document.createElement('a');
     const contentType = response.headers['content-type'];
@@ -81,6 +84,7 @@ const getFile = async (url) => {
     const objectUrl = URL.createObjectURL(blob);
 
     downloadLink.href = objectUrl;
+    downloadLink.download = fileName;
     downloadLink.click();
 
     URL.revokeObjectURL(objectUrl);
