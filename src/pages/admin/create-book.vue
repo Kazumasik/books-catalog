@@ -21,6 +21,7 @@ const createRules = {
   origTitleRules: [(v) => !!v || "Оригінальна назва обов'язкова"],
   genreRules: [(v) => !!v.length || "Жанр обов'язковий"],
   coverRules: [(v) => !!v || "Обкладинка обов'язкова"],
+  contentRules: [(v) => !!v || "Контент обов'язковий"],
 };
 const createBook = async () => {
   const response = await bookStore.createBook(newBook);

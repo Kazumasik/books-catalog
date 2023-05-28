@@ -9,7 +9,7 @@ const bookStore = useBookStore();
 const route = useRoute();
 const genres = ref([]);
 
-const deleteDialog = ref(false)
+const deleteDialog = ref(false);
 
 onMounted(async () => {
   updatedBook.value = await bookStore.findById(route.params.id);
@@ -30,7 +30,11 @@ const deleteBook = async () => {
 <template>
   <v-container>
     <v-sheet class="pa-4 rounded-lg">
-      <v-file-input v-model="updatedBook.image" label="Обкладинка книги" variant="outlined"></v-file-input>
+      <v-file-input
+        v-model="updatedBook.image"
+        label="Обкладинка книги"
+        variant="outlined"
+      ></v-file-input>
       <v-text-field
         v-model="updatedBook.title"
         label="Назва українською"
@@ -62,6 +66,14 @@ const deleteBook = async () => {
         :hide-details="true"
       >
       </v-combobox>
+      <v-file-input
+        :rules="createRules.coverRules"
+        accept=".doc,.docx"
+        show-size
+        v-model="updatedBook.content"
+        label="Контент"
+        variant="outlined"
+      ></v-file-input>
       <v-btn @click="updateBook"> Оновити інформацію </v-btn>
       <v-btn @click="deleteDialog = true" class="ml-4" color="error">
         Видалити книгу
@@ -74,13 +86,15 @@ const deleteBook = async () => {
         Ви впевнені що хочете видалити цю книгу?
       </v-card-title>
       <v-card-actions>
-        <v-spacer>
-
-        </v-spacer>
+        <v-spacer> </v-spacer>
         <v-btn color="green-lighten-1" variant="text" @click="deleteBook">
           Так
         </v-btn>
-        <v-btn color="red-lighten-1" variant="text" @click="deleteDialog = false">
+        <v-btn
+          color="red-lighten-1"
+          variant="text"
+          @click="deleteDialog = false"
+        >
           ні
         </v-btn>
       </v-card-actions>
@@ -95,7 +109,7 @@ const deleteBook = async () => {
   }
 }
 </style>
-<route lang='yaml'>
+<route lang="yaml">
 meta:
   requiresAdmin: true
 </route>
