@@ -5,16 +5,15 @@ import { useBookStore } from "@/stores/book.js";
 import LoginButton from "../components/header/LoginButton.vue";
 import ProfileButton from "../components/header/ProfileButton.vue";
 import router from "../router";
-import { useRoute } from "vue-router"
+import { useRoute } from "vue-router";
 const userStore = useUserStore();
 const route = useRoute();
 const bookStore = useBookStore();
 const searchQuery = ref("");
 const searchBook = async () => {
-  router.replace(`/search?title=${searchQuery.value}`)
-  searchQuery.value=""
+  router.replace(`/search?title=${searchQuery.value}`);
+  searchQuery.value = "";
 };
-const isSearch = ref(route.name === "search")
 </script>
 
 <template>
@@ -29,6 +28,7 @@ const isSearch = ref(route.name === "search")
         </router-link>
         <v-spacer></v-spacer>
         <VTextField
+          v-if="!(route.name === 'search')"
           v-model="searchQuery"
           prepend-inner-icon="mdi-magnify"
           density="compact"

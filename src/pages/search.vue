@@ -33,19 +33,17 @@ const searchBook = async () => {
       @keydown.enter.prevent="searchBook"
       :hide-details="true"
     />
-    <div v-if="books.length" class="mt-4 search-results-wrapper">
+    <div class="mt-4 search-results-wrapper">
       <book-card
         v-for="book in books"
         :key="book._id"
         :title="book.title"
-        :book_grade="9"
+        :book_grade="book.averageRating"
         :url="book._id"
         :genre="book.genres[0]"
         :src="book"
-        class="catalog-item"
       ></book-card>
     </div>
-    <h2 class="mt-4 text-center" v-else-if="title">Нічого не знайдено</h2>
   </v-container>
 </template>
 

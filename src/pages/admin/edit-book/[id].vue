@@ -7,13 +7,23 @@ const genreStore = useGenreStore();
 const updatedBook = ref({});
 const bookStore = useBookStore();
 const route = useRoute();
-const genres = ref([]);
+const genres = ref(genreStore.getGenres);
 
 const deleteDialog = ref(false);
-
+const updateRules = {
+  titleRules: [(v) => !!v || "Назва обов'язкова"],
+  origTitleRules: [(v) => !!v || "Оригінальна назва обов'язкова"],
+  genreRules: [
+    (v) => !!v.length || "Жанр обов'язковий",
+    (value) => {
+      if (value instanceof Array && value.length == 0) {
+        return "Жанр обов'язковий.";
+      }
+    },
+  ],
+};
 onMounted(async () => {
   updatedBook.value = await bookStore.findById(route.params.id);
-  genres.value = await genreStore.fetchAll();
 });
 
 const updateBook = async () => {
@@ -36,16 +46,20 @@ const deleteBook = async () => {
         variant="outlined"
       ></v-file-input>
       <v-text-field
+        :rules="updateRules.titleRules"
         v-model="updatedBook.title"
         label="Назва українською"
         variant="outlined"
       ></v-text-field>
       <v-text-field
+        class="mt-4"
+        :rules="updateRules.origTitleRules"
         v-model="updatedBook.origTitle"
         label="Оригінальна назва"
         variant="outlined"
       ></v-text-field>
       <v-textarea
+        class="mt-4"
         v-model="updatedBook.description"
         count
         no-resize
@@ -53,6 +67,7 @@ const deleteBook = async () => {
         label="Опис"
       ></v-textarea>
       <v-combobox
+        :rules="updateRules.genreRules"
         v-model="updatedBook.genres"
         class="filter-row mb-4"
         multiple
@@ -67,7 +82,7 @@ const deleteBook = async () => {
       >
       </v-combobox>
       <v-file-input
-        :rules="createRules.coverRules"
+        :rules="updatedBook.contentRules"
         accept=".doc,.docx"
         show-size
         v-model="updatedBook.content"

@@ -14,13 +14,13 @@ const router = createRouter({
 router.beforeEach(async function (to, from, next) {
   const userStore = useUserStore();
   const genreStore = useGenreStore();
-  if(!userStore.getUser.nickname && localStorage.getItem('token')){
+  if(!userStore.getUser?.nickname && localStorage.getItem('token')){
     await userStore.current();
   }
   if(!genreStore.getGenres.length){
     await genreStore.fetchAll();
   }
-  if(to.meta.requiresAdmin && userStore.getUserRole !== "admin"){
+  if(to.meta.requiresAdmin && !userStore.isAdmin){
     next('/')
   }
   next()

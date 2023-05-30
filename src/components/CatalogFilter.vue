@@ -38,7 +38,7 @@ watch(selectedGenres, (newValue, oldValue) => {
   <div class="ml-3 filter-wrapper">
     <h4 class="mb-4">Фільтри</h4>
     <v-combobox
-      class="filter-row mb-4"
+      class="filter-row"
       multiple
       chips
       closable-chips
@@ -46,6 +46,19 @@ watch(selectedGenres, (newValue, oldValue) => {
       item-title="name"
       item-value="_id"
       label="Жанри"
+      variant="outlined"
+      v-model="selectedGenres"
+      :hide-details="true"
+    ></v-combobox>
+    <v-combobox
+      class="filter-row mt-4"
+      multiple
+      chips
+      closable-chips
+      :items="props.categories"
+      item-title="name"
+      item-value="_id"
+      label="Категорії"
       variant="outlined"
       v-model="selectedGenres"
       :hide-details="true"

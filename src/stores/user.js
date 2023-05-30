@@ -1,4 +1,4 @@
-import { editData, getData, postData } from "@/api/apiService";
+import { editData, getData, postData, deleteData } from "@/api/apiService";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore({
@@ -7,6 +7,7 @@ export const useUserStore = defineStore({
   state: () => ({
     token: localStorage.getItem("token"),
     user: {},
+    userRole: "user"
   }),
 
   getters: {
@@ -15,6 +16,7 @@ export const useUserStore = defineStore({
     getUserId: (state) => state.user?.id,
     getUserRole: (state) => state.user?.role,
     isAuth: (state) => state.token ? true : false,
+    isAdmin: (state) => state.userRole === "admin" ? true : false,
   },
 
   actions: {
@@ -26,20 +28,24 @@ export const useUserStore = defineStore({
       const response = await postData("auth/login", payload);
       this.setToken(response.token);
       this.user=response.user
+      this.userRole=response.user.role
     },
     async register(payload) {
       const response = await postData("auth/register", payload);
       this.setToken(response.token);
       this.user=response.user
+      this.userRole=response.user.role
     },
-    async logout() {
+    logout() {
       this.token = null;
       this.user = null;
+      this.userRole = "user";
       localStorage.clear();
     },
     async current() {
       const response = await getData("user/current");
       this.user=response
+      this.userRole=response.role
     },
     async findById(userId) {
       const response = await getData("user/"+userId);
@@ -51,6 +57,17 @@ export const useUserStore = defineStore({
       }
       const response = await editData("user/", payload);
       return response
+    },
+    async addBookmark(bookId, bookmarkType) {
+      const payload = {
+        bookmarkType
+      }
+      const response = await editData(`book/${bookId}/add-bookmark`, payload);
+      return response
+    },
+    async deleteBookmark(bookId) {
+      console.log("Подтверждаю")
+      await deleteData(`book/${bookId}/bookmark`);
     },
   },
 });

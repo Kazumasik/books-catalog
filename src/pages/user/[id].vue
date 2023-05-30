@@ -3,28 +3,37 @@ import { onMounted } from "vue";
 import BookCard from "../../components/BookCard.vue";
 import { useUserStore } from "@/stores/user.js";
 import { useRoute } from "vue-router";
-const tab = ref(null);
+const tab = ref("reading");
 const userStore = useUserStore();
 const route = useRoute();
 const user = ref({});
+const books = ref([]);
 const isYourProfile = ref(route.params.id === userStore.getUser.id);
 const newNickname = ref("");
 const editMode = ref(false);
-
+const rules = {
+  required: (value) => !!value.trim() || "Нікнейм не може бути порожнім.",
+  counter: (value) => value.length <= 20 || "Максимум 20 символів",
+};
 const changeName = async () => {
-  editMode.value=false;
-  const response = await userStore.changeName(newNickname.value)
-  console.log("РЕСПОНС",response)
-  user.value.nickname = response.nickname
-}
+  if (!newNickname.value.trim()) {
+    return;
+  }
+  editMode.value = false;
+  const response = await userStore.changeName(newNickname.value);
+  console.log("РЕСПОНС", response);
+  user.value.nickname = response.nickname;
+};
 
-const cancelEditing=()=>{
+const cancelEditing = () => {
   newNickname.value = user.value.nickname;
-  editMode.value=false;
-}
+  editMode.value = false;
+};
 onMounted(async () => {
   user.value = await userStore.findById(route.params.id);
+  books.value = user.value.bookmarks;
   newNickname.value = user.value.nickname;
+  console.log(books.value);
 });
 </script>
 
@@ -55,8 +64,12 @@ onMounted(async () => {
             v-model="newNickname"
             label="Нікнейм"
             class="nickname-input"
+            :rules="[rules.required, rules.counter]"
+            maxlength="20"
+            counter
           ></v-text-field>
           <v-btn
+            class="mt-2"
             @click="changeName"
             append-icon="mdi-check-bold"
             color="success"
@@ -64,9 +77,10 @@ onMounted(async () => {
             Зберегти
           </v-btn>
           <v-btn
+          
             @click="cancelEditing"
             append-icon="mdi-close-thick"
-            class="ml-4"
+            class="mt-2 ml-4"
             color="error"
           >
             Відмінити
@@ -79,41 +93,49 @@ onMounted(async () => {
   <v-container>
     <v-tabs v-model="tab" class="mb-4 mx-2">
       <v-tab value="reading">Читаю</v-tab>
-      <v-tab value="read">Прочитав</v-tab>
-      <v-tab value="will-read">Буду читати</v-tab>
+      <v-tab value="end_read">Прочитав</v-tab>
+      <v-tab value="will_read">Буду читати</v-tab>
     </v-tabs>
 
-    <!-- <v-window v-model="tab">
+    <v-window v-model="tab">
       <v-window-item value="reading">
         <div class="catalog-wrapper">
           <book-card
-            v-for="n in 12"
-            :key="n"
-            book_name="Диктор"
-            :book_grade="2"
-            src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
-            class="catalog-item"
+            v-for="book in books.reading"
+            :key="book._id"
+            :title="book.title"
+            :url="book._id"
+            :genre="book.genres[0]"
+            :src="book"
           ></book-card>
-          <book-placeholder
-            v-for="n in 10"
-            :key="n"
-            class="catalog-item"
-          ></book-placeholder>
         </div>
       </v-window-item>
-      <v-window-item value="read">
+      <v-window-item value="end_read">
         <div class="catalog-wrapper">
           <book-card
-            v-for="n in 3"
-            :key="n"
-            book_name="Нежить"
-            :book_grade="2"
-            src="https://remanga.org/media/titles/undead-king-an-adventurer-at-the-bottom-evolutionary-warriors-with-the-power-of-demons/691e549f4674e228c46a07cc2c3be1dd.jpg"
-            class="catalog-item"
-          ></book-card></div
-      ></v-window-item>
-      <v-window-item value="will-read"> </v-window-item> 
-    </v-window> -->
+            v-for="book in books.end_read"
+            :key="book._id"
+            :title="book.title"
+            :url="book._id"
+            :genre="book.genres[0]"
+            :src="book"
+          >
+          </book-card>
+        </div>
+      </v-window-item>
+      <v-window-item value="will_read">
+        <div class="catalog-wrapper">
+          <book-card
+            v-for="book in books.will_read"
+            :key="book._id"
+            :title="book.title"
+            :url="book._id"
+            :genre="book.genres[0]"
+            :src="book"
+          ></book-card>
+        </div>
+      </v-window-item>
+    </v-window>
   </v-container>
 </template>
 
@@ -132,16 +154,8 @@ onMounted(async () => {
 }
 
 .catalog-wrapper {
-  display: flex;
-  box-sizing: border-box;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-}
-.catalog-item,
-.book-placeholder {
-  flex: 1 0 auto;
-}
-.book-placeholder {
-  width: 200px;
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(6, minmax(0px, 1fr));
 }
 </style>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "../router";
+import { useUserStore } from "@/stores/user.js";
 const apiService = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 });
@@ -19,12 +20,13 @@ apiService.interceptors.response.use(
   },
   (error) => {
     {
+      const userStore = useUserStore()
       switch (error.response.status) {
         case 404:
           router.replace("/404");
           break;
-        case 401:
-          localStorage.clear();
+        case 498:
+          userStore.logout()
           router.replace("/");
           break;
         default:
@@ -72,14 +74,14 @@ const editData = async (url, payload) => {
 const getFile = async (url, name) => {
   try {
     const response = await apiService.get(url, {
-      responseType: 'blob',
+      responseType: "blob",
     });
 
-    const disposition = response.headers['content-disposition'];
+    const disposition = response.headers["content-disposition"];
     let fileName = name; // Имя файла по умолчанию
 
-    const downloadLink = document.createElement('a');
-    const contentType = response.headers['content-type'];
+    const downloadLink = document.createElement("a");
+    const contentType = response.headers["content-type"];
     const blob = new Blob([response.data], { type: contentType });
     const objectUrl = URL.createObjectURL(blob);
 
@@ -94,6 +96,5 @@ const getFile = async (url, name) => {
     return Promise.reject(e);
   }
 };
-
 
 export { getData, postData, deleteData, editData, getFile, apiService };

@@ -4,7 +4,20 @@ import commentary from "../../components/book/commentary.vue";
 import { useUserStore } from "@/stores/user.js";
 import { useBookStore } from "@/stores/book.js";
 import { watch } from "vue";
-const bookmarks = ["Читаю", "Прочитав", "Буду читати"];
+const bookmarks = [
+  {
+    value: "reading",
+    title: "Читаю",
+  },
+  {
+    value: "end_read",
+    title: "Прочитав",
+  },
+  {
+    value: "will_read",
+    title: "Буду читати",
+  },
+];
 const bookStore = useBookStore();
 const userStore = useUserStore();
 const book = ref({});
@@ -14,6 +27,8 @@ const dialogRating = ref(false);
 const editId = ref(null);
 const imageSrc = ref("");
 const rating = ref(0);
+const selectedBookmark = ref(null);
+
 watch(rating, async (newValue, oldValue) => {
   const response = await bookStore.addRating(route.params.id, newValue);
   book.value.averageRating = response.averageRating;
@@ -22,11 +37,11 @@ watch(rating, async (newValue, oldValue) => {
 const changeEditMode = (comentId) => {
   editId.value = comentId;
 };
-const isAdmin = ref(userStore.getUserRole === "admin");
 onMounted(async () => {
   book.value = await bookStore.findById(route.params.id);
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
   imageSrc.value = import.meta.env.VITE_BASE_URL + "/" + book.value.imageUrl;
+  selectedBookmark.value = book.value.bookmarkType;
 });
 
 const publish = async () => {
@@ -56,9 +71,19 @@ const changeRating = () => {
   }
 };
 
-const downloadBook=async ()=>{
+const downloadBook = async () => {
   await bookStore.downloadBook(route.params.id, book.value.title);
-}
+};
+const changeBookmark = async (newValue) => {
+  console.log(newValue);
+  if (newValue === null) {
+    await userStore.deleteBookmark(route.params.id);
+    book.value.bookmarkCount--
+  } else {
+    await userStore.addBookmark(route.params.id, newValue);
+    book.value.bookmarkCount++
+  }
+};
 </script>
 
 <template>
@@ -67,9 +92,16 @@ const downloadBook=async ()=>{
       <div class="first-column">
         <div class="first-column-wrapper">
           <v-img class="rounded-xl mb-4" cover :src="imageSrc"></v-img>
-          <v-btn :to="`/book/${book._id}/content?page=1`" class="mb-4"> Читати </v-btn>
-          <v-btn class="mb-4" @click="downloadBook" append-icon="mdi-download"> Завантажити </v-btn>
+          <v-btn :to="`/book/${book._id}/content?page=1`" class="mb-4">
+            Читати
+          </v-btn>
+          <v-btn class="mb-4" @click="downloadBook" append-icon="mdi-download">
+            Завантажити
+          </v-btn>
           <v-select
+            @update:modelValue="changeBookmark"
+            clearable
+            v-model="selectedBookmark"
             class="elevation-0 mb-4"
             hide-details
             single-line
@@ -78,7 +110,7 @@ const downloadBook=async ()=>{
             variant="solo"
           ></v-select>
           <v-btn
-            v-if="isAdmin"
+            v-if="userStore.isAdmin"
             :to="`/admin/edit-book/${book._id}`"
             class="mb-4"
           >
@@ -111,7 +143,7 @@ const downloadBook=async ()=>{
               prepend-icon="mdi-bookmark"
               size="default"
             >
-              333
+              {{ book.bookmarkCount }}
             </v-btn>
           </div>
           <p class="my-4">

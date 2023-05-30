@@ -49,6 +49,9 @@ export const useBookStore = defineStore({
       if (payload.image) {
         formData.append("image", payload.image[0]);
       }
+      if (payload.content) {
+        formData.append("content", payload.content[0]);
+      }
       await editData(`book/${bookId}`, formData);
     },
     async deleteBook(bookId) {
