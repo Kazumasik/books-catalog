@@ -158,6 +158,15 @@ const changeBookmark = async (newValue) => {
               <v-chip rounded>{{ genre.name }}</v-chip>
             </router-link>
           </v-chip-group>
+          <v-chip-group v-if="book.categories?.length" class="mb-4 pa-0">
+            <router-link
+              v-for="category in book.categories"
+              :key="category._id"
+              :to="`/book?page=1&category=${category._id}`"
+            >
+              <v-chip rounded>{{ category.name }}</v-chip>
+            </router-link>
+          </v-chip-group>
           <div class="commentaries">
             <h2 class="mb-4">Коментарі</h2>
             <v-textarea

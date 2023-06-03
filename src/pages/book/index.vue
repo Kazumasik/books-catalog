@@ -11,25 +11,35 @@ const genreStore = useGenreStore();
 const books = ref([]);
 const route = useRoute();
 const totalPages = ref(1);
-const genres = ref(genreStore.getGenres);
 const queryGenres = Array.isArray(route.query.genre)
   ? route.query.genre.map((id) => ({ _id: id }))
   : route.query.genre
   ? [{ _id: route.query.genre }]
   : [];
+
+const queryCategories = Array.isArray(route.query.category)
+  ? route.query.category.map((id) => ({ _id: id }))
+  : route.query.category
+  ? [{ _id: route.query.category }]
+  : [];
 const page = ref(+route.query.page || 1);
-const fetchData = async (pageValue, selectedGenres = []) => {
-  const response = await bookStore.fetchBooks(pageValue, selectedGenres);
+const fetchData = async (
+  pageValue,
+  selectedGenres = [],
+  selectedCategories = []
+) => {
+  const response = await bookStore.fetchBooks(
+    pageValue,
+    selectedGenres,
+    selectedCategories
+  );
   books.value = response.books;
   totalPages.value = response.totalPages;
 };
 
 onMounted(async () => {
-  await fetchData(page.value, route.query.genre);
+  await fetchData(page.value, route.query.genre, route.query.category);
 });
-// watch(route.query, async (newValue, oldValue) => {
-//   await fetchData(page.value, route.query.genre);
-// });
 
 watch(page, async (newValue, oldValue) => {
   router.push({
@@ -40,14 +50,26 @@ watch(page, async (newValue, oldValue) => {
   await fetchData(newValue, route.query.genre);
 });
 
-const changeGenres = async (selectedGenres) => {
+const changeGenres = async (selectedGenres, selectedCategories) => {
+  selectedCategories = selectedCategories.map((category) => category._id);
   selectedGenres = selectedGenres.map((genre) => genre._id);
   router.push({
     name: "book",
     query: { ...route.query, genre: [...selectedGenres] },
     replace: false,
   });
-  await fetchData(page.value, selectedGenres);
+  await fetchData(page.value, selectedGenres, selectedCategories);
+};
+
+const changeCategories = async (selectedGenres, selectedCategories) => {
+  selectedCategories = selectedCategories.map((category) => category._id);
+  selectedGenres = selectedGenres.map((genre) => genre._id);
+  router.push({
+    name: "book",
+    query: { ...route.query, category: [...selectedCategories] },
+    replace: false,
+  });
+  await fetchData(page.value, selectedGenres, selectedCategories);
 };
 </script>
 
@@ -77,13 +99,15 @@ const changeGenres = async (selectedGenres) => {
       </div>
       <CatalogFilter
         :queryGenres="queryGenres"
+        :queryCategories="queryCategories"
         @changeGenres="changeGenres"
-        :genres="genres"
+        @changeCategories="changeCategories"
+        :genres="genreStore.getGenres"
+        :categories="genreStore.getCategories"
         class="filter"
       ></CatalogFilter>
     </div>
   </v-container>
-
 </template>
 
 <style scoped>

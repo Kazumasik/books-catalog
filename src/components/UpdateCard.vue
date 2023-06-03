@@ -1,11 +1,17 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+  bookData: {
+    type: Object,
+    required: true,
+  }
+});
+</script>
 <template>
-  <v-card class="rounded-xl">
+  <v-card class="rounded-lg">
     <v-card-item>
       <div class="update-card d-flex align-center">
         <v-img
-          class="rounded-xl"
-          style="height: 96px; max-width: 64px"
+          class="rounded-lg"
           src="https://remanga.org/media/titles/jiang-si/13c43b3cb4e9421de1e2af2f663402c6.jpg"
         >
         </v-img>
@@ -19,10 +25,12 @@
   </v-card>
 </template>
 <style scoped>
-.v-card {
-  height: 117px;
-}
 .v-card-text {
   padding: 0;
+}
+.v-img{
+  max-width: 86px;
+  width: 86px !important;
+  height: 120px !important;
 }
 </style>

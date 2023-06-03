@@ -6,14 +6,15 @@ import router from "../../router";
 const genreStore = useGenreStore();
 const bookStore = useBookStore();
 const genres = ref(genreStore.getGenres);
-
+const categories = ref(genreStore.getCategories);
 const newBook = reactive({
   image: [],
   title: "",
   origTitle: "",
   description: "",
   genres: [],
-  content:[]
+  categories: [],
+  content: [],
 });
 
 const createRules = {
@@ -77,6 +78,19 @@ const createBook = async () => {
           :hide-details="true"
           v-model="newBook.genres"
         ></v-combobox>
+        <v-combobox
+          class="filter-row mt-4 mb-6"
+          multiple
+          chips
+          closable-chips
+          :items="categories"
+          item-title="name"
+          item-value="_id"
+          label="Категорії"
+          variant="outlined"
+          :hide-details="true"
+          v-model="newBook.categories"
+        ></v-combobox>
         <v-file-input
           :rules="createRules.coverRules"
           accept=".doc,.docx"
@@ -98,7 +112,7 @@ const createBook = async () => {
   }
 }
 </style>
-<route lang='yaml'>
+<route lang="yaml">
 meta:
   requiresAdmin: true
 </route>

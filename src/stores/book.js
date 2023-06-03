@@ -15,7 +15,7 @@ export const useBookStore = defineStore({
   getters: {},
 
   actions: {
-    async fetchBooks(page, genres) {
+    async fetchBooks(page, genres, categories) {
       let url = `book?page=${page}`;
 
       if (genres && Array.isArray(genres)) {
@@ -23,6 +23,15 @@ export const useBookStore = defineStore({
         url += `&${genreParams.join("&")}`;
       } else if (genres) {
         url += `&genre=${genres}`;
+      }
+
+      if (categories && Array.isArray(categories)) {
+        const categoryParams = categories.map(
+          (category) => `category=${category}`
+        );
+        url += `&${categoryParams.join("&")}`;
+      } else if (categories) {
+        url += `&category=${categories}`;
       }
 
       const response = await getData(url);
@@ -35,6 +44,7 @@ export const useBookStore = defineStore({
       formData.append("origTitle", payload.origTitle);
       formData.append("description", payload.description);
       formData.append("genres", JSON.stringify(payload.genres));
+      formData.append("categories", JSON.stringify(payload.categories));
       formData.append("image", payload.image[0]);
       formData.append("content", payload.content[0]);
       return await postData("book/create", formData);
@@ -96,11 +106,14 @@ export const useBookStore = defineStore({
       await getFile(`book/${bookId}/download`, bookName);
     },
     async getBookContent(bookId, page) {
-      let url = `book/${bookId}/content`
-      if(page){
-        url+=`?page=${page}`
+      let url = `book/${bookId}/content`;
+      if (page) {
+        url += `?page=${page}`;
       }
       return await getData(url);
+    },
+    async fetchNewBooks() {
+      return await getData("book/new/");
     },
   },
 });

@@ -11,6 +11,14 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  queryCategories: {
+    type: Array,
+    required: true,
+  },
+  categories: {
+    type: Array,
+    required: true,
+  },
 });
 const transformGenres = (idArray) => {
   return idArray.map((obj) => {
@@ -27,10 +35,38 @@ const transformGenres = (idArray) => {
     };
   });
 };
-const emit = defineEmits(["changeGenres"]);
+
+const transformCategories = (idArray) => {
+  return idArray.map((obj) => {
+    const categoryId = obj._id;
+    const categoryObj = genreStore.getCategories.find(
+      (category) => category._id === categoryId
+    );
+    const categoryName = categoryObj.name;
+
+    return {
+      _id: categoryId,
+      name: categoryName,
+      __v: 0,
+    };
+  });
+};
+const emit = defineEmits(["changeGenres", "changeCategories"]);
+const selectedCategories = ref(transformCategories(props.queryCategories));
 const selectedGenres = ref(transformGenres(props.queryGenres));
 watch(selectedGenres, (newValue, oldValue) => {
-  emit("changeGenres", JSON.parse(JSON.stringify(newValue)));
+  emit(
+    "changeGenres",
+    JSON.parse(JSON.stringify(newValue)),
+    JSON.parse(JSON.stringify(selectedCategories.value))
+  );
+});
+watch(selectedCategories, (newValue, oldValue) => {
+  emit(
+    "changeCategories",
+    JSON.parse(JSON.stringify(selectedGenres.value)),
+    JSON.parse(JSON.stringify(newValue))
+  );
 });
 </script>
 
@@ -60,7 +96,7 @@ watch(selectedGenres, (newValue, oldValue) => {
       item-value="_id"
       label="Категорії"
       variant="outlined"
-      v-model="selectedGenres"
+      v-model="selectedCategories"
       :hide-details="true"
     ></v-combobox>
   </div>
