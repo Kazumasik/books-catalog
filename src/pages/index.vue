@@ -7,16 +7,15 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 const bookStore = useBookStore();
 const newBooks = ref({});
+const lastBooks = ref({})
 onMounted(async () => {
   newBooks.value = await bookStore.fetchNewBooks();
+  const response  = await bookStore.fetchBooks(1, undefined, undefined, 100);
+  lastBooks.value = response.books
 });
 
 const breakPoints = {
-  1: {
-    slidesPerView: 1,
-    spaceBetween: 10,
-  },
-  200: {
+  300: {
     slidesPerView: 2,
     spaceBetween: 10,
   },
@@ -66,7 +65,7 @@ const breakPoints = {
     <Swiper
       :breakpoints="breakPoints"
       class="mt-4"
-      :slides-per-view="4"
+      :slides-per-view="1"
       :space-between="10"
     >
       <swiper-slide v-for="book in newBooks" :key="book._id">
@@ -79,7 +78,7 @@ const breakPoints = {
       </swiper-slide>
     </Swiper>
     <h4 class="text-h4 mt-4">Останні оновлення</h4>
-    <update-card v-for="n in 10" :key="n" class="mt-4"></update-card>
+    <update-card v-for="book in lastBooks" :key="book._id" class="mt-4" :bookData="book"></update-card>
   </v-container>
 </template>
 

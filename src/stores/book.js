@@ -15,9 +15,9 @@ export const useBookStore = defineStore({
   getters: {},
 
   actions: {
-    async fetchBooks(page, genres, categories) {
+    async fetchBooks(page, genres, categories, limit) {
       let url = `book?page=${page}`;
-
+      
       if (genres && Array.isArray(genres)) {
         const genreParams = genres.map((genre) => `genre=${genre}`);
         url += `&${genreParams.join("&")}`;
@@ -33,7 +33,9 @@ export const useBookStore = defineStore({
       } else if (categories) {
         url += `&category=${categories}`;
       }
-
+      if (limit) {
+        url += `&limit=${limit}`;
+      }
       const response = await getData(url);
       return response;
     },

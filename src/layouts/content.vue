@@ -6,12 +6,12 @@ import LoginButton from "../components/header/LoginButton.vue";
 import ProfileButton from "../components/header/ProfileButton.vue";
 import router from "../router";
 import { ref, watch } from "vue";
-import { useRoute } from "vue-router"
+import { useRoute } from "vue-router";
 const userStore = useUserStore();
 const bookStore = useBookStore();
 const props = ref(null);
 const route = useRoute();
-const infiniteMode = ref(route.query.page ? false : true)
+const infiniteMode = ref(route.query.page ? false : true);
 
 watch(infiniteMode, async (newValue, oldValue) => {
   if (newValue) {
@@ -31,7 +31,7 @@ watch(infiniteMode, async (newValue, oldValue) => {
 
 <template>
   <v-app id="inspire">
-    <v-app-bar flat height="72px">
+    <v-app-bar scroll-behavior="collapse" flat height="72px">
       <v-container class="fill-height d-flex align-center">
         <router-link to="/">
           <v-avatar class="me-5" color="grey-darken-1" size="40"></v-avatar>
@@ -40,9 +40,14 @@ watch(infiniteMode, async (newValue, oldValue) => {
           <v-btn variant="text"> Каталог </v-btn>
         </router-link>
         <v-spacer></v-spacer>
-        <v-switch v-model="infiniteMode" class="read-mode mr-4" hide-details label="Все одразу"></v-switch>
-        <ProfileButton  v-if="userStore.getToken" />
-        <LoginButton  v-else />
+        <v-switch
+          v-model="infiniteMode"
+          class="read-mode mr-4"
+          hide-details
+          label="Все одразу"
+        ></v-switch>
+        <ProfileButton v-if="userStore.getToken" />
+        <LoginButton v-else />
       </v-container>
     </v-app-bar>
 
@@ -58,7 +63,7 @@ watch(infiniteMode, async (newValue, oldValue) => {
     max-width: 1200px;
   }
 }
-.read-mode{
+.read-mode {
   flex: inherit !important;
 }
 </style>
