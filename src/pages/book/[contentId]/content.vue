@@ -28,9 +28,9 @@ watch(route, async (newValue, oldValue) => {
     route.query.page
   );
   bookContent.value = response.text;
-  if(route.query.page){
-    page.value = response.currentPage
-    totalPages.value = response.totalPages
+  if (route.query.page) {
+    page.value = response.currentPage;
+    totalPages.value = response.totalPages;
   }
 });
 
@@ -61,9 +61,14 @@ watch(page, async (newValue, oldValue) => {
   </v-container>
 </template>
 
-<style scoped>
+<style>
 .book-content p {
   margin-bottom: 15px;
+}
+.book-content img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto 15px auto;
 }
 @media (min-width: 1920px) {
   .v-container {

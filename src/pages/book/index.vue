@@ -11,6 +11,7 @@ const genreStore = useGenreStore();
 const books = ref([]);
 const route = useRoute();
 const totalPages = ref(1);
+const filterDrawer = ref(false);
 const queryGenres = Array.isArray(route.query.genre)
   ? route.query.genre.map((id) => ({ _id: id }))
   : route.query.genre
@@ -74,9 +75,40 @@ const changeCategories = async (selectedGenres, selectedCategories) => {
 </script>
 
 <template>
+  <v-navigation-drawer
+    absolute
+    value="0"
+    location="right"
+    v-model="filterDrawer"
+    temporary
+  >
+    <v-list-item
+      prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
+      title="John Leider"
+    ></v-list-item>
+
+    <v-divider></v-divider>
+
+    <v-list density="compact" nav>
+      <v-list-item
+        prepend-icon="mdi-view-dashboard"
+        title="Home"
+        value="home"
+      ></v-list-item>
+      <v-list-item
+        prepend-icon="mdi-forum"
+        title="About"
+        value="about"
+      ></v-list-item>
+    </v-list>
+  </v-navigation-drawer>
   <v-container>
-    <h1 class="mb-4 mx-2">Каталог</h1>
-    <div class="page-wrapper">
+    <div class="d-flex">
+      <h1>Каталог</h1>
+      <v-spacer></v-spacer>
+      <v-btn class="d-block d-sm-none" variant="outlined" color="primary" @click.stop="filterDrawer=true"> Фільтри </v-btn>
+    </div>
+    <div class="mt-4 page-wrapper">
       <div class="catalog-wrapper">
         <div class="books-wrapper">
           <book-card
@@ -145,7 +177,7 @@ const changeCategories = async (selectedGenres, selectedCategories) => {
   }
 }
 
-@media (max-width: 649px) {
+@media (max-width: 599px) {
   .filter {
     display: none;
   }

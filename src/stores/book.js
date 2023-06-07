@@ -58,6 +58,7 @@ export const useBookStore = defineStore({
       formData.append("origTitle", payload.origTitle);
       formData.append("description", payload.description);
       formData.append("genres", JSON.stringify(payload.genres));
+      formData.append("categories", JSON.stringify(payload.categories));
       if (payload.image) {
         formData.append("image", payload.image[0]);
       }

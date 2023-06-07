@@ -8,7 +8,7 @@ const updatedBook = ref({});
 const bookStore = useBookStore();
 const route = useRoute();
 const genres = ref(genreStore.getGenres);
-
+const categories = ref(genreStore.getCategories);
 const deleteDialog = ref(false);
 const updateRules = {
   titleRules: [(v) => !!v || "Назва обов'язкова"],
@@ -81,6 +81,19 @@ const deleteBook = async () => {
         :hide-details="true"
       >
       </v-combobox>
+      <v-combobox
+        class="filter-row mt-4 mb-6"
+        multiple
+        chips
+        closable-chips
+        :items="categories"
+        item-title="name"
+        item-value="_id"
+        label="Категорії"
+        variant="outlined"
+        :hide-details="true"
+        v-model="updatedBook.categories"
+      ></v-combobox>
       <v-file-input
         :rules="updatedBook.contentRules"
         accept=".doc,.docx"

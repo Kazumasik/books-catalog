@@ -78,10 +78,10 @@ const changeBookmark = async (newValue) => {
   console.log(newValue);
   if (newValue === null) {
     await userStore.deleteBookmark(route.params.id);
-    book.value.bookmarkCount--
+    book.value.bookmarkCount--;
   } else {
     await userStore.addBookmark(route.params.id, newValue);
-    book.value.bookmarkCount++
+    book.value.bookmarkCount++;
   }
 };
 </script>
@@ -91,7 +91,17 @@ const changeBookmark = async (newValue) => {
     <div class="book-wrapper">
       <div class="first-column">
         <div class="first-column-wrapper">
-          <v-img class="rounded-xl mb-4" cover :src="imageSrc"></v-img>
+          <div class="book-cover">
+            <v-img class="book-cover-image rounded-xl mb-4" cover :src="imageSrc"> </v-img>
+            <div class="d-block d-sm-none mobile-cover-info pa-5">
+              <h1 class="text-h4 text-white">
+                {{ book.title }}
+              </h1>
+              <h4 class="text-grey-lighten-2 font-weight-medium">
+                {{ book.origTitle }}
+              </h4>
+            </div>
+          </div>
           <v-btn :to="`/book/${book._id}/content?page=1`" class="mb-4">
             Читати
           </v-btn>
@@ -118,9 +128,9 @@ const changeBookmark = async (newValue) => {
           </v-btn>
         </div>
       </div>
-      <div class="second-column ml-6">
+      <div class="second-column ml-0 ml-sm-4">
         <div class="book-content flex-grow-1">
-          <div class="book-header mb-4">
+          <div class="d-none d-sm-block book-header mb-4">
             <h1 class="text-h4 font-weight-bold">
               {{ book.title }}
             </h1>
@@ -228,6 +238,22 @@ const changeBookmark = async (newValue) => {
 </template>
 
 <style scoped>
+.book-cover {
+  position: relative;
+}
+.book-cover-image div:first-child {
+  background-image: linear-gradient(
+    -180deg,
+    transparent 70%,
+    rgba(0, 0, 0, 0.9) 90%
+  );
+}
+.mobile-cover-info {
+  position: absolute;
+  bottom: 0;
+  inline-size: 100%;
+  overflow: hidden;
+}
 .v-card-title {
   font-size: 1rem;
   align-items: center;
@@ -237,6 +263,7 @@ const changeBookmark = async (newValue) => {
   font-weight: 600;
   line-height: 1.2;
 }
+
 @media (min-width: 1920px) {
   .v-container {
     max-width: 1200px;
@@ -263,5 +290,13 @@ const changeBookmark = async (newValue) => {
 .first-column,
 .author-wrapper {
   width: 250px;
+}
+@media (max-width: 599px) {
+  .book-wrapper {
+    flex-wrap: wrap;
+  }
+  .first-column {
+    width: 100%;
+  }
 }
 </style>

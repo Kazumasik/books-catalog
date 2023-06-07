@@ -65,7 +65,7 @@ const imageUrl = import.meta.env.VITE_BASE_URL +"/"+props.src.imageUrl
   position: relative;
 }
 .v-card-title {
-  height: 46px;
+  min-height: 41px;
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;

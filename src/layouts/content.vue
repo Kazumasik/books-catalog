@@ -36,7 +36,7 @@ watch(infiniteMode, async (newValue, oldValue) => {
         <router-link to="/">
           <v-avatar class="me-5" color="grey-darken-1" size="40"></v-avatar>
         </router-link>
-        <router-link to="/book">
+        <router-link class="d-none d-sm-block"  to="/book">
           <v-btn variant="text"> Каталог </v-btn>
         </router-link>
         <v-spacer></v-spacer>
@@ -58,6 +58,11 @@ watch(infiniteMode, async (newValue, oldValue) => {
 </template>
 
 <style scoped>
+@media (max-width: 599px) {
+  .catalog-button {
+    display: none;
+  }
+}
 @media (min-width: 1920px) {
   .v-container {
     max-width: 1200px;

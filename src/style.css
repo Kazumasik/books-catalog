@@ -2,3 +2,6 @@ a{
     text-decoration: none !important;
     color: initial !important;
 }
+.v-container{
+    max-width: 100%;
+}
