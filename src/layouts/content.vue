@@ -30,11 +30,11 @@ watch(infiniteMode, async (newValue, oldValue) => {
 </script>
 
 <template>
-  <v-app id="inspire">
-    <v-app-bar scroll-behavior="collapse" flat height="72px">
-      <v-container class="fill-height d-flex align-center">
+  <v-app   id="inspire">
+    <v-app-bar scroll-behavior="collapse"  flat>
+      <v-container class="py-0 fill-height d-flex align-center">
         <router-link to="/">
-          <v-avatar class="me-5" color="grey-darken-1" size="40"></v-avatar>
+          <v-avatar class="me-5" color="grey-darken-1" size="32"></v-avatar>
         </router-link>
         <router-link class="d-none d-sm-block"  to="/book">
           <v-btn variant="text"> Каталог </v-btn>

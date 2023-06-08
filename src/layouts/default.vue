@@ -18,12 +18,12 @@ const searchBook = async () => {
 
 <template>
   <v-app id="inspire">
-    <v-app-bar flat height="72px">
-      <v-container class="fill-height d-flex align-center">
+    <v-app-bar :order="1" flat>
+      <v-container class="fill-height py-0 d-flex align-center">
         <router-link to="/">
-          <v-avatar class="me-5" color="grey-darken-1" size="40"></v-avatar>
+          <v-avatar class="me-5" color="grey-darken-1" size="32"></v-avatar>
         </router-link>
-        <router-link to="/book">
+        <router-link class="d-none d-sm-block" to="/book">
           <v-btn variant="text"> Каталог </v-btn>
         </router-link>
         <v-spacer></v-spacer>

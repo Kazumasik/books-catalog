@@ -76,37 +76,34 @@ const changeCategories = async (selectedGenres, selectedCategories) => {
 
 <template>
   <v-navigation-drawer
-    absolute
-    value="0"
     location="right"
     v-model="filterDrawer"
     temporary
+    width="300"
   >
-    <v-list-item
-      prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
-      title="John Leider"
-    ></v-list-item>
-
-    <v-divider></v-divider>
-
-    <v-list density="compact" nav>
-      <v-list-item
-        prepend-icon="mdi-view-dashboard"
-        title="Home"
-        value="home"
-      ></v-list-item>
-      <v-list-item
-        prepend-icon="mdi-forum"
-        title="About"
-        value="about"
-      ></v-list-item>
-    </v-list>
+    <CatalogFilter
+    style="width: 100%"
+      :queryGenres="queryGenres"
+      :queryCategories="queryCategories"
+      @changeGenres="changeGenres"
+      @changeCategories="changeCategories"
+      :genres="genreStore.getGenres"
+      :categories="genreStore.getCategories"
+      class="pa-4"
+    ></CatalogFilter>
   </v-navigation-drawer>
   <v-container>
     <div class="d-flex">
       <h1>Каталог</h1>
       <v-spacer></v-spacer>
-      <v-btn class="d-block d-sm-none" variant="outlined" color="primary" @click.stop="filterDrawer=true"> Фільтри </v-btn>
+      <v-btn
+        class="d-block d-sm-none"
+        variant="outlined"
+        color="primary"
+        @click.stop="filterDrawer = true"
+      >
+        Фільтри
+      </v-btn>
     </div>
     <div class="mt-4 page-wrapper">
       <div class="catalog-wrapper">
@@ -130,13 +127,13 @@ const changeCategories = async (selectedGenres, selectedCategories) => {
         ></v-pagination>
       </div>
       <CatalogFilter
+        class="ml-3 d-none d-sm-block"
         :queryGenres="queryGenres"
         :queryCategories="queryCategories"
         @changeGenres="changeGenres"
         @changeCategories="changeCategories"
         :genres="genreStore.getGenres"
         :categories="genreStore.getCategories"
-        class="filter"
       ></CatalogFilter>
     </div>
   </v-container>
@@ -178,9 +175,6 @@ const changeCategories = async (selectedGenres, selectedCategories) => {
 }
 
 @media (max-width: 599px) {
-  .filter {
-    display: none;
-  }
   .books-wrapper {
     grid-template-columns: repeat(3, minmax(0px, 1fr));
   }

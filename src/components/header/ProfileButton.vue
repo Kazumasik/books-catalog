@@ -55,7 +55,7 @@ watch(vuetifyTheme.global.name, (val) => {
         <VListItem :to="`/user/${userId}`">
           <template #prepend>
             <VListItemAction start>
-              <VAvatar color="primary" size="40" variant="tonal">
+              <VAvatar color="primary" size="32" variant="tonal">
                 <VImg
                   src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
                 />

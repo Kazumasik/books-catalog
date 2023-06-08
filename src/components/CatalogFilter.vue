@@ -71,7 +71,7 @@ watch(selectedCategories, (newValue, oldValue) => {
 </script>
 
 <template>
-  <div class="ml-3 filter-wrapper">
+  <div class="filter-wrapper">
     <h4 class="mb-4">Фільтри</h4>
     <v-combobox
       class="filter-row"

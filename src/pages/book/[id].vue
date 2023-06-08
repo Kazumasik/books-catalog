@@ -92,7 +92,7 @@ const changeBookmark = async (newValue) => {
       <div class="first-column">
         <div class="first-column-wrapper">
           <div class="book-cover">
-            <v-img class="book-cover-image rounded-xl mb-4" cover :src="imageSrc"> </v-img>
+            <v-img class="book-cover-image rounded-xl" cover :src="imageSrc"> </v-img>
             <div class="d-block d-sm-none mobile-cover-info pa-5">
               <h1 class="text-h4 text-white">
                 {{ book.title }}
@@ -102,17 +102,17 @@ const changeBookmark = async (newValue) => {
               </h4>
             </div>
           </div>
-          <v-btn :to="`/book/${book._id}/content?page=1`" class="mb-4">
+          <v-btn :to="`/book/${book._id}/content?page=1`" class="mt-4">
             Читати
           </v-btn>
-          <v-btn class="mb-4" @click="downloadBook" append-icon="mdi-download">
+          <v-btn class="mt-4" @click="downloadBook" append-icon="mdi-download">
             Завантажити
           </v-btn>
           <v-select
             @update:modelValue="changeBookmark"
             clearable
             v-model="selectedBookmark"
-            class="elevation-0 mb-4"
+            class="elevation-0 mt-4"
             hide-details
             single-line
             label="Додати до закладок"
@@ -122,7 +122,7 @@ const changeBookmark = async (newValue) => {
           <v-btn
             v-if="userStore.isAdmin"
             :to="`/admin/edit-book/${book._id}`"
-            class="mb-4"
+            class="mt-4"
           >
             Редагувати
           </v-btn>
@@ -130,7 +130,7 @@ const changeBookmark = async (newValue) => {
       </div>
       <div class="second-column ml-0 ml-sm-4">
         <div class="book-content flex-grow-1">
-          <div class="d-none d-sm-block book-header mb-4">
+          <div class="d-none d-sm-block book-header">
             <h1 class="text-h4 font-weight-bold">
               {{ book.title }}
             </h1>
@@ -138,7 +138,7 @@ const changeBookmark = async (newValue) => {
               {{ book.origTitle }}
             </h4>
           </div>
-          <div class="statistic d-flex mb-4">
+          <div class="statistic d-flex my-4">
             <v-btn
               variant="tonal"
               @click="changeRating"
@@ -159,7 +159,7 @@ const changeBookmark = async (newValue) => {
           <p class="my-4">
             {{ book.description }}
           </p>
-          <v-chip-group class="mb-4 pa-0">
+          <v-chip-group class="mb-1 pa-0">
             <router-link
               v-for="genre in book.genres"
               :key="genre._id"
@@ -218,7 +218,7 @@ const changeBookmark = async (newValue) => {
   </v-container>
   <v-dialog v-model="dialogRating" max-width="600px">
     <v-card>
-      <v-card-title class="text-h5 text-center"
+      <v-card-title class="text-h7 text-sm-h6 text-center"
         >Поставте свою оцінку цій книзі.</v-card-title
       >
       <VContainer class="pt-0 d-flex justify-center">
