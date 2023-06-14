@@ -10,6 +10,7 @@ const route = useRoute();
 const genres = ref(genreStore.getGenres);
 const categories = ref(genreStore.getCategories);
 const deleteDialog = ref(false);
+const isLoading = ref(false);
 const updateRules = {
   titleRules: [(v) => !!v || "Назва обов'язкова"],
   origTitleRules: [(v) => !!v || "Оригінальна назва обов'язкова"],
@@ -27,13 +28,25 @@ onMounted(async () => {
 });
 
 const updateBook = async () => {
-  await bookStore.updateBook(updatedBook.value._id, updatedBook.value);
-  router.replace("/book/" + updatedBook.value._id);
+  isLoading.value = true;
+  try {
+    await bookStore.updateBook(updatedBook.value._id, updatedBook.value);
+    router.replace("/book/" + updatedBook.value._id);
+  } catch (err) {
+    console.log(err);
+  }
+  isLoading.value = false;
 };
 
 const deleteBook = async () => {
-  await bookStore.deleteBook(updatedBook.value._id);
-  router.replace("/");
+  isLoading.value = true;
+  try {
+    await bookStore.deleteBook(updatedBook.value._id);
+    router.replace("/");
+  } catch (err) {
+    console.log(err);
+  }
+  isLoading.value = false;
 };
 </script>
 

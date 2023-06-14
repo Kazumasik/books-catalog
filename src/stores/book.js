@@ -40,7 +40,6 @@ export const useBookStore = defineStore({
       return response;
     },
     async createBook(payload) {
-      console.log(payload);
       const formData = new FormData();
       formData.append("title", payload.title);
       formData.append("origTitle", payload.origTitle);
@@ -52,7 +51,6 @@ export const useBookStore = defineStore({
       return await postData("book/create", formData);
     },
     async updateBook(bookId, payload) {
-      console.log(payload);
       const formData = new FormData();
       formData.append("title", payload.title);
       formData.append("origTitle", payload.origTitle);

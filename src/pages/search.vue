@@ -33,7 +33,7 @@ const searchBook = async () => {
       @keydown.enter.prevent="searchBook"
       :hide-details="true"
     />
-    <div class="mt-4 search-results-wrapper">
+    <div class="mt-4 books-wrapper">
       <book-card
         v-for="book in books"
         :key="book._id"
@@ -48,14 +48,36 @@ const searchBook = async () => {
 </template>
 
 <style scoped>
-.search-results-wrapper {
-  display: grid;
-  gap: 0.7rem;
-  grid-template-columns: repeat(6, minmax(0px, 1fr));
-}
 @media (min-width: 1920px) {
   .v-container {
     max-width: 1200px;
+  }
+}
+.books-wrapper {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(7, minmax(0px, 1fr));
+}
+
+@media (max-width: 1279px) {
+  .books-wrapper {
+    grid-template-columns: repeat(5, minmax(0px, 1fr));
+  }
+}
+
+@media (max-width: 959px) {
+  .books-wrapper {
+    grid-template-columns: repeat(4, minmax(0px, 1fr));
+  }
+}
+@media (max-width: 599px) {
+  .books-wrapper {
+    grid-template-columns: repeat(3, minmax(0px, 1fr));
+  }
+}
+@media (max-width: 399px) {
+  .books-wrapper {
+    grid-template-columns: repeat(2, minmax(0px, 1fr));
   }
 }
 </style>

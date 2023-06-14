@@ -1,6 +1,6 @@
 <script setup>
 import BookCard from "../../components/BookCard.vue";
-import commentary from "../../components/book/commentary.vue";
+import Commentary from "../../components/book/commentary.vue";
 import { useUserStore } from "@/stores/user.js";
 import { useBookStore } from "@/stores/book.js";
 import { watch } from "vue";
@@ -92,7 +92,8 @@ const changeBookmark = async (newValue) => {
       <div class="first-column">
         <div class="first-column-wrapper">
           <div class="book-cover">
-            <v-img class="book-cover-image rounded-xl" cover :src="imageSrc"> </v-img>
+            <v-img class="book-cover-image rounded-xl" cover :src="imageSrc">
+            </v-img>
             <div class="d-block d-sm-none mobile-cover-info pa-5">
               <h1 class="text-h4 text-white">
                 {{ book.title }}
@@ -198,7 +199,7 @@ const changeBookmark = async (newValue) => {
               "
             >
             </v-textarea>
-            <commentary
+            <Commentary
               class="mt-4"
               @edit="editComment"
               @setEditMode="changeEditMode"
@@ -210,7 +211,7 @@ const changeBookmark = async (newValue) => {
               :commentary_text="commentary.content"
               :user="commentary.user"
               :editMode="commentary._id === editId"
-            ></commentary>
+            ></Commentary>
           </div>
         </div>
       </div>
@@ -298,5 +299,12 @@ const changeBookmark = async (newValue) => {
   .first-column {
     width: 100%;
   }
+}
+.v-responsive__sizer {
+  background-image: linear-gradient(
+    -180deg,
+    transparent 30%,
+    rgba(0, 0, 0, 0.9) 90%
+  );
 }
 </style>

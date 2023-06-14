@@ -7,6 +7,8 @@ const genreStore = useGenreStore();
 const bookStore = useBookStore();
 const genres = ref(genreStore.getGenres);
 const categories = ref(genreStore.getCategories);
+const isLoading = ref(false);
+const form = ref(null);
 const newBook = reactive({
   image: [],
   title: "",
@@ -25,16 +27,22 @@ const createRules = {
   contentRules: [(v) => !!v || "Контент обов'язковий"],
 };
 const createBook = async () => {
-  const response = await bookStore.createBook(newBook);
-  console.log(response);
-  router.replace("/book/" + response._id);
+  isLoading.value = true;
+  try {
+    const response = await bookStore.createBook(newBook);
+    console.log(response);
+    router.replace("/book/" + response._id);
+  } catch (err) {
+    console.log(err);
+  }
+  isLoading.value = false;
 };
 </script>
 
 <template>
   <v-container>
     <v-sheet class="pa-4 rounded-lg">
-      <v-form @submit.prevent.stop="createBook">
+      <v-form ref="form" @submit.prevent.stop="createBook">
         <v-file-input
           :rules="createRules.coverRules"
           accept="image/*"
@@ -50,12 +58,14 @@ const createBook = async () => {
           v-model="newBook.title"
         ></v-text-field>
         <v-text-field
+          class="mt-4"
           :rules="createRules.origTitleRules"
           label="Оригінальна назва"
           variant="outlined"
           v-model="newBook.origTitle"
         ></v-text-field>
         <v-textarea
+          class="mt-4"
           persistent-counter
           maxLength="1000"
           auto-grow
@@ -75,7 +85,6 @@ const createBook = async () => {
           item-value="_id"
           label="Жанри"
           variant="outlined"
-          :hide-details="true"
           v-model="newBook.genres"
         ></v-combobox>
         <v-combobox
@@ -88,7 +97,6 @@ const createBook = async () => {
           item-value="_id"
           label="Категорії"
           variant="outlined"
-          :hide-details="true"
           v-model="newBook.categories"
         ></v-combobox>
         <v-file-input
@@ -99,7 +107,9 @@ const createBook = async () => {
           label="Контент"
           variant="outlined"
         ></v-file-input>
-        <v-btn type="submit" class="w-100"> Створити книгу </v-btn>
+        <v-btn :loading="isLoading" type="submit" class="w-100">
+          Створити книгу
+        </v-btn>
       </v-form>
     </v-sheet>
   </v-container>

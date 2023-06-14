@@ -21,13 +21,14 @@ const searchBook = async () => {
     <v-app-bar :order="1" flat>
       <v-container class="fill-height py-0 d-flex align-center">
         <router-link to="/">
-          <v-avatar class="me-5" color="grey-darken-1" size="32"></v-avatar>
+          <v-avatar v-ripple color="surface-variant"  icon="mdi-book-open-variant" class="me-5"  size="32"></v-avatar>
         </router-link>
         <router-link class="d-none d-sm-block" to="/book">
           <v-btn variant="text"> Каталог </v-btn>
         </router-link>
         <v-spacer></v-spacer>
         <VTextField
+
           v-if="!(route.name === 'search')"
           v-model="searchQuery"
           prepend-inner-icon="mdi-magnify"
@@ -35,7 +36,7 @@ const searchBook = async () => {
           variant="outlined"
           @keydown.enter.prevent="searchBook"
           :hide-details="true"
-          class="mr-4"
+          class="d-none d-sm-block mr-4"
         />
         <ProfileButton v-if="userStore.getToken" />
         <LoginButton v-else />

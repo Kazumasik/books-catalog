@@ -74,6 +74,13 @@ watch(vuetifyTheme.global.name, (val) => {
 
           <VListItemTitle>Створити книгу</VListItemTitle>
         </VListItem>
+        <VListItem  v-if="isAdmin" to="/admin/genres-and-categories">
+          <template #prepend>
+            <VIcon icon="mdi-pencil-box" class="me-2" size="22" />
+          </template>
+
+          <VListItemTitle>Жанри та категорії</VListItemTitle>
+        </VListItem>
         <VListItem @click="changeTheme">
           <template #prepend>
             <VIcon :icon="getThemeIcon" class="me-2" size="22" />

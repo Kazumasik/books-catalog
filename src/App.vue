@@ -1,10 +1,4 @@
 <script setup>
-const  links= [
-        'Dashboard',
-        'Messages',
-        'Profile',
-        'Updates',
-      ]
 </script>
 
 <template>

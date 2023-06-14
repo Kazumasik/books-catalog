@@ -30,8 +30,8 @@ watch(infiniteMode, async (newValue, oldValue) => {
 </script>
 
 <template>
-  <v-app   id="inspire">
-    <v-app-bar scroll-behavior="collapse"  flat>
+  <v-app app-bar id="inspire">
+    <v-app-bar scroll-behavior="hide" flat>
       <v-container class="py-0 fill-height d-flex align-center">
         <router-link to="/">
           <v-avatar class="me-5" color="grey-darken-1" size="32"></v-avatar>
