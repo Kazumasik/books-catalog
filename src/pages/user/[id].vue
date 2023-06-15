@@ -59,8 +59,8 @@ onMounted(async () => {
                   :rotate="360"
                   :size="40"
                   :width="5"
-                  :max-value="552"
-                  :model-value="user.experience"
+                  :max-value="user.nextLevelExperience"
+                  :model-value="100*(user.experience/user.nextLevelExperience)"
                   class="ml-4"
                   color="teal"
                 >
