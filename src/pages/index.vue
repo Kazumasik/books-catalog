@@ -68,7 +68,7 @@ const breakPoints = {
     <h4 class="text-h5 mt-4 mt-sm-0">Горячі новинки</h4>
     <Swiper
       :breakpoints="breakPoints"
-      class="mt-4"
+      class="mt-4 pb-4"
       :slides-per-view="1"
       :space-between="10"
     >

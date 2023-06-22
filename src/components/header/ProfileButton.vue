@@ -1,15 +1,13 @@
 <script setup>
 import { useTheme } from "vuetify";
-import { useUserStore } from '@/stores/user.js'
-import router from '../../router'
-const userStore = useUserStore()
-const logOut = () =>{
-  userStore.logout()
-}
+import { useUserStore } from "@/stores/user.js";
+import router from "../../router";
+const userStore = useUserStore();
+const logOut = () => {
+  userStore.logout();
+};
 
-const isAdmin = ref(userStore.getUserRole === "admin")
-
-const userId = ref(userStore.getUserId)
+const userId = ref(userStore.getUserId);
 const themes = [
   {
     name: "light",
@@ -43,38 +41,38 @@ const getThemeIcon = computedWithControl(vuetifyTheme.global.name, () => {
 watch(vuetifyTheme.global.name, (val) => {
   currentTheme.value = val;
 });
-
 </script>
 <template>
-  <VAvatar style="cursor: pointer" color="primary" variant="tonal">
-    <VImg
-      src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
-    />
+  <VAvatar style="cursor: pointer">
+    
+    <VAvatar color="primary" variant="tonal" icon="mdi-account" ></VAvatar>
     <VMenu activator="parent" width="230" location="bottom end" offset="25px">
       <VList>
         <VListItem :to="`/user/${userId}`">
           <template #prepend>
             <VListItemAction start>
-              <VAvatar color="primary" size="32" variant="tonal">
-                <VImg
-                  src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
-                />
+              <VAvatar
+                icon="mdi-account"
+                color="primary"
+                size="32"
+                variant="tonal"
+              >
               </VAvatar>
             </VListItemAction>
           </template>
 
           <VListItemTitle class="font-weight-semibold">
-            {{userStore.getUser.nickname}}
+            {{ userStore.getUser.nickname }}
           </VListItemTitle>
         </VListItem>
-        <VListItem  v-if="isAdmin" to="/admin/create-book">
+        <VListItem v-if="userStore.isAdmin" to="/admin/create-book">
           <template #prepend>
             <VIcon icon="mdi-book-plus" class="me-2" size="22" />
           </template>
 
           <VListItemTitle>Створити книгу</VListItemTitle>
         </VListItem>
-        <VListItem  v-if="isAdmin" to="/admin/genres-and-categories">
+        <VListItem v-if="userStore.isAdmin" to="/admin/genres-and-categories">
           <template #prepend>
             <VIcon icon="mdi-pencil-box" class="me-2" size="22" />
           </template>
@@ -88,12 +86,12 @@ watch(vuetifyTheme.global.name, (val) => {
 
           <VListItemTitle>Змінити тему</VListItemTitle>
         </VListItem>
-        <VListItem :active="false" @click='logOut' to="/">
+        <VListItem :active="false" @click="logOut" to="/">
           <template #prepend>
             <VIcon class="me-2" icon="mdi-logout" size="22" />
           </template>
 
-          <VListItemTitle >Вийти</VListItemTitle>
+          <VListItemTitle>Вийти</VListItemTitle>
         </VListItem>
       </VList>
     </VMenu>

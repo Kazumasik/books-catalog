@@ -18,6 +18,9 @@ const bookmarks = [
     title: "Буду читати",
   },
 ];
+const commentaryInput = ref();
+const isLoadingDownload = ref(false);
+const isLoadingCommentary = ref(false);
 const bookStore = useBookStore();
 const userStore = useUserStore();
 const book = ref({});
@@ -45,9 +48,12 @@ onMounted(async () => {
 });
 
 const publish = async () => {
+  commentaryInput.value.blur();
+  isLoadingCommentary.value = true;
   await bookStore.createComment(route.params.id, commentaryData);
   commentaryData.content = "";
   commentaries.value = await bookStore.fetchAllComments(route.params.id);
+  isLoadingCommentary.value = false;
 };
 const commentaryData = reactive({
   user: userStore.getUser.id,
@@ -72,7 +78,9 @@ const changeRating = () => {
 };
 
 const downloadBook = async () => {
+  isLoadingDownload.value = true;
   await bookStore.downloadBook(route.params.id, book.value.title);
+  isLoadingDownload.value = false;
 };
 const changeBookmark = async (newValue) => {
   console.log(newValue);
@@ -106,10 +114,16 @@ const changeBookmark = async (newValue) => {
           <v-btn :to="`/book/${book._id}/content?page=1`" class="mt-4">
             Читати
           </v-btn>
-          <v-btn class="mt-4" @click="downloadBook" append-icon="mdi-download">
+          <v-btn
+            :loading="isLoadingDownload"
+            class="mt-4"
+            @click="downloadBook"
+            append-icon="mdi-download"
+          >
             Завантажити
           </v-btn>
           <v-select
+            v-if="userStore.isAuth"
             @update:modelValue="changeBookmark"
             clearable
             v-model="selectedBookmark"
@@ -181,6 +195,8 @@ const changeBookmark = async (newValue) => {
           <div class="commentaries">
             <h2 class="mb-4">Коментарі</h2>
             <v-textarea
+              ref="commentaryInput"
+              :loading="isLoadingCommentary"
               persistent-counter
               maxLength="500"
               v-model="commentaryData.content"

@@ -15,7 +15,10 @@ const loginData = reactive({
   email: "",
   password: "",
 });
-
+const isLoading = reactive({
+  register: false,
+  login: false,
+});
 const isPasswordVisible = ref(false);
 
 const changeModal = async () => {
@@ -45,21 +48,25 @@ const registerRules = {
   ],
 };
 const register = async () => {
+  isLoading.register = true;
   try {
     await userStore.register(registrationData);
     dialogRegister.value = false;
   } catch (error) {
     console.log(error);
   }
+  isLoading.register = false;
 };
 
 const login = async () => {
+  isLoading.login = true;
   try {
     await userStore.login(loginData);
     dialogRegister.value = false;
   } catch (error) {
     console.log(error);
   }
+  isLoading.login = false;
 };
 </script>
 <template>
@@ -93,7 +100,11 @@ const login = async () => {
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               required
             ></v-text-field>
-            <v-btn type="submit" @click="login" class="mt-2 w-100"
+            <v-btn
+              :loading="isLoading.login"
+              type="submit"
+              @click="login"
+              class="mt-2 w-100"
               >Увійти</v-btn
             >
             <VCol cols="12" class="text-center text-base mt-2 pa-0">
@@ -149,7 +160,7 @@ const login = async () => {
             <v-text-field
               :rules="registerRules.repeatPasswordRules"
               variant="outlined"
-              label="Повторіть пароль"
+              label="Підтвердіть пароль"
               :type="isPasswordVisible ? 'text' : 'password'"
               :append-inner-icon="
                 isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
@@ -158,7 +169,11 @@ const login = async () => {
               class="mt-2"
               required
             ></v-text-field>
-            <v-btn type="submit" class="mt-2 w-100" @click="register"
+            <v-btn
+              type="submit"
+              class="mt-2 w-100"
+              @click="register"
+              :loading="isLoading.register"
               >Зареєструватись</v-btn
             >
             <VCol cols="12" class="text-center text-base mt-2 pa-0">

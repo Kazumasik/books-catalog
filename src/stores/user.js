@@ -7,7 +7,7 @@ export const useUserStore = defineStore({
   state: () => ({
     token: localStorage.getItem("token"),
     user: {},
-    userRole: "user"
+    userRole: "user",
   }),
 
   getters: {
@@ -15,8 +15,12 @@ export const useUserStore = defineStore({
     getUser: (state) => state.user,
     getUserId: (state) => state.user?.id,
     getUserRole: (state) => state.user?.role,
-    isAuth: (state) => state.token ? true : false,
-    isAdmin: (state) => state.userRole === "admin" ? true : false,
+    isAuth: (state) => (state.token ? true : false),
+    isAdmin: (state) =>
+      state.userRole === "admin" || state.userRole === "superadmin"
+        ? true
+        : false,
+    isSuperAdmin: (state) => (state.userRole === "superadmin" ? true : false),
   },
 
   actions: {
@@ -27,14 +31,14 @@ export const useUserStore = defineStore({
     async login(payload) {
       const response = await postData("auth/login", payload);
       this.setToken(response.token);
-      this.user=response.user
-      this.userRole=response.user.role
+      this.user = response.user;
+      this.userRole = response.user.role;
     },
     async register(payload) {
       const response = await postData("auth/register", payload);
       this.setToken(response.token);
-      this.user=response.user
-      this.userRole=response.user.role
+      this.user = response.user;
+      this.userRole = response.user.role;
     },
     logout() {
       this.token = null;
@@ -44,30 +48,38 @@ export const useUserStore = defineStore({
     },
     async current() {
       const response = await getData("user/current");
-      this.user=response
-      this.userRole=response.role
+      this.user = response;
+      this.userRole = response.role;
     },
     async findById(userId) {
-      const response = await getData("user/"+userId);
-      return response
+      const response = await getData("user/" + userId);
+      return response;
     },
     async changeName(newName) {
-      const payload={
-        nickname: newName
-      }
+      const payload = {
+        nickname: newName,
+      };
       const response = await editData("user/", payload);
-      return response
+      return response;
     },
     async addBookmark(bookId, bookmarkType) {
       const payload = {
-        bookmarkType
-      }
+        bookmarkType,
+      };
       const response = await editData(`book/${bookId}/add-bookmark`, payload);
-      return response
+      return response;
     },
     async deleteBookmark(bookId) {
-      console.log("Подтверждаю")
       await deleteData(`book/${bookId}/bookmark`);
+    },
+    async changePassword(payload) {
+      await editData("user/password", payload);
+    },
+    async giveAdminRole(userId) {
+      await editData(`user/${userId}/make-admin`);
+    },
+    async removeAdminRole(userId) {
+      await editData(`user/${userId}/remove-admin`);
     },
   },
 });

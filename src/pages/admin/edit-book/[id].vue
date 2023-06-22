@@ -10,43 +10,37 @@ const route = useRoute();
 const genres = ref(genreStore.getGenres);
 const categories = ref(genreStore.getCategories);
 const deleteDialog = ref(false);
-const isLoading = ref(false);
+const isLoading = ref({
+  edit: false,
+  delete: false,
+});
 const updateRules = {
   titleRules: [(v) => !!v || "Назва обов'язкова"],
-  origTitleRules: [(v) => !!v || "Оригінальна назва обов'язкова"],
-  genreRules: [
-    (v) => !!v.length || "Жанр обов'язковий",
-    (value) => {
-      if (value instanceof Array && value.length == 0) {
-        return "Жанр обов'язковий.";
-      }
-    },
-  ],
 };
 onMounted(async () => {
   updatedBook.value = await bookStore.findById(route.params.id);
 });
 
 const updateBook = async () => {
-  isLoading.value = true;
+  isLoading.value.edit = true;
   try {
     await bookStore.updateBook(updatedBook.value._id, updatedBook.value);
     router.replace("/book/" + updatedBook.value._id);
   } catch (err) {
     console.log(err);
   }
-  isLoading.value = false;
+  isLoading.value.edit = false;
 };
 
 const deleteBook = async () => {
-  isLoading.value = true;
+  isLoading.value.delete = true;
   try {
     await bookStore.deleteBook(updatedBook.value._id);
     router.replace("/");
   } catch (err) {
     console.log(err);
   }
-  isLoading.value = false;
+  isLoading.value.delete = false;
 };
 </script>
 
@@ -66,7 +60,6 @@ const deleteBook = async () => {
       ></v-text-field>
       <v-text-field
         class="mt-4"
-        :rules="updateRules.origTitleRules"
         v-model="updatedBook.origTitle"
         label="Оригінальна назва"
         variant="outlined"
@@ -80,7 +73,6 @@ const deleteBook = async () => {
         label="Опис"
       ></v-textarea>
       <v-combobox
-        :rules="updateRules.genreRules"
         v-model="updatedBook.genres"
         class="filter-row mb-4"
         multiple
@@ -115,8 +107,15 @@ const deleteBook = async () => {
         label="Контент"
         variant="outlined"
       ></v-file-input>
-      <v-btn @click="updateBook"> Оновити інформацію </v-btn>
-      <v-btn @click="deleteDialog = true" class="ml-4" color="error">
+      <v-btn :loading="isLoading.edit" @click="updateBook">
+        Оновити інформацію
+      </v-btn>
+      <v-btn
+        :loading="isLoading.delete"
+        @click="deleteDialog = true"
+        class="ml-4"
+        color="error"
+      >
         Видалити книгу
       </v-btn>
     </v-sheet>

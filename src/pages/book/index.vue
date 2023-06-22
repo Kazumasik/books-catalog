@@ -38,6 +38,8 @@ const fetchData = async (
   totalPages.value = response.totalPages;
 };
 
+
+
 onMounted(async () => {
   await fetchData(page.value, route.query.genre, route.query.category);
 });
@@ -82,7 +84,7 @@ const changeCategories = async (selectedGenres, selectedCategories) => {
     width="300"
   >
     <CatalogFilter
-    style="width: 100%"
+      style="width: 100%"
       :queryGenres="queryGenres"
       :queryCategories="queryCategories"
       @changeGenres="changeGenres"

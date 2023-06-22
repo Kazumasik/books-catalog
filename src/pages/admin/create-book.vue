@@ -18,15 +18,27 @@ const newBook = reactive({
   categories: [],
   content: [],
 });
-
+const error = reactive({
+  content: "",
+  image: "",
+});
 const createRules = {
   titleRules: [(v) => !!v || "Назва обов'язкова"],
-  origTitleRules: [(v) => !!v || "Оригінальна назва обов'язкова"],
-  genreRules: [(v) => !!v.length || "Жанр обов'язковий"],
-  coverRules: [(v) => !!v || "Обкладинка обов'язкова"],
-  contentRules: [(v) => !!v || "Контент обов'язковий"],
 };
 const createBook = async () => {
+  if (!newBook.content.length) {
+    error.content = "Контент обов'язковий";
+    return;
+  } else {
+    error.content = "";
+  }
+  if (!newBook.image.length) {
+    console.log(newBook.content);
+    error.image = "Обкладинка книги обов'язкова";
+    return;
+  } else {
+    error.image = "";
+  }
   isLoading.value = true;
   try {
     const response = await bookStore.createBook(newBook);
@@ -50,8 +62,10 @@ const createBook = async () => {
           v-model="newBook.image"
           label="Обкладинка книги"
           variant="outlined"
+          :error-messages="error.image"
         ></v-file-input>
         <v-text-field
+          class="mt-4"
           :rules="createRules.titleRules"
           label="Назва українською"
           variant="outlined"
@@ -59,7 +73,6 @@ const createBook = async () => {
         ></v-text-field>
         <v-text-field
           class="mt-4"
-          :rules="createRules.origTitleRules"
           label="Оригінальна назва"
           variant="outlined"
           v-model="newBook.origTitle"
@@ -75,7 +88,6 @@ const createBook = async () => {
           v-model="newBook.description"
         ></v-textarea>
         <v-combobox
-          :rules="createRules.genreRules"
           class="filter-row mt-4 mb-6"
           multiple
           chips
@@ -100,14 +112,15 @@ const createBook = async () => {
           v-model="newBook.categories"
         ></v-combobox>
         <v-file-input
-          :rules="createRules.coverRules"
+          :rules="createRules.contentRules"
           accept=".doc,.docx"
           show-size
           v-model="newBook.content"
           label="Контент"
           variant="outlined"
+          :error-messages="error.content"
         ></v-file-input>
-        <v-btn :loading="isLoading" type="submit" class="w-100">
+        <v-btn :loading="isLoading" type="submit" class="mt-4 w-100">
           Створити книгу
         </v-btn>
       </v-form>

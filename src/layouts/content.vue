@@ -34,9 +34,15 @@ watch(infiniteMode, async (newValue, oldValue) => {
     <v-app-bar scroll-behavior="hide" flat>
       <v-container class="py-0 fill-height d-flex align-center">
         <router-link to="/">
-          <v-avatar class="me-5" color="grey-darken-1" size="32"></v-avatar>
+          <v-avatar
+            v-ripple
+            color="surface-variant"
+            icon="mdi-book-open-variant"
+            class="me-5"
+            size="32"
+          ></v-avatar>
         </router-link>
-        <router-link class="d-none d-sm-block"  to="/book">
+        <router-link class="d-none d-sm-block" to="/book">
           <v-btn variant="text"> Каталог </v-btn>
         </router-link>
         <v-spacer></v-spacer>
