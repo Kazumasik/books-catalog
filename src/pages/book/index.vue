@@ -38,8 +38,6 @@ const fetchData = async (
   totalPages.value = response.totalPages;
 };
 
-
-
 onMounted(async () => {
   await fetchData(page.value, route.query.genre, route.query.category);
 });
@@ -74,25 +72,45 @@ const changeCategories = async (selectedGenres, selectedCategories) => {
   });
   await fetchData(page.value, selectedGenres, selectedCategories);
 };
+const changeAll = async (selectedGenres, selectedCategories) => {
+  selectedCategories = selectedCategories.map((category) => category._id);
+  selectedGenres = selectedGenres.map((genre) => genre._id);
+  router.push({
+    name: "book",
+    query: {
+      ...route.query,
+      genre: [...selectedGenres],
+      category: [...selectedCategories],
+    },
+    replace: false,
+  });
+  await fetchData(page.value, selectedGenres, selectedCategories);
+};
 </script>
 
 <template>
   <v-navigation-drawer
     location="right"
     v-model="filterDrawer"
-    temporary
     width="300"
-  >
-    <CatalogFilter
-      style="width: 100%"
-      :queryGenres="queryGenres"
-      :queryCategories="queryCategories"
-      @changeGenres="changeGenres"
-      @changeCategories="changeCategories"
-      :genres="genreStore.getGenres"
-      :categories="genreStore.getCategories"
-      class="pa-4"
-    ></CatalogFilter>
+    temporary
+    ><v-list>
+      <v-list-item
+        ><CatalogFilter
+          attach
+          style="width: 100%"
+          :queryGenres="queryGenres"
+          :queryCategories="queryCategories"
+          @changeGenres="changeGenres"
+          @changeCategories="changeCategories"
+          :genres="genreStore.getGenres"
+          :categories="genreStore.getCategories"
+          @changeAll="changeAll"
+          class="pa-4"
+          mobile
+        ></CatalogFilter
+      ></v-list-item>
+    </v-list>
   </v-navigation-drawer>
   <v-container>
     <div class="d-flex">

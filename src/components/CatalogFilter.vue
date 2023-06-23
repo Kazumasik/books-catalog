@@ -19,6 +19,11 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  mobile: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 const transformGenres = (idArray) => {
   return idArray.map((obj) => {
@@ -55,6 +60,9 @@ const emit = defineEmits(["changeGenres", "changeCategories"]);
 const selectedCategories = ref(transformCategories(props.queryCategories));
 const selectedGenres = ref(transformGenres(props.queryGenres));
 watch(selectedGenres, (newValue, oldValue) => {
+  if (props.mobile) {
+    return;
+  }
   emit(
     "changeGenres",
     JSON.parse(JSON.stringify(newValue)),
@@ -62,12 +70,23 @@ watch(selectedGenres, (newValue, oldValue) => {
   );
 });
 watch(selectedCategories, (newValue, oldValue) => {
+  if (props.mobile) {
+    return;
+  }
   emit(
     "changeCategories",
     JSON.parse(JSON.stringify(selectedGenres.value)),
     JSON.parse(JSON.stringify(newValue))
   );
 });
+
+const applyChanges = () => {
+  emit(
+    "changeAll",
+    JSON.parse(JSON.stringify(selectedGenres.value)),
+    JSON.parse(JSON.stringify(selectedCategories.value))
+  );
+};
 </script>
 
 <template>
@@ -99,6 +118,9 @@ watch(selectedCategories, (newValue, oldValue) => {
       v-model="selectedCategories"
       :hide-details="true"
     ></v-combobox>
+    <v-btn @click="applyChanges" v-if="props.mobile" class="mt-4"
+      >Застосувати</v-btn
+    >
   </div>
 </template>
 <style scoped>

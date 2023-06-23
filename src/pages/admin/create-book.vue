@@ -113,7 +113,7 @@ const createBook = async () => {
         ></v-combobox>
         <v-file-input
           :rules="createRules.contentRules"
-          accept=".doc,.docx"
+          accept=".docx"
           show-size
           v-model="newBook.content"
           label="Контент"

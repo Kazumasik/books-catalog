@@ -102,14 +102,14 @@ const changeBookmark = async (newValue) => {
           <div class="book-cover">
             <v-img class="book-cover-image rounded-xl" cover :src="imageSrc">
             </v-img>
-            <div class="d-block d-sm-none mobile-cover-info pa-5">
-              <h1 class="text-h4 text-white">
-                {{ book.title }}
-              </h1>
-              <h4 class="text-grey-lighten-2 font-weight-medium">
-                {{ book.origTitle }}
-              </h4>
-            </div>
+          </div>
+          <div class="mt-4 d-block d-sm-none mobile-cover-info">
+            <h1 class="text-h5 text-white">
+              {{ book.title }}
+            </h1>
+            <h4 class="text-grey-lighten-2 font-weight-medium">
+              {{ book.origTitle }}
+            </h4>
           </div>
           <v-btn :to="`/book/${book._id}/content?page=1`" class="mt-4">
             Читати
@@ -257,19 +257,6 @@ const changeBookmark = async (newValue) => {
 <style scoped>
 .book-cover {
   position: relative;
-}
-.book-cover-image div:first-child {
-  background-image: linear-gradient(
-    -180deg,
-    transparent 70%,
-    rgba(0, 0, 0, 0.9) 90%
-  );
-}
-.mobile-cover-info {
-  position: absolute;
-  bottom: 0;
-  inline-size: 100%;
-  overflow: hidden;
 }
 .v-card-title {
   font-size: 1rem;

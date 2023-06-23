@@ -43,20 +43,24 @@ watch(vuetifyTheme.global.name, (val) => {
 });
 </script>
 <template>
-  <VAvatar style="cursor: pointer">
-    
-    <VAvatar color="primary" variant="tonal" icon="mdi-account" ></VAvatar>
+  <VAvatar style="cursor: pointer" color="primary" variant="tonal">
+    <VImg
+      src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
+    />
+
     <VMenu activator="parent" width="230" location="bottom end" offset="25px">
       <VList>
         <VListItem :to="`/user/${userId}`">
           <template #prepend>
             <VListItemAction start>
               <VAvatar
-                icon="mdi-account"
                 color="primary"
                 size="32"
                 variant="tonal"
               >
+                <VImg
+                  src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
+                />
               </VAvatar>
             </VListItemAction>
           </template>
