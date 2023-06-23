@@ -10,6 +10,7 @@ const registrationData = reactive({
   email: "",
   password: "",
 });
+const repeatPassword = ref("");
 
 const loginData = reactive({
   email: "",
@@ -20,7 +21,9 @@ const isLoading = reactive({
   login: false,
 });
 const isPasswordVisible = ref(false);
-
+const errors = reactive({
+  password: "",
+});
 const changeModal = async () => {
   dialogRegister.value = !dialogRegister.value;
   dialogLogin.value = !dialogLogin.value;
@@ -48,6 +51,9 @@ const registerRules = {
   ],
 };
 const register = async () => {
+  if (registrationData.password !== repeatPassword.value) {
+    return;
+  }
   isLoading.register = true;
   try {
     await userStore.register(registrationData);
@@ -59,12 +65,16 @@ const register = async () => {
 };
 
 const login = async () => {
+  errors.password=""
   isLoading.login = true;
   try {
     await userStore.login(loginData);
     dialogRegister.value = false;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data.message);
+    if (error.response.data.message === "Wrong password!") {
+      errors.password = "Неправильний пароль";
+    }
   }
   isLoading.login = false;
 };
@@ -99,6 +109,7 @@ const login = async () => {
               "
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               required
+              :error-messages="errors.password"
             ></v-text-field>
             <v-btn
               :loading="isLoading.login"
@@ -168,6 +179,7 @@ const login = async () => {
               @click:append-inner="isPasswordVisible = !isPasswordVisible"
               class="mt-2"
               required
+              v-model="repeatPassword"
             ></v-text-field>
             <v-btn
               type="submit"
