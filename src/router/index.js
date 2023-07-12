@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "~pages";
+import { useUserStore } from "@/stores/user";
 import { setupLayouts } from "virtual:generated-layouts";
-import { useUserStore } from '@/stores/user'
-import { useGenreStore } from "@/stores/genre.js";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [...setupLayouts(routes)],
@@ -13,16 +12,18 @@ const router = createRouter({
 
 router.beforeEach(async function (to, from, next) {
   const userStore = useUserStore();
-  const genreStore = useGenreStore();
-  if(!userStore.getUser?.nickname && localStorage.getItem('token')){
-    await userStore.current();
+  if (!userStore.user && userStore.token) {
+    try {
+      await userStore.current();
+    } catch {
+      userStore.logout();
+    }
   }
-  if(!genreStore.getGenres.length){
-    await genreStore.fetchAll();
+  if (!userStore.user && !to.meta.requiresUnauth) {
+    next("/login");
+    return;
   }
-  if(to.meta.requiresAdmin && !userStore.isAdmin){
-    next('/')
-  }
-  next()
+  next();
+  return;
 });
 export default router;

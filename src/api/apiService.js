@@ -1,6 +1,6 @@
 import axios from "axios";
 import router from "../router";
-import { useUserStore } from "@/stores/user.js";
+
 const apiService = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 });
@@ -20,13 +20,13 @@ apiService.interceptors.response.use(
   },
   (error) => {
     {
-      const userStore = useUserStore()
+      const userStore = useUserStore();
       switch (error.response.status) {
         case 404:
           router.replace("/404");
           break;
         case 498:
-          userStore.logout()
+          userStore.logout();
           router.replace("/");
           break;
         default:

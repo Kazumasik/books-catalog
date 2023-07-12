@@ -1,103 +1,130 @@
 <script setup>
-import BookCard from "../components/BookCard.vue";
-import UpdateCard from "../components/UpdateCard.vue";
-import { useBookStore } from "@/stores/book.js";
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/css";
-const bookStore = useBookStore();
-const newBooks = ref({});
-const lastBooks = ref({});
-onMounted(async () => {
-  newBooks.value = await bookStore.fetchNewBooks();
-  const response = await bookStore.fetchBooks(1, undefined, undefined, 100);
-  lastBooks.value = response.books;
-});
-
-const breakPoints = {
-  300: {
-    slidesPerView: 2,
-    spaceBetween: 10,
-  },
-  400: {
-    slidesPerView: 3,
-    spaceBetween: 10,
-  },
-  600: {
-    slidesPerView: 4,
-    spaceBetween: 10,
-  },
-  760: {
-    slidesPerView: 5,
-    spaceBetween: 10,
-  },
-  960: {
-    slidesPerView: 6,
-    spaceBetween: 10,
-  },
-  1280: {
-    slidesPerView: 7,
-    spaceBetween: 10,
-  },
-};
+import ChapterCard from "../components/header/ChapterCard.vue";
+const chaptersTab = ref("coming");
 </script>
 
 <template>
-  <!-- <Swiper
-    slidesPerView="auto"
-    :spaceBetween="5"
-  >
-    <swiper-slide v-for="n in 10" :key="n">
-      <book-card
-        book_name="Еволюція вбивці богів богов"
-        src="https://remanga.org/media/titles/godkilling-oresamas-strongest-angels-evolution-story/f4a794f52152e3630834aae8702a9fbf.jpg"
-      ></book-card>
-    </swiper-slide>
-    <swiper-slide v-for="n in 10" :key="n">
-      <book-card
-        book_name="Диктор лялялялялялялялял"
-        src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
-      ></book-card>
-    </swiper-slide>
-  </Swiper> -->
-  <v-container>
-    <v-btn-group class="d-flex flex-row d-sm-none" divided>
-      <v-btn to="/book" prepend-icon="mdi-bookshelf" class="flex-grow-1"> Каталог </v-btn>
-      <v-btn to="/search" prepend-icon="mdi-magnify" class="flex-grow-1"> Пошук </v-btn>
-    </v-btn-group>
-    <h4 class="text-h5 mt-4 mt-sm-0">Горячі новинки</h4>
-    <Swiper
-      :breakpoints="breakPoints"
-      class="mt-4 pb-4"
-      :slides-per-view="1"
-      :space-between="10"
-    >
-      <swiper-slide v-for="book in newBooks" :key="book._id">
-        <book-card
-          :title="book.title"
-          :url="book._id"
-          :genre="book.genres[0]"
-          :src="book"
-        ></book-card>
-      </swiper-slide>
-    </Swiper>
-    <h4 class="text-h5 mt-4">Останні оновлення</h4>
-    <update-card
-      v-for="book in lastBooks"
-      :key="book._id"
-      class="mt-4"
-      :bookData="book"
-    ></update-card>
-  </v-container>
+  <div class="background">
+    <v-container>
+      <p class="text-center text-h3 font-weight-bold">Лента</p>
+      <v-tabs class="mx-auto mt-6 chapter-type" v-model="chaptersTab">
+        <v-tab class="text-body-1" value="coming">В процессе (6)</v-tab>
+        <v-tab class="text-body-1" value="made">Готовые (0)</v-tab>
+      </v-tabs>
+      <v-window class="mt-4" v-model="chaptersTab">
+        <v-window-item value="coming">
+          <v-expansion-panels class="rounded-lg">
+            <v-expansion-panel class="my-1" v-for="n in 6" :key="n">
+              <v-expansion-panel-title expand-icon="" collapse-icon="">
+                <span>Глава 1</span>
+                <router-link to="/titles" class="ml-4">Диктор</router-link>
+                <v-spacer> </v-spacer>
+                <v-avatar size="20" color="primary"> </v-avatar>
+                <span class="ml-5">26.06.2023 </span>
+              </v-expansion-panel-title>
+              <v-expansion-panel-text>
+                <v-row>
+                  <v-col cols="12" class="gap d-flex">
+                    <v-chip
+                      to="/user/2"
+                      rounded="lg"
+                      color="success"
+                      class="h-100"
+                      variant="outlined"
+                    >
+                      Nicaea
+                    </v-chip>
+                    <v-chip
+                      to="/user/2"
+                      rounded="lg"
+                      color="primary"
+                      class="h-100"
+                      variant="outlined"
+                    >
+                      Manchan
+                    </v-chip>
+                    <v-spacer> </v-spacer>
+                    <v-btn
+                      height="35"
+                      class="text-body-2"
+                      variant="tonal"
+                      color="grey-lighten-1"
+                    >
+                      Отдать главу
+                    </v-btn>
+                  </v-col>
+                  <v-col cols="9">
+                    <v-text-field
+                      density="comfortable"
+                      hide-details
+                      variant="outlined"
+                      label="Ссылка"
+                    >
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="3">
+                    <v-btn height="45" class="w-100 text-body-2">
+                      Отправить
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-text>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-window-item>
+
+        <v-window-item value="made"> </v-window-item>
+      </v-window>
+    </v-container>
+  </div>
 </template>
 
 <style scoped>
-/* .swiper-slide {
-  width: auto;
-} */
+.background {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, 62.37%, #000 100%),
+    url("/src/assets/back-feed.png"), lightgray 50%;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 100%;
+}
 @media (min-width: 1920px) {
   .v-container {
-    max-width: 1200px;
+    max-width: 1280px;
+    padding: 0;
+    padding-top: 50px;
   }
 }
+
+.v-expansion-panels:not(.v-expansion-panels--variant-accordion)
+  > :first-child:not(:last-child):not(.v-expansion-panel--active):not(
+    .v-expansion-panel--before-active
+  ),
+.v-expansion-panels:not(.v-expansion-panels--variant-accordion)
+  > :not(:first-child):not(:last-child):not(.v-expansion-panel--active):not(
+    .v-expansion-panel--after-active
+  ),
+.v-expansion-panels:not(.v-expansion-panels--variant-accordion)
+  > :last-child:not(:first-child):not(.v-expansion-panel--active):not(
+    .v-expansion-panel--after-active
+  ),
+.v-expansion-panels:not(.v-expansion-panels--variant-accordion)
+  > :not(:first-child):not(:last-child):not(.v-expansion-panel--active):not(
+    .v-expansion-panel--before-active
+  ) {
+  border-top-left-radius: inherit !important;
+  border-top-right-radius: inherit !important;
+  border-bottom-left-radius: inherit !important;
+  border-bottom-right-radius: inherit !important;
+}
+
+.v-expansion-panel__shadow {
+  box-shadow: 0;
+}
+.v-expansion-panel:not(:first-child)::after {
+  border: 0;
+}
 </style>
+<route lang="yaml">
+meta:
+  requiresAuth: true
+</route>

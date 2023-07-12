@@ -4,7 +4,7 @@
 
 <template>
 <v-container>
-    <h1>Нічого не знайдно</h1>
+    <h1>404</h1>
   </v-container>
 </template>
 

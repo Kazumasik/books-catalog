@@ -1,335 +1,200 @@
 <script setup>
-import { onMounted } from "vue";
-import BookCard from "../../components/BookCard.vue";
+import { onMounted, reactive } from "vue";
 import { useUserStore } from "@/stores/user.js";
 import { useRoute } from "vue-router";
-const tab = ref("reading");
 const userStore = useUserStore();
 const route = useRoute();
 const user = ref({});
-const books = ref([]);
-const isYourProfile = ref(route.params.id === userStore.getUser.id);
-const newNickname = ref("");
-const editMode = ref(false);
-const tooltipActivator = ref();
-const rules = {
-  required: (value) => !!value.trim() || "Нікнейм не може бути порожнім.",
-  counter: (value) => value.length <= 20 || "Максимум 20 символів",
-};
-const changeName = async () => {
-  if (!newNickname.value.trim()) {
-    return;
-  }
-  editMode.value = false;
-  const response = await userStore.changeName(newNickname.value);
-  console.log("РЕСПОНС", response);
-  user.value.nickname = response.nickname;
-};
-const passAlert = ref(false);
-const passwordChange = ref({
-  currentPassword: "",
-  newPassword: "",
-});
-const isLoading = ref(false);
-const passError = ref("");
-const changePassword = async () => {
-  if (
-    passwordChange.value.currentPassword.trim().length != 0 &&
-    passwordChange.value.newPassword.trim().length != 0
-  ) {
-    try {
-      isLoading.value = true;
-      await userStore.changePassword(passwordChange.value);
-      passError.value = "";
-      passAlert.value = true;
-      setTimeout(() => {
-        passAlert.value = false;
-      }, 5000);
-    } catch {
-      passError.value = "Старий пароль невірний";
-    }
-    isLoading.value = false;
-  }
-};
-const cancelEditing = () => {
-  newNickname.value = user.value.nickname;
-  editMode.value = false;
-};
-
-const giveAdminRole = async () => {
-  await userStore.giveAdminRole(route.params.id);
-  user.value = await userStore.findById(route.params.id);
-};
-const removeAdminRole = async () => {
-  await userStore.removeAdminRole(route.params.id);
-  user.value = await userStore.findById(route.params.id);
-};
+const isYourProfile = ref(+route.params.id === userStore.user.id);
+const subroles = ref([]);
+const tab = ref("one");
+const statuses = ref(["Марафон", "Онгоинг", "Хватит", "Отпуск"]);
+const selection = ref();
 onMounted(async () => {
-  user.value = await userStore.findById(route.params.id);
-  books.value = user.value.bookmarks;
-  newNickname.value = user.value.nickname;
-  console.log(user.value);
+  const response = await userStore.findById(route.params.id);
+  user.value = response.content;
+  subroles.value = user.value.subroles.map((subrole) => subrole.name);
+  console.log(subroles.value);
 });
 </script>
 
 <template>
-  <v-alert
-    style="
-      z-index: 99;
-      top: 70px;
-      left: 0;
-      right: 0;
-      margin-left: auto;
-      margin-right: auto;
-      width: 250px;
-    "
-    position="absolute"
-    v-model="passAlert"
-    closable
-    type="success"
-    text="Пароль успішно змінено"
-  ></v-alert>
   <v-container>
-    <div class="profile-header mx-2">
-      <div class="profile-avatar">
-        <v-avatar color="surface" size="100">
-          <v-img
-            src="https://remanga.org/media/publishers/getmanshina-test/high_cover.jpg"
-          ></v-img>
-        </v-avatar>
-      </div>
-      <div class="profile-header-content ml-4">
-        <div v-if="!editMode">
-          <div class="d-flex align-center">
-            <h1>{{ user.nickname }}</h1>
-            <v-tooltip
-              :text="`${user.experience} / ${user.nextLevelExperience}`"
-              location="top"
+    <div class="profile d-flex">
+      <div class="profile-info d-flex flex-column">
+        <v-card
+          variant="flat"
+          height="340"
+          width="320"
+          class="d-flex justify-center flex-column align-center"
+        >
+          <v-avatar color="surface" size="166">
+            <v-img
+              src="https://remanga.org/media/users/44887/avatar_GA9ed7N.jpg"
+            ></v-img>
+          </v-avatar>
+          <v-card-title class="text-center mt-4 text-h4 font-weight-bold">
+            {{ user.username }}
+          </v-card-title>
+          <div class="d-flex gap mt-4">
+            <v-chip link rounded="pill" variant="tonal">
+              {{ user.balance + " руб" }}
+            </v-chip>
+            <v-btn
+              rounded="pill"
+              variant="tonal"
+              color="grey-lighten-2"
+              class="h-auto text text-capitalize"
             >
-              <template v-slot:activator="{ props }">
-                <v-progress-circular
-                  v-bind="props"
-                  :rotate="360"
-                  :size="40"
-                  :width="5"
-                  :max-value="user.nextLevelExperience"
-                  :model-value="
-                    100 * (user.experience / user.nextLevelExperience)
-                  "
-                  class="ml-4"
-                  color="teal"
-                >
-                  {{ user.level }}
-                </v-progress-circular>
-              </template>
-            </v-tooltip>
-            <v-tooltip
-              v-if="
-                userStore.isSuperAdmin &&
-                !isYourProfile &&
-                user.role !== 'admin'
-              "
-              activator="parent"
-              location="top"
-              >Надати роль адміністратора
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  @click="giveAdminRole"
-                  v-bind="props"
-                  size="small"
-                  class="ml-4"
-                  icon="mdi-arrow-up-bold"
-                >
-                </v-btn>
-              </template>
-            </v-tooltip>
-            <v-tooltip
-              v-else-if="
-                userStore.isSuperAdmin && !isYourProfile && user.role == 'admin'
-              "
-              activator="parent"
-              location="top"
-              >Забрати роль адміністратора
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  @click="removeAdminRole"
-                  v-bind="props"
-                  size="small"
-                  class="ml-4"
-                  icon="mdi-close-thick"
-                  color="error"
-                >
-                </v-btn>
-              </template>
-            </v-tooltip>
+              <v-avatar color="grey-lighten-2" class="mr-4" size="18">
+              </v-avatar>
+              Статуc
+              <v-menu offset="5px" location="bottom center" activator="parent">
+                <v-list width="105" rounded="lg" bg-color="grey-darken-3">
+                  <v-list-item link v-for="status in statuses" :key="status">
+                    <v-list-item-title>{{ status }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-btn>
           </div>
-          <v-btn
-            class="mt-4"
-            v-if="isYourProfile"
-            @click="editMode = true"
-            append-icon="mdi-pencil"
+        </v-card>
+        <v-item-group
+          mandatory="force"
+          class="d-flex flex-column"
+          v-model="selection"
+        >
+          <v-item v-slot="{ isSelected, toggle }">
+            <v-btn
+              :color="isSelected ? 'primary' : 'grey-lighten-1'"
+              class="mt-4 text-capitalize"
+              prepend-icon="mdi-bookmark-outline"
+              :variant="isSelected ? 'outlined' : 'tonal'"
+              height="55"
+              rounded="lg"
+              @click="toggle"
+            >
+              <template v-slot:prepend>
+                <v-icon size="x-large"></v-icon>
+              </template>
+              <span class="text-left"> Тайтлы </span>
+            </v-btn>
+          </v-item>
+          <v-item v-slot="{ isSelected, toggle }">
+            <v-btn
+              @click="toggle"
+              :color="isSelected ? 'primary' : 'grey-lighten-1'"
+              :variant="isSelected ? 'outlined' : 'tonal'"
+              class="mt-4 text-capitalize"
+              prepend-icon="mdi-cog-outline"
+              height="55"
+              rounded="lg"
+            >
+              <template v-slot:prepend>
+                <v-icon size="x-large"></v-icon>
+              </template>
+              Настройки
+            </v-btn>
+          </v-item>
+        </v-item-group>
+      </div>
+      <div v-if="selection === 0" class="profile-titles ml-8 w-100">
+        <v-tabs v-model="tab">
+          <v-tab value="one" class="text-capitalize">Тайп (3)</v-tab>
+          <v-tab value="two" class="text-capitalize">Клин (6)</v-tab>
+        </v-tabs>
+
+        <v-window v-model="tab">
+          <v-window-item value="one">
+            <div class="titles-wrapper mt-4">
+              <v-card
+                to="/title"
+                rounded="lg"
+                variant="text"
+                v-for="n in 12"
+                :key="n"
+              >
+                <v-img
+                  class="rounded-lg"
+                  src="https://remanga.org/media/titles/reincarnation-plan/540948e6326b29834c7dbaa487edd4ae.jpg"
+                  cover
+                >
+                </v-img>
+
+                <p class="manga-title pa-2 text-body-1">
+                  Чертоваfffff реинкарнация
+                </p>
+              </v-card>
+            </div>
+          </v-window-item>
+
+          <v-window-item class="w-100" value="two">
+            <div class="titles-wrapper mt-4">
+              <v-card link rounded="lg" variant="text" v-for="n in 12" :key="n">
+                <v-img
+                  class="rounded-lg"
+                  src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
+                  cover
+                >
+                </v-img>
+
+                <p class="manga-title pa-2 text-body-1">Диктор</p>
+              </v-card>
+            </div>
+          </v-window-item>
+        </v-window>
+      </div>
+      <div v-else-if="selection === 1" class="profile-settings w-100 ml-8">
+        <v-card variant="flat" class="pa-4">
+          <v-card-title class="pa-0"> Настройка аккаунта </v-card-title>
+          <v-file-input
+            class="mt-9"
+            variant="outlined"
+            accept="image/*"
+            label="Загрузка аватара"
+            prepend-icon=""
           >
-            Налаштування
-          </v-btn>
-        </div>
-        <div class="h-100" v-else>
+          </v-file-input>
           <v-text-field
-            variant="underlined"
-            v-model="newNickname"
-            label="Нікнейм"
-            class="nickname-input"
-            :rules="[rules.required, rules.counter]"
-            maxlength="20"
-            counter
-          ></v-text-field>
-          <v-btn-group class="mt-2">
-            <v-btn
-              size="small"
-              @click="changeName"
-              append-icon="mdi-check-bold"
-              color="success"
-            >
-            </v-btn>
-            <v-btn
-              size="small"
-              @click="cancelEditing"
-              append-icon="mdi-close-thick"
-              color="error"
-            >
-            </v-btn>
-          </v-btn-group>
-        </div>
+            class="rounded-lg"
+            variant="outlined"
+            label="Имя пользователя"
+          >
+          </v-text-field>
+          <v-text-field variant="outlined" label="Почта"> </v-text-field>
+          <v-text-field variant="outlined" label="Новый пароль"> </v-text-field>
+          <v-text-field variant="outlined" label="Подтверждение пароля">
+          </v-text-field>
+          <v-btn height="35" width="30%" rounded="lg" class="text-capitalize">
+            Сохранить
+          </v-btn>
+        </v-card>
       </div>
     </div>
-  </v-container>
-  <v-divider></v-divider>
-
-  <v-container v-if="!editMode">
-    <v-tabs v-model="tab" class="mb-4 mx-2">
-      <v-tab value="reading">Читаю</v-tab>
-      <v-tab value="end_read">Прочитав</v-tab>
-      <v-tab value="will_read">Буду читати</v-tab>
-    </v-tabs>
-
-    <v-window v-model="tab">
-      <v-window-item value="reading">
-        <div class="books-wrapper">
-          <book-card
-            v-for="book in books.reading"
-            :key="book._id"
-            :title="book.title"
-            :url="book._id"
-            :genre="book.genres[0]"
-            :src="book"
-          ></book-card>
-        </div>
-      </v-window-item>
-      <v-window-item value="end_read">
-        <div class="books-wrapper">
-          <book-card
-            v-for="book in books.end_read"
-            :key="book._id"
-            :title="book.title"
-            :url="book._id"
-            :genre="book.genres[0]"
-            :src="book"
-          >
-          </book-card>
-        </div>
-      </v-window-item>
-      <v-window-item value="will_read">
-        <div class="books-wrapper">
-          <book-card
-            v-for="book in books.will_read"
-            :key="book._id"
-            :title="book.title"
-            :url="book._id"
-            :genre="book.genres[0]"
-            :src="book"
-          ></book-card>
-        </div>
-      </v-window-item>
-    </v-window>
-  </v-container>
-  <v-container v-else>
-    <v-tabs>
-      <v-tab>Зміна паролю</v-tab>
-    </v-tabs>
-
-    <v-window class="py-6" v-model="tab">
-      <v-window-item>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="passwordChange.currentPassword"
-              label="Старий пароль"
-              variant="outlined"
-              :error-messages="passError"
-            >
-            </v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="passwordChange.newPassword"
-              label="Новий пароль"
-              variant="outlined"
-            >
-            </v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-btn :loading="isLoading" @click="changePassword"
-              >Змінити пароль
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-window-item>
-    </v-window>
   </v-container>
 </template>
 
 <style scoped>
+.manga-title {
+  line-clamp: 2;
+}
+.titles-wrapper {
+  display: grid;
+  gap: 1rem 0.8rem;
+  grid-template-columns: repeat(5, minmax(0px, 1fr));
+}
+.profile-info {
+  width: 320px;
+}
 @media (min-width: 1920px) {
   .v-container {
-    max-width: 1200px;
-  }
-}
-.profile-header {
-  display: flex;
-  align-items: center;
-}
-
-.books-wrapper {
-  display: grid;
-  gap: 0.7rem;
-  grid-template-columns: repeat(7, minmax(0px, 1fr));
-}
-.nickname-input {
-  min-width: 200px;
-}
-
-@media (max-width: 1279px) {
-  .books-wrapper {
-    grid-template-columns: repeat(5, minmax(0px, 1fr));
-  }
-}
-
-@media (max-width: 959px) {
-  .books-wrapper {
-    grid-template-columns: repeat(4, minmax(0px, 1fr));
-  }
-}
-@media (max-width: 599px) {
-  .books-wrapper {
-    grid-template-columns: repeat(3, minmax(0px, 1fr));
-  }
-}
-@media (max-width: 399px) {
-  .books-wrapper {
-    grid-template-columns: repeat(2, minmax(0px, 1fr));
+    max-width: 1280px;
+    padding: 0;
+    padding-top: 50px;
   }
 }
 </style>
+<route lang="yaml">
+meta:
+  requiresAuth: true
+</route>
