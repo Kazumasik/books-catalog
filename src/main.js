@@ -33,13 +33,21 @@ const vuetify = createVuetify({
     },
   },
   defaults: {
-    VBtn: { rounded: "lg", flat: true, height: "55", class: ['text-none'], },
+    VBtn: { rounded: "lg", flat: true, height: "55", class: ["text-none"] },
     VChip: { rounded: "pill", link: true },
     VContainer: {
       class: "pa-0",
     },
-    VTab:{
+    VTab: {
       class: "text-body-1",
+    },
+    VTextField: {
+      variant: "outlined",
+      hideDetails: true,
+    },
+    VSelect: {
+      variant: "outlined",
+      hideDetails: true,
     },
   },
   icons: {

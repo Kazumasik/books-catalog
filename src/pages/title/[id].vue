@@ -5,6 +5,21 @@ import router from "../../router";
 const editMode = ref(false);
 const userStore = useUserStore();
 const tab = ref("ongoing");
+const outputFormat = ref([
+  "Ежедневник",
+  "Еженедельник",
+  "Двунедельник",
+  "Ежемесячник",
+]);
+const daysWeek = ref([
+  "Понедельник",
+  "Вторник",
+  "Среда",
+  "Четверг",
+  "Пятница",
+  "Суббота",
+  "Воскресенье",
+]);
 </script>
 
 <template>
@@ -80,134 +95,169 @@ const tab = ref("ongoing");
         </div>
       </div>
       <div class="ml-14 flex-grow-1 title-right d-flex flex-column">
-        <span class="text-h5">[Еженедельник]</span>
+        <span v-if="!editMode" class="text-h5">[Еженедельник]</span>
         <h2 class="text-h3 mt-3 font-weight-bold">Диктор</h2>
-        <div class="d-flex gap mt-5">
+        <div v-if="!editMode" class="d-flex gap mt-5">
           <v-chip color="primary">Raide</v-chip>
           <v-chip color="success">Nicaea</v-chip>
           <v-chip>Выф</v-chip>
         </div>
-        <v-tabs class="mt-10" v-model="tab">
-          <v-tab class="text-body-1" value="ongoing">В процессе</v-tab>
-          <v-tab class="text-body-1" value="ended">Готовые</v-tab>
-        </v-tabs>
-        <v-window v-model="tab">
-          <v-window-item value="ongoing">
-            <v-expansion-panels class="mt-5 rounded-lg">
-              <v-expansion-panel class="my-1" v-for="n in 6" :key="n">
-                <v-expansion-panel-title expand-icon="" collapse-icon="">
-                  Глава 1
-                  <v-spacer> </v-spacer>
-                  <v-avatar size="20" color="primary"> </v-avatar>
-                  <span class="ml-5">26.06.2023 </span>
-                </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                  <v-row>
-                    <v-col cols="12" class="gap d-flex">
-                      <v-chip
-                        rounded="lg"
-                        color="success"
-                        class="h-100"
-                        variant="outlined"
-                      >
-                        Nicaea
-                      </v-chip>
-                      <v-chip
-                        rounded="lg"
-                        color="primary"
-                        class="h-100"
-                        variant="outlined"
-                      >
-                        Manchan
-                      </v-chip>
-                      <v-spacer> </v-spacer>
-                      <v-btn
-                        height="35"
-                        class="text-body-2"
-                        variant="tonal"
-                        color="grey-lighten-1"
-                      >
-                        Отдать главу
-                      </v-btn>
-                    </v-col>
-                    <v-col cols="9">
-                      <v-text-field
-                        density="comfortable"
-                        hide-details
-                        variant="outlined"
-                        label="Ссылка"
-                      >
-                      </v-text-field>
-                    </v-col>
-                    <v-col cols="3">
-                      <v-btn height="45" class="w-100 text-body-2">
-                        Отправить
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-expansion-panel-text>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </v-window-item>
+        <div v-if="!editMode">
+          <v-tabs class="mt-10" v-model="tab">
+            <v-tab class="text-body-1" value="ongoing">В процессе</v-tab>
+            <v-tab class="text-body-1" value="ended">Готовые</v-tab>
+          </v-tabs>
+          <v-window v-model="tab">
+            <v-window-item value="ongoing">
+              <v-expansion-panels class="mt-5 rounded-lg">
+                <v-expansion-panel class="my-1" v-for="n in 6" :key="n">
+                  <v-expansion-panel-title expand-icon="" collapse-icon="">
+                    Глава 1
+                    <v-spacer> </v-spacer>
+                    <v-avatar size="20" color="primary"> </v-avatar>
+                    <span class="ml-5">26.06.2023 </span>
+                  </v-expansion-panel-title>
+                  <v-expansion-panel-text>
+                    <v-row>
+                      <v-col cols="12" class="gap d-flex">
+                        <v-chip
+                          rounded="lg"
+                          color="success"
+                          class="h-100"
+                          variant="outlined"
+                        >
+                          Nicaea
+                        </v-chip>
+                        <v-chip
+                          rounded="lg"
+                          color="primary"
+                          class="h-100"
+                          variant="outlined"
+                        >
+                          Manchan
+                        </v-chip>
+                        <v-spacer> </v-spacer>
+                        <v-btn
+                          height="35"
+                          class="text-body-2"
+                          variant="tonal"
+                          color="grey-lighten-1"
+                        >
+                          Отдать главу
+                        </v-btn>
+                      </v-col>
+                      <v-col cols="9">
+                        <v-text-field
+                          density="comfortable"
+                          hide-details
+                          variant="outlined"
+                          label="Ссылка"
+                        >
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="3">
+                        <v-btn height="45" class="w-100 text-body-2">
+                          Отправить
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-expansion-panel-text>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-window-item>
 
-          <v-window-item value="ended">
-            <v-expansion-panels class="mt-5 rounded-lg">
-              <v-expansion-panel class="my-1" v-for="n in 6" :key="n">
-                <v-expansion-panel-title expand-icon="" collapse-icon="">
-                  Глава 1
-                  <v-spacer> </v-spacer>
-                  <v-avatar size="20" color="primary"> </v-avatar>
-                  <span class="ml-5">26.06.2023 </span>
-                </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                  <v-row>
-                    <v-col cols="12" class="gap d-flex">
-                      <v-chip
-                        rounded="lg"
-                        color="success"
-                        class="h-100"
-                        variant="outlined"
-                      >
-                        Nicaea
-                      </v-chip>
-                      <v-chip
-                        rounded="lg"
-                        color="primary"
-                        class="h-100"
-                        variant="outlined"
-                      >
-                        Manchan
-                      </v-chip>
-                      <v-spacer> </v-spacer>
-                      <v-btn
-                        height="35"
-                        class="text-body-2"
-                        variant="tonal"
-                        color="grey-lighten-1"
-                      >
-                        Отдать главу
-                      </v-btn>
-                    </v-col>
-                    <v-col cols="9">
-                      <v-text-field
-                        density="comfortable"
-                        hide-details
-                        variant="outlined"
-                        label="Ссылка"
-                      >
-                      </v-text-field>
-                    </v-col>
-                    <v-col cols="3">
-                      <v-btn height="45" class="w-100 text-body-2">
-                        Отправить
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-expansion-panel-text>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </v-window-item>
-        </v-window>
+            <v-window-item value="ended">
+              <v-expansion-panels class="mt-5 rounded-lg">
+                <v-expansion-panel class="my-1" v-for="n in 6" :key="n">
+                  <v-expansion-panel-title expand-icon="" collapse-icon="">
+                    Глава 1
+                    <v-spacer> </v-spacer>
+                    <v-avatar size="20" color="primary"> </v-avatar>
+                    <span class="ml-5">26.06.2023 </span>
+                  </v-expansion-panel-title>
+                  <v-expansion-panel-text>
+                    <v-row>
+                      <v-col cols="12" class="gap d-flex">
+                        <v-chip
+                          rounded="lg"
+                          color="success"
+                          class="h-100"
+                          variant="outlined"
+                        >
+                          Nicaea
+                        </v-chip>
+                        <v-chip
+                          rounded="lg"
+                          color="primary"
+                          class="h-100"
+                          variant="outlined"
+                        >
+                          Manchan
+                        </v-chip>
+                        <v-spacer> </v-spacer>
+                        <v-btn
+                          height="35"
+                          class="text-body-2"
+                          variant="tonal"
+                          color="grey-lighten-1"
+                        >
+                          Отдать главу
+                        </v-btn>
+                      </v-col>
+                      <v-col cols="9">
+                        <v-text-field
+                          density="comfortable"
+                          hide-details
+                          variant="outlined"
+                          label="Ссылка"
+                        >
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="3">
+                        <v-btn height="45" class="w-100 text-body-2">
+                          Отправить
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-expansion-panel-text>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-window-item>
+          </v-window>
+        </div>
+        <v-sheet rounded="lg" v-else-if="editMode" class="mt-11 pa-6">
+          <v-row>
+            <v-col cols="12">
+              <p class="text-h5 font-weight-bold">Ссылки</p>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field label="Ссылки на оригинал"></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field label="Ссылки на решку"></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <p class="text-h5 font-weight-bold">Формат выхода</p>
+            </v-col>
+            <v-col cols="6">
+              <v-select :items="outputFormat" label="Формат выхода"></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select :items="daysWeek" label="День выхода"></v-select>
+            </v-col>
+            <v-col cols="12">
+              <p class="text-h5 font-weight-bold">Состав</p>
+            </v-col>
+            <v-col cols="2">
+              <v-btn variant="tonal" color="success"
+                ><span class="text-body-1 text-white">Клинер</span></v-btn
+              >
+            </v-col>
+            <v-col cols="3">
+              <v-select label="Ник"></v-select>
+            </v-col>
+          </v-row>
+        </v-sheet>
       </div>
     </v-container>
   </div>
