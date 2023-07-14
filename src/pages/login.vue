@@ -5,7 +5,7 @@ import router from "../router";
 const userStore = useUserStore();
 const loginData = reactive({
   login: "amirkhdaur@gmail.com",
-  password: "1234",
+  password: "12345678",
 });
 const isPasswordVisible = ref(false);
 
@@ -21,6 +21,9 @@ const login = async () => {
     <div transition="scroll-x-transition" class="background"></div>
     <div class="background-grey">
       <v-container class="h-screen d-flex justify-center align-center">
+        <v-card>
+          
+        </v-card>
         <v-row class="login-wrapper">
           <v-col cols="12">
             <span class="text-h2">Вход</span>

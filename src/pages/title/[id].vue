@@ -20,12 +20,36 @@ const daysWeek = ref([
   "Суббота",
   "Воскресенье",
 ]);
+const exitDialog = ref(false);
+const roles = ref([
+  {
+    name: "Клинер",
+    color: "success",
+  },
+  {
+    name: "Переводчик",
+    color: "purple",
+  },
+  {
+    name: "Тайпер",
+    color: "primary",
+  },
+  {
+    name: "Бета",
+    color: "indigo",
+  },
+  {
+    name: "Куратор",
+    color: "error",
+  },
+]);
 </script>
 
 <template>
   <div class="background">
     <v-container class="d-flex flex-row">
       <div class="title-left d-flex flex-column">
+
         <v-img
           width="320"
           cover
@@ -33,6 +57,7 @@ const daysWeek = ref([
           src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
         >
         </v-img>
+
         <div v-if="!editMode" class="d-flex flex-column">
           <v-btn
             @click="editMode = true"
@@ -49,7 +74,7 @@ const daysWeek = ref([
               height="55"
               class="text-body-1 flex-grow-1"
             >
-              <span> Discord </span>
+              <span class="text-indigo-lighten-1"> Discord </span>
             </v-btn>
             <v-btn
               color=""
@@ -67,6 +92,7 @@ const daysWeek = ref([
             rounded="lg"
             height="55"
             class="mt-4 text-body-1"
+            @click="exitDialog = true"
           >
             <template #prepend>
               <v-icon icon="mdi-exit-to-app" color="error"> </v-icon>
@@ -248,19 +274,74 @@ const daysWeek = ref([
             <v-col cols="12">
               <p class="text-h5 font-weight-bold">Состав</p>
             </v-col>
-            <v-col cols="2">
-              <v-btn variant="tonal" color="success"
-                ><span class="text-body-1 text-white">Клинер</span></v-btn
-              >
-            </v-col>
-            <v-col cols="3">
-              <v-select label="Ник"></v-select>
-            </v-col>
+            <v-row v-for="role in roles" :key="role.name">
+              <v-col cols="2">
+                <v-btn variant="tonal" :color="role.color" class="w-100">
+                  <span class="text-body-1 text-white">{{ role.name }}</span>
+                </v-btn>
+              </v-col>
+              <v-col cols="4">
+                <v-select label="Ник"></v-select>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field
+                  type="number"
+                  label="Дней на главу"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field type="number" label="Ставка"></v-text-field>
+              </v-col>
+            </v-row>
           </v-row>
         </v-sheet>
       </div>
     </v-container>
   </div>
+
+  <v-dialog :scrollable="false" v-model="exitDialog" width="500">
+    <v-card class="pa-4 rounded-xl">
+      <v-img
+        class="rounded-xl"
+        cover
+        src="https://w.wallhaven.cc/full/we/wallhaven-wem1zx.jpg"
+      ></v-img>
+      <v-card-text class="text-h6 font-weight-bold text-center">
+        Ты точно хочешь уйти? <br />Напиши причину, если да :c
+      </v-card-text>
+      <v-textarea
+        class="mt-2"
+        no-resize
+        bg-color="grey-darken-3"
+        variant="solo-filled"
+      >
+      </v-textarea>
+      <v-card-actions>
+        <v-row>
+          <v-col cols="6">
+            <v-btn
+              variant="flat"
+              color="primary"
+              @click="exitDialog = false"
+              class="text-body-1 w-100"
+            >
+              Отмена
+            </v-btn>
+          </v-col>
+          <v-col cols="6"
+            ><v-btn
+              variant="outlined"
+              color="error"
+              @click="exitDialog = false"
+              class="text-body-1 w-100"
+            >
+              Уйти
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style>

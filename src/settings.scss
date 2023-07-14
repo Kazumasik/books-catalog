@@ -1,0 +1,5 @@
+@use "vuetify/settings" with (
+  $expansion-panel-title-min-height: 65px,
+  $list-item-icon-opacity: 1,
+  $overlay-scrim-background: #000
+);

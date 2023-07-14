@@ -7,6 +7,28 @@ export const useUserStore = defineStore({
   state: () => ({
     token: localStorage.getItem("token"),
     user: null,
+    statuses: [
+      {
+        id: 1,
+        name: "Марафон",
+        color: "success",
+      },
+      {
+        id: 2,
+        name: "Онгоинг",
+        color: "indigo",
+      },
+      {
+        id: 3,
+        name: "Хватит",
+        color: "primary",
+      },
+      {
+        id: 4,
+        name: "Отпуск",
+        color: "error",
+      },
+    ],
   }),
 
   getters: {
@@ -39,6 +61,15 @@ export const useUserStore = defineStore({
     async findById(userId) {
       const response = await getData("/users/" + userId);
       return response;
+    },
+    async getStatuses() {
+      return await getData("/statuses");
+    },
+    async changeStatus(statusId) {
+      const payload = {
+        status: statusId,
+      };
+      return await editData(`/users/${this.user.id}/status`, payload);
     },
   },
 });

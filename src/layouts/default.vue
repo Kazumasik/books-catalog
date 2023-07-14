@@ -1,6 +1,6 @@
 <script setup>
 import { useTheme } from "vuetify";
-import ProfileButton from "../components/header/ProfileButton.vue";
+import ProfileButton from "@core/components/header/ProfileButton.vue";
 import router from "../router";
 import { useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user.js";
@@ -14,6 +14,7 @@ const notifications = ref([
     title: "Вам предложен новый тайтл",
   },
 ]);
+const newTitleDialog = ref(true);
 </script>
 
 <template>
@@ -58,6 +59,7 @@ const notifications = ref([
             >
               <p class="text-center text-h5">Уведомления</p>
               <VListItem
+                @click="newTitleDialog = true"
                 class="my-2"
                 rounded="lg"
                 v-for="notification in notifications"
@@ -86,6 +88,19 @@ const notifications = ref([
       <router-view></router-view>
     </v-main>
   </v-app>
+  <v-dialog v-model="newTitleDialog" width="auto">
+    <v-card class="d-flex flex-row py-3 px-4" width="auto">
+      <v-img
+        class="rounded-lg"
+        width="200px"
+        src="https://renovels.org/media/titles/main-characters-killed-by-me/ba421ed33f48715fdf075b5f8587064d.jpg"
+      >
+      </v-img>
+      <div class="d-flex flex-column ml-5">
+        <p class="text-h5 font-weight-bold">У меня есть зал героических душ</p>
+      </div>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

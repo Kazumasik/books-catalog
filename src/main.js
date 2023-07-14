@@ -33,7 +33,7 @@ const vuetify = createVuetify({
     },
   },
   defaults: {
-    VBtn: { rounded: "lg", flat: true, height: "55", class: ["text-none"] },
+    VBtn: { rounded: "lg", flat: true, height: "55", class: ["text-none", "text-body-1"] },
     VChip: { rounded: "pill", link: true },
     VContainer: {
       class: "pa-0",

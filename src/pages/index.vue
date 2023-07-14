@@ -1,5 +1,4 @@
 <script setup>
-import ChapterCard from "../components/header/ChapterCard.vue";
 const chaptersTab = ref("coming");
 </script>
 

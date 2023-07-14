@@ -1,4 +1,6 @@
-
+.v-expansion-panel-title--active:focus-visible > .v-expansion-panel-title__overlay, .v-expansion-panel-title[aria-haspopup=menu][aria-expanded=true]:focus-visible > .v-expansion-panel-title__overlay{
+  opacity: 1;
+}
 a{
     text-decoration: none !important;
     color: initial !important;
