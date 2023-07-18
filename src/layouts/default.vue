@@ -14,7 +14,7 @@ const notifications = ref([
     title: "Вам предложен новый тайтл",
   },
 ]);
-const newTitleDialog = ref(true);
+const newTitleDialog = ref(false);
 </script>
 
 <template>
@@ -30,9 +30,18 @@ const newTitleDialog = ref(true);
             size="32"
           ></v-avatar>
         </router-link>
-        <v-btn height="" to="/login" variant="text"> Логин</v-btn>
-        <v-btn height="" to="/title/1" variant="text"> Тайтлы</v-btn>
-        <v-btn height="" to="/" variant="text"> Лента</v-btn>
+        <v-btn height="" to="/login" variant="text" class="text-body-1">
+          Логин</v-btn
+        >
+        <v-btn height="" to="/title/1" variant="text" class="text-body-1">
+          Тайтлы</v-btn
+        >
+        <v-btn height="" to="/" variant="text" class="text-body-1">
+          Лента</v-btn
+        >
+        <v-btn height="" to="/FAQ" variant="text" class="text-body-1">
+          Справка
+        </v-btn>
         <v-spacer></v-spacer>
         <v-icon icon="mdi-cash-multiple"> </v-icon>
         <span class="ml-3"> 1233 руб </span>
@@ -52,7 +61,7 @@ const newTitleDialog = ref(true);
             offset="25px"
           >
             <VList
-              rounded="xl"
+              rounded="lg"
               variant="tonal"
               class="pa-4"
               v-if="notifications?.length"
@@ -61,6 +70,7 @@ const newTitleDialog = ref(true);
               <VListItem
                 @click="newTitleDialog = true"
                 class="my-2"
+                height="60px"
                 rounded="lg"
                 v-for="notification in notifications"
                 :key="notification.title"
@@ -91,23 +101,44 @@ const newTitleDialog = ref(true);
   <v-dialog v-model="newTitleDialog" width="auto">
     <v-card class="d-flex flex-row py-3 px-4" width="auto">
       <v-img
+        width="150"
+        cover
         class="rounded-lg"
-        width="200px"
         src="https://renovels.org/media/titles/main-characters-killed-by-me/ba421ed33f48715fdf075b5f8587064d.jpg"
       >
       </v-img>
       <div class="d-flex flex-column ml-5">
-        <p class="text-h5 font-weight-bold">У меня есть зал героических душ</p>
+        <p class="text-h6">[Еженедельник]</p>
+        <p class="text-h5 font-weight-bold mt-2">
+          У меня есть зал героических душ
+        </p>
+        <div class="d-flex gap mt-3">
+          <v-chip color="primary">Raide</v-chip>
+          <v-chip color="success">Nicaea</v-chip>
+          <v-chip>Выф</v-chip>
+        </div>
+        <div class="text-h7 mt-8">
+          <span>Роль: <span class="text-primary">Тайпер</span> </span>
+          <span class="ml-4">Ближайшая глава: 3 дня</span>
+        </div>
+        <div class="dialog-buttons d-flex mt-4">
+          <v-btn height="" color="grey-darken-3" class="text-body-1">
+            Remanga
+          </v-btn>
+          <v-spacer> </v-spacer>
+          <v-btn height="" variant="outlined" class="text-body-1" color="error">
+            Отказаться
+          </v-btn>
+          <v-btn height="" class="text-body-1 ml-4"> Принять </v-btn>
+        </div>
       </div>
     </v-card>
   </v-dialog>
 </template>
 
 <style scoped>
-@media (min-width: 1920px) {
-  .v-container {
-    max-width: 1280px;
-    padding: 0;
-  }
+.v-container {
+  max-width: 1280px;
+  padding: 0;
 }
 </style>

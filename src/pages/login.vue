@@ -4,15 +4,17 @@ import { useUserStore } from "@/stores/user.js";
 import router from "../router";
 const userStore = useUserStore();
 const loginData = reactive({
-  login: "amirkhdaur@gmail.com",
-  password: "12345678",
+  login: "raide",
+  password: "1234",
 });
 const isPasswordVisible = ref(false);
-
+const isLoading = ref(false);
 // Методы
 const login = async () => {
+  isLoading.value = true;
   await userStore.login(loginData);
   router.replace("/");
+  isLoading.value = false;
 };
 </script>
 
@@ -21,66 +23,67 @@ const login = async () => {
     <div transition="scroll-x-transition" class="background"></div>
     <div class="background-grey">
       <v-container class="h-screen d-flex justify-center align-center">
-        <v-card>
-          
-        </v-card>
-        <v-row class="login-wrapper">
-          <v-col cols="12">
-            <span class="text-h2">Вход</span>
-          </v-col>
+        <v-card class="pa-10 login-card">
+          <v-row class="login-wrapper">
+            <v-col cols="12">
+              <span class="text-h2">Вход</span>
+            </v-col>
 
-          <v-col cols="12" class="mt-8 d-flex align-center py-0">
-            <v-icon size="large" color="primary" icon="mdi-account"></v-icon>
-            <span class="ml-2 text-h5"> Логин </span>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="loginData.login"
-              class="mt-2"
-              variant="solo"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" class="d-flex align-center py-0">
-            <v-icon size="large" color="primary" icon="mdi-lock"></v-icon>
-            <span class="ml-2 text-h5"> Пароль </span>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field
-              v-model="loginData.password"
-              class="mt-2 rounded-xs"
-              variant="solo"
-              autocomplete="on"
-              :type="isPasswordVisible ? 'text' : 'password'"
-              :append-inner-icon="
-                isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-              "
-              @click:append-inner="isPasswordVisible = !isPasswordVisible"
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <v-btn
-              @click="login"
-              height="50px"
-              class="text-h6 text-capitalize log-in"
-            >
-              Продолжить
-            </v-btn>
-          </v-col>
-        </v-row>
+            <v-col cols="12" class="mt-8 d-flex align-center py-0">
+              <v-icon size="large" color="primary" icon="mdi-account"></v-icon>
+              <span class="ml-2 text-h5"> Логин </span>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                bg-color="background"
+                v-model="loginData.login"
+                class="mt-2"
+                variant="solo"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" class="d-flex align-center py-0">
+              <v-icon size="large" color="primary" icon="mdi-lock"></v-icon>
+              <span class="ml-2 text-h5"> Пароль </span>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                bg-color="background"
+                v-model="loginData.password"
+                class="mt-2 rounded-xs"
+                variant="solo"
+                autocomplete="on"
+                :type="isPasswordVisible ? 'text' : 'password'"
+                :append-inner-icon="
+                  isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                "
+                @click:append-inner="isPasswordVisible = !isPasswordVisible"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-btn
+                @click="login"
+                height="50px"
+                class="text-h6 text-capitalize log-in"
+                :loading="isLoading"
+              >
+                Продолжить
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
       </v-container>
     </div>
   </div>
 </template>
 
 <style scoped>
+.login-card {
+  max-width: 400px;
+}
 .wrapper {
   overflow: hidden;
   height: 100vh;
-}
-.login-wrapper {
-  margin-top: -100px;
-  max-width: 450px;
 }
 .background {
   overflow: hidden;

@@ -49,7 +49,6 @@ const roles = ref([
   <div class="background">
     <v-container class="d-flex flex-row">
       <div class="title-left d-flex flex-column">
-
         <v-img
           width="320"
           cover
@@ -123,15 +122,42 @@ const roles = ref([
       <div class="ml-14 flex-grow-1 title-right d-flex flex-column">
         <span v-if="!editMode" class="text-h5">[Еженедельник]</span>
         <h2 class="text-h3 mt-3 font-weight-bold">Диктор</h2>
+        <div class="d-flex align-center">
+          <p class="text-h5 mt-3">
+            最凶の支援職【話術士】である俺は世界最強クランを従える
+          </p>
+          <v-btn
+            target="_blank"
+            href="https://remanga.org/"
+            color=""
+            height=""
+            class="text-body-1 ml-4"
+          >
+            Оригинал
+          </v-btn>
+        </div>
+
         <div v-if="!editMode" class="d-flex gap mt-5">
           <v-chip color="primary">Raide</v-chip>
           <v-chip color="success">Nicaea</v-chip>
           <v-chip>Выф</v-chip>
         </div>
         <div v-if="!editMode">
-          <v-tabs class="mt-10" v-model="tab">
-            <v-tab class="text-body-1" value="ongoing">В процессе</v-tab>
-            <v-tab class="text-body-1" value="ended">Готовые</v-tab>
+          <v-tabs class="mt-4" v-model="tab">
+            <v-tab
+              :transition="false"
+              :reverse-transition="false"
+              class="text-body-1"
+              value="ongoing"
+              >В процессе</v-tab
+            >
+            <v-tab
+              :transition="false"
+              :reverse-transition="false"
+              class="text-body-1"
+              value="ended"
+              >Готовые</v-tab
+            >
           </v-tabs>
           <v-window v-model="tab">
             <v-window-item value="ongoing">
@@ -344,7 +370,7 @@ const roles = ref([
   </v-dialog>
 </template>
 
-<style>
+<style scoped>
 .background {
   background: linear-gradient(
       180deg,
@@ -358,12 +384,10 @@ const roles = ref([
   background-attachment: fixed;
   height: 100%;
 }
-@media (min-width: 1920px) {
-  .v-container {
-    max-width: 1280px;
-    padding: 0;
-    padding-top: 50px;
-  }
+.v-container {
+  max-width: 1280px;
+  padding: 0;
+  padding-top: 50px;
 }
 
 .v-expansion-panels:not(.v-expansion-panels--variant-accordion)

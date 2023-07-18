@@ -16,7 +16,7 @@ export const useUserStore = defineStore({
       {
         id: 2,
         name: "Онгоинг",
-        color: "indigo",
+        color: "indigo-accent-2",
       },
       {
         id: 3,
@@ -69,7 +69,12 @@ export const useUserStore = defineStore({
       const payload = {
         status: statusId,
       };
-      return await editData(`/users/${this.user.id}/status`, payload);
+      return await editData(`/users/status`, payload);
     },
+    // async changePassword(){
+    //   const payload={
+
+    //   }
+    // }
   },
 });
