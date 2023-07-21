@@ -9,30 +9,65 @@ export const useUserStore = defineStore({
     user: null,
     statuses: [
       {
-        id: 1,
+        id: 0,
         name: "Марафон",
         color: "success",
       },
       {
-        id: 2,
+        id: 1,
         name: "Онгоинг",
         color: "indigo-accent-2",
       },
       {
-        id: 3,
+        id: 2,
         name: "Хватит",
         color: "primary",
       },
       {
-        id: 4,
+        id: 3,
         name: "Отпуск",
         color: "error",
+      },
+    ],
+    roles: [
+      {
+        id: 0,
+        name: "Куратор",
+        color: "error",
+      },
+      {
+        id: 1,
+        name: "Равочник",
+        color: "blue-lighten-1",
+      },
+      {
+        id: 2,
+        name: "Клинер",
+        color: "success",
+      },
+      {
+        id: 3,
+        name: "Переводчик",
+        color: "purple-lighten-1",
+      },
+      {
+        id: 4,
+        name: "Тайпер",
+        color: "primary",
+      },
+      {
+        id: 5,
+        name: "Бета",
+        color: "indigo-accent-2",
       },
     ],
   }),
 
   getters: {
     isAuth: (state) => (state.token ? true : false),
+    getStatusById: (state) => (id) => {
+      return state.statuses.find((status) => status.id === id) || null;
+    },
   },
 
   actions: {

@@ -8,7 +8,7 @@ import UserTitles from "@core/components/user/UserTitles.vue";
 import UserSettings from "@core/components/user/UserSettings.vue";
 const userStore = useUserStore();
 const route = useRoute();
-const user = ref({});
+const user = ref(null);
 const isYourProfile = ref(+route.params.id === userStore.user.id);
 const selection = ref("titles");
 const isLoading = ref(true);
@@ -24,7 +24,7 @@ const changeSelection = (newSelection) => [(selection.value = newSelection)];
   <v-container>
     <div class="profile d-flex">
       <div class="profile-info d-flex flex-column">
-        <UserInfo :user="user"></UserInfo>
+        <UserInfo v-if="user" :user="user"></UserInfo>
         <UserMenuToggle @toggle="changeSelection"></UserMenuToggle>
       </div>
       <UserTitles

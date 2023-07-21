@@ -9,11 +9,8 @@ const props = defineProps({
     required: true,
   },
 });
-const status = ref("");
+const status = ref(userStore.getStatusById(props.user.status));
 
-onMounted(() => {
-  status.value = props.user.status;
-});
 const changeStatus = async (newStatus) => {
   status.value = newStatus;
   await userStore.changeStatus(newStatus.id);
