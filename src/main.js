@@ -8,6 +8,7 @@ import router from "../src/router/index";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
+import { fa } from "vuetify/iconsets/fa";
 import "@mdi/font/css/materialdesignicons.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { createPinia } from "pinia";
@@ -33,7 +34,11 @@ const vuetify = createVuetify({
     },
   },
   defaults: {
-    VBtn: { rounded: "lg", flat: true, height: "55", class: ["text-none", "text-body-1"] },
+    VBtn: {
+      rounded: "lg",
+      flat: true,
+      class: ["text-body-1"],
+    },
     VChip: { rounded: "pill", link: true },
     VContainer: {
       class: "pa-0",
@@ -55,6 +60,7 @@ const vuetify = createVuetify({
     aliases,
     sets: {
       mdi,
+      fa,
     },
   },
 });

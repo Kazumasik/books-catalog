@@ -2,6 +2,7 @@
 import { reactive } from "vue";
 import { useUserStore } from "@/stores/user.js";
 import router from "../../router";
+import TitleInfo from "@core/components/title/TitleInfo.vue";
 const editMode = ref(false);
 const userStore = useUserStore();
 const tab = ref("ongoing");
@@ -47,83 +48,13 @@ const roles = ref([
 
 <template>
   <div class="background">
-    <v-container class="d-flex flex-row">
-      <div class="title-left d-flex flex-column">
-        <v-img
-          width="320"
-          cover
-          class="rounded-xl flex-0"
-          src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
-        >
-        </v-img>
-
-        <div v-if="!editMode" class="d-flex flex-column">
-          <v-btn
-            @click="editMode = true"
-            rounded="lg"
-            height="55"
-            class="mt-4 text-body-1"
-          >
-            Редактировать
-          </v-btn>
-          <div class="mt-4 gap-1 d-flex">
-            <v-btn
-              color=""
-              rounded="lg"
-              height="55"
-              class="text-body-1 flex-grow-1"
-            >
-              <span class="text-indigo-lighten-1"> Discord </span>
-            </v-btn>
-            <v-btn
-              color=""
-              height="55"
-              rounded="lg"
-              class="text-body-1 flex-grow-1"
-            >
-              Remanga
-            </v-btn>
-          </div>
-          <v-btn
-            color=""
-            variant="tonal"
-            prepend-icon="mdi-exit-run"
-            rounded="lg"
-            height="55"
-            class="mt-4 text-body-1"
-            @click="exitDialog = true"
-          >
-            <template #prepend>
-              <v-icon icon="mdi-exit-to-app" color="error"> </v-icon>
-            </template>
-            Уйти с тайтла
-          </v-btn>
-        </div>
-        <div v-else-if="editMode" class="d-flex flex-column">
-          <v-btn
-            @click="editMode = false"
-            rounded="lg"
-            height="55"
-            class="mt-4 text-body-1"
-          >
-            Принять изменения
-          </v-btn>
-          <v-btn
-            color=""
-            rounded="lg"
-            height="55"
-            @click="editMode = false"
-            class="text-body-1 flex-grow-1 mt-4"
-          >
-            <span> Вернуться назад </span>
-          </v-btn>
-        </div>
-      </div>
-      <div class="ml-14 flex-grow-1 title-right d-flex flex-column">
+    <v-container class="d-flex title-container">
+      <TitleInfo></TitleInfo>
+      <div class="ml-0 ml-sm-14 flex-grow-1 title-right d-flex flex-column">
         <span v-if="!editMode" class="text-h5">[Еженедельник]</span>
         <h2 class="text-h3 mt-3 font-weight-bold">Диктор</h2>
-        <div class="d-flex align-center">
-          <p class="text-h5 mt-3">
+        <div class="d-flex align-center mt-3">
+          <p class="text-h5">
             最凶の支援職【話術士】である俺は世界最強クランを従える
           </p>
           <v-btn
@@ -371,6 +302,12 @@ const roles = ref([
 </template>
 
 <style scoped>
+@media (max-width: 600px) {
+  .title-container {
+    flex-wrap: wrap;
+  }
+}
+
 .background {
   background: linear-gradient(
       180deg,
@@ -388,6 +325,11 @@ const roles = ref([
   max-width: 1280px;
   padding: 0;
   padding-top: 50px;
+}
+@media (max-width: 599px) {
+  .v-container {
+    padding: 16px;
+  }
 }
 
 .v-expansion-panels:not(.v-expansion-panels--variant-accordion)
@@ -419,12 +361,6 @@ const roles = ref([
 }
 .v-expansion-panel:not(:first-child)::after {
   border: 0;
-}
-.gap-1 {
-  gap: 1.35rem;
-}
-.title-left {
-  width: 320px;
 }
 </style>
 <route lang="yaml">

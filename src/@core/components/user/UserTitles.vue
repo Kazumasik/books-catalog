@@ -8,9 +8,7 @@ const props = defineProps({
   },
 });
 const tabTitles = ref();
-onMounted(() => {
-  tabTitles.value = props.roles[0].id;
-});
+
 </script>
 <template>
   <div class="profile-titles ml-8 w-100">

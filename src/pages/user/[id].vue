@@ -24,7 +24,7 @@ const changeSelection = (newSelection) => [(selection.value = newSelection)];
   <v-container>
     <div class="profile d-flex">
       <div class="profile-info d-flex flex-column">
-        <UserInfo v-if="user" :user="user"></UserInfo>
+        <UserInfo v-if="!isLoading" :user="user"></UserInfo>
         <UserMenuToggle @toggle="changeSelection"></UserMenuToggle>
       </div>
       <UserTitles

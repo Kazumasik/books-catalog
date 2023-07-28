@@ -20,7 +20,7 @@ const newTitleDialog = ref(false);
 <template>
   <v-app id="inspire">
     <v-app-bar height="56" color="background" :order="1" flat>
-      <v-container class="fill-height pa-0 d-flex align-center">
+      <v-container class="fill-height pa-0 d-flex align-center header-container">
         <router-link to="/">
           <v-avatar
             v-ripple
@@ -137,7 +137,7 @@ const newTitleDialog = ref(false);
 </template>
 
 <style scoped>
-.v-container {
+.header-container {
   max-width: 1280px;
   padding: 0;
 }
