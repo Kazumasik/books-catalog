@@ -26,11 +26,12 @@ a {
 .gap-1 {
   gap: 1.35rem;
 }
+.v-container {
+  max-width: 1280px;
+  padding: 0;
+}
 @media (min-width: 1920px) {
-  .v-container {
-    max-width: 1280px;
-    padding: 0;
-  }
+
 }
 @media (max-width: 599px) {
   .v-container {

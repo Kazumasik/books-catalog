@@ -40,6 +40,10 @@ const changeSelection = (newSelection) => [(selection.value = newSelection)];
 .v-container {
   padding-top: 50px;
 }
+.v-container {
+  max-width: 1280px;
+  padding:50px 0 0 0;
+}
 </style>
 <route lang="yaml">
 meta:

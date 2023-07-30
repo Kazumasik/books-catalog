@@ -5,15 +5,17 @@ import router from "../router";
 const userStore = useUserStore();
 const loginData = reactive({
   login: "raide",
-  password: "1234",
+  password: "0987654321",
 });
 const isPasswordVisible = ref(false);
 const isLoading = ref(false);
 // Методы
 const login = async () => {
   isLoading.value = true;
-  await userStore.login(loginData);
-  router.replace("/");
+  try {
+    await userStore.login(loginData);
+    router.replace("/");
+  } catch {}
   isLoading.value = false;
 };
 </script>

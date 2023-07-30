@@ -6,14 +6,11 @@ export const useTitleStore = defineStore({
 
   state: () => ({}),
 
-  getters: {
-    isAuth: (state) => (state.token ? true : false),
-  },
+  getters: {},
 
   actions: {
-    setToken(token) {
-      this.token = token;
-      localStorage.setItem("token", token);
+    async findBySlug(slug) {
+      return await getData(`/titles/${slug}/`);
     },
   },
 });

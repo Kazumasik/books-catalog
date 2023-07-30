@@ -3,7 +3,6 @@
 import { useUserStore } from "@/stores/user.js";
 import { onMounted } from "vue";
 const props = defineProps({});
-const userStore = useUserStore();
 const emit = defineEmits(["toggle"]);
 
 const changeSelection = (toggle, newSelection) => {

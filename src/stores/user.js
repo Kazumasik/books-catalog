@@ -68,6 +68,26 @@ export const useUserStore = defineStore({
     getStatusById: (state) => (id) => {
       return state.statuses.find((status) => status.id === id) || null;
     },
+    getRolesById: (state) => (roles) => {
+      return roles.map((role) => {
+        const roleId = role.role;
+        const matchingRole = state.roles.find((r) => r.id === roleId);
+        return {
+          ...role,
+          name: matchingRole.name,
+          color: matchingRole.color,
+        };
+      });
+    },
+    getWorkersColor: (state) => (workers) => {
+      return workers.map((worker) => {
+        const role = state.roles.find((role) => role.id === worker.role);
+        return {
+          ...worker,
+          color: role.color,
+        };
+      });
+    },
   },
 
   actions: {
@@ -106,10 +126,11 @@ export const useUserStore = defineStore({
       };
       return await editData(`/users/status`, payload);
     },
-    // async changePassword(){
-    //   const payload={
-
-    //   }
-    // }
+    async changePassword(newPass) {
+      const payload = {
+        password: newPass,
+      };
+      await postData("/auth/change-password/", payload);
+    },
   },
 });

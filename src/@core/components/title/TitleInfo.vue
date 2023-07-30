@@ -1,22 +1,32 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+  title: {
+    type: Object,
+    required: true,
+  },
+  editMode: {
+    type: Boolean,
+    required: true,
+  },
+});
+const emit = defineEmits(["changeEditMode"]);
+</script>
 <template>
   <div class="title-left d-flex flex-column">
-    <v-img
-      cover
-      class="rounded-xl manga-cover"
-      src="https://remanga.org/media/titles/the-most-notorious-talker-runs-the-worlds-greatest-clan/a5b434d0072124f001284b4ac99726ff.jpg"
-    >
+    <v-img cover class="rounded-xl manga-cover" :src="props.title.img">
       <div class="manga-cover-buttons w-100 d-flex justify-space-around">
-        <v-btn
+        <!-- <v-btn
           height=""
           rounded="pill"
           color=""
           variant="text"
           icon="mdi-exit-to-app"
-          @click="exitDialog = true"
         >
-        </v-btn>
+        </v-btn> -->
         <v-btn
+          v-if="props.title.discord_channel"
+          :href="props.title.discord_channel"
+          target="_blank"
           height=""
           rounded="pill"
           color=""
@@ -25,6 +35,8 @@
         >
         </v-btn>
         <v-btn
+          target="_blank"
+          :href="`https://remanga.org/manga/${props.title.slug}`"
           height=""
           rounded="pill"
           color=""
@@ -32,20 +44,29 @@
           icon="mdi-yin-yang"
         >
         </v-btn>
+        <v-btn
+          @click="emit('changeEditMode')"
+          height=""
+          rounded="pill"
+          color=""
+          variant="text"
+          icon="mdi-pencil"
+        >
+        </v-btn>
       </div>
     </v-img>
 
-    <div v-if="!editMode" class="d-flex flex-column">
-      <v-btn height="55" class="mt-3 text-body-1" color="">
+    <div v-if="!props.editMode" class="d-flex flex-column">
+      <v-btn height="55" class="mt-4 text-body-1" color="">
         Частота: Раз в неделю
       </v-btn>
-      <v-btn height="55" class="mt-3 text-body-1" color="">
+      <v-btn height="55" class="mt-4 text-body-1" color="">
         Ставка - 150 руб
       </v-btn>
     </div>
-    <div v-else-if="editMode" class="d-flex flex-column">
+    <div v-else-if="props.editMode" class="d-flex flex-column">
       <v-btn
-        @click="editMode = false"
+        @click="emit('changeEditMode')"
         rounded="lg"
         height="55"
         class="mt-4 text-body-1"
@@ -56,7 +77,7 @@
         color=""
         rounded="lg"
         height="55"
-        @click="editMode = false"
+        @click="emit('changeEditMode')"
         class="text-body-1 flex-grow-1 mt-4"
       >
         <span> Вернуться назад </span>
