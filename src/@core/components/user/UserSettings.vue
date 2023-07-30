@@ -7,17 +7,16 @@ const password = reactive({
   repeat: "",
 });
 const changePass = () => {
+  form.value.validate();
   userStore.changePassword(password.new);
 };
 const rules = {
-  required: [(v) => !!v || "Это поле обязательное"],
+  required: (v) => !!v || "Это обязательное поле",
+  minimum: (v) => v.length >= 4 || "Пароль должен содержать как минимум 4 символа",
+  match: (v) => v === password.new || "Пароли должны совпадать",
 };
-
-const validate = () => {
-  const { valid } = this.$refs.form.validate();
-
-  if (valid) alert("Form is valid");
-};
+console.log(rules);
+const form = ref(null);
 </script>
 <template>
   <div class="profile-settings w-100 ml-8">
@@ -25,7 +24,7 @@ const validate = () => {
       <v-card-title class="pa-0 text-h4"> Настройка аккаунта </v-card-title>
       <v-form @submit.prevent ref="form">
         <v-text-field
-          :rules="rules.required"
+          :rules="[rules.required]"
           v-model="password.new"
           class="mt-10"
           variant="outlined"
@@ -35,7 +34,7 @@ const validate = () => {
         </v-text-field>
         <v-text-field
           :hide-details="false"
-          :rules="rules.required"
+          :rules="[rules.required, rules.match]"
           v-model="password.repeat"
           class="mt-4"
           variant="outlined"

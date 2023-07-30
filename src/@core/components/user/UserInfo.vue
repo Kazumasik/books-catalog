@@ -42,9 +42,9 @@ const changeStatus = async (newStatus) => {
     </div>
 
     <v-avatar color="surface" size="166">
-      <v-img
-        src="https://remanga.org/media/users/44887/avatar_GA9ed7N.jpg"
-      ></v-img>
+      <v-icon icon="mdi-account-circle" size="166">
+
+      </v-icon>
     </v-avatar>
     <v-card-title class="pa-0 text-center mt-4 text-h4 font-weight-bold">
       {{ props.user.username }}

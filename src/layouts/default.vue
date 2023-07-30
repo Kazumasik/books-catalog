@@ -33,9 +33,6 @@ const newTitleDialog = ref(false);
         <v-btn height="" to="/login" variant="text" class="text-body-1">
           Логин</v-btn
         >
-        <v-btn height="" to="/title/1" variant="text" class="text-body-1">
-          Тайтлы</v-btn
-        >
         <v-btn height="" to="/" variant="text" class="text-body-1">
           Лента</v-btn
         >

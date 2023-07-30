@@ -1,6 +1,7 @@
 <script setup>
 import { useUserStore } from "@/stores/user.js";
 const userStore = useUserStore();
+const tab = ref("ongoing");
 const props = defineProps({
   title: {
     type: Object,
@@ -11,29 +12,12 @@ const props = defineProps({
     required: true,
   },
 });
-const roles = ref([
-  {
-    name: "Клинер",
-    color: "success",
-  },
-  {
-    name: "Переводчик",
-    color: "purple",
-  },
-  {
-    name: "Тайпер",
-    color: "primary",
-  },
-  {
-    name: "Бета",
-    color: "indigo",
-  },
-  {
-    name: "Куратор",
-    color: "error",
-  },
-]);
-const tab = ref("ongoing");
+const workers = ref();
+onMounted(async () => {
+  workers.value = userStore.getWorkersColor(
+    JSON.parse(JSON.stringify(props.title.workers))
+  );
+});
 
 const outputFormat = ref([
   "Ежедневник",
@@ -71,12 +55,15 @@ const daysWeek = ref([
     </div>
 
     <div v-if="!props.editMode" class="d-flex gap mt-5">
-      <v-chip
-        v-for="worker in props.title.workers"
+      <v-btn
+        class="text-body-1"
+        v-for="worker in workers"
         :key="worker.id"
-        color="primary"
+        :color="worker.color"
+        rounded="pill"
+        variant="tonal"
         :to="worker.user?.id ? `/user/${worker.user.id}` : ''"
-        >{{ worker.user?.username ? worker.user.username : "      " }}</v-chip
+        >{{ worker.user?.username ? worker.user.username : "" }}</v-btn
       >
     </div>
     <div v-if="!props.editMode">
@@ -211,7 +198,7 @@ const daysWeek = ref([
           <p class="text-h5 font-weight-bold">Ссылки</p>
         </v-col>
         <v-col cols="6">
-          <v-text-field label="Ссылки на оригинал"></v-text-field>
+          <v-text-field label="Ссылки на оригинал" v-model="props.title.raw"></v-text-field>
         </v-col>
         <v-col cols="6">
           <v-text-field label="Ссылки на решку"></v-text-field>
@@ -228,20 +215,25 @@ const daysWeek = ref([
         <v-col cols="12">
           <p class="text-h5 font-weight-bold">Состав</p>
         </v-col>
-        <v-row v-for="role in roles" :key="role.name">
+        <v-row v-for="role in userStore.roles" :key="role.name">
           <v-col cols="2">
-            <v-btn variant="tonal" :color="role.color" class="w-100">
+            <v-btn
+              height="56px"
+              variant="tonal"
+              :color="role.color"
+              class="w-100"
+            >
               <span class="text-body-1 text-white">{{ role.name }}</span>
             </v-btn>
           </v-col>
           <v-col cols="4">
-            <v-select label="Ник"></v-select>
+            <v-select item-title="user.username" label="Ник" v-model="props.title.workers[role.id]"></v-select>
           </v-col>
           <v-col cols="3">
-            <v-text-field type="number" label="Дней на главу"></v-text-field>
+            <v-text-field type="number" label="Дней на главу" v-model="props.title.workers[role.id].days_for_work"></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-text-field type="number" label="Ставка"></v-text-field>
+            <v-text-field type="number" label="Ставка" v-model="props.title.workers[role.id].rate"></v-text-field>
           </v-col>
         </v-row>
       </v-row>

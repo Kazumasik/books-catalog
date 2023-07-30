@@ -1,22 +1,27 @@
 <script setup>
 import { reactive } from "vue";
 import { useTitleStore } from "@/stores/title.js";
+import { useUserStore } from "@/stores/user.js";
 import router from "../../router";
 import { useRoute } from "vue-router";
 import TitleInfo from "@core/components/title/TitleInfo.vue";
 import TitleContent from "@core/components/title/TitleContent.vue";
 const title = ref();
 const isLoading = ref(true);
+const route = useRoute();
+const titleStore = useTitleStore();
+const userStore = useUserStore();
 onMounted(async () => {
   const { content } = await titleStore.findBySlug(route.params.slug);
   title.value = content;
   isLoading.value = false;
+  const coloredRoles = userStore.getWorkersColor(
+    JSON.parse(JSON.stringify(title.value.workers))
+  );
+
 });
 
-const route = useRoute();
-const titleStore = useTitleStore();
 const editMode = ref(false);
-
 const exitDialog = ref(false);
 </script>
 
