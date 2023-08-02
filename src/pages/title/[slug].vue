@@ -18,9 +18,10 @@ onMounted(async () => {
   const coloredRoles = userStore.getWorkersColor(
     JSON.parse(JSON.stringify(title.value.workers))
   );
-
 });
-
+const applyChanges = () => {
+  editMode.value = false;
+};
 const editMode = ref(false);
 const exitDialog = ref(false);
 </script>
@@ -29,6 +30,7 @@ const exitDialog = ref(false);
   <div class="background">
     <v-container v-if="!isLoading" class="d-flex title-container">
       <TitleInfo
+        @applyChanges="applyChanges"
         @changeEditMode="editMode = !editMode"
         :editMode="editMode"
         :title="title"
@@ -81,8 +83,11 @@ const exitDialog = ref(false);
     </v-card>
   </v-dialog>
 </template>
-
+<style></style>
 <style scoped>
+.v-container {
+  max-width: 1280px;
+}
 @media (max-width: 600px) {
   .title-container {
     flex-wrap: wrap;
@@ -103,8 +108,6 @@ const exitDialog = ref(false);
   height: 100%;
 }
 .v-container {
-  max-width: 1280px;
-  padding: 0;
   padding-top: 50px;
 }
 @media (max-width: 599px) {

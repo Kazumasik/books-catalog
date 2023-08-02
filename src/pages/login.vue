@@ -5,7 +5,7 @@ import router from "../router";
 const userStore = useUserStore();
 const loginData = reactive({
   login: "raide",
-  password: "0987654321",
+  password: "1234",
 });
 const isPasswordVisible = ref(false);
 const isLoading = ref(false);

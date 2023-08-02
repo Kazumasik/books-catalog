@@ -1,4 +1,6 @@
 <script setup>
+import { useUserStore } from "@/stores/user.js";
+const userStore = useUserStore();
 const props = defineProps({
   title: {
     type: Object,
@@ -9,12 +11,15 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(["changeEditMode"]);
+const emit = defineEmits(["changeEditMode", "applyChanges"]);
 </script>
 <template>
   <div class="title-left d-flex flex-column">
     <v-img cover class="rounded-xl manga-cover" :src="props.title.img">
-      <div class="manga-cover-buttons w-100 d-flex justify-space-around">
+      <div
+        class="manga-cover-buttons w-100 d-flex justify-space-around"
+        v-if="!props.editMode"
+      >
         <!-- <v-btn
           height=""
           rounded="pill"
@@ -45,6 +50,7 @@ const emit = defineEmits(["changeEditMode"]);
         >
         </v-btn>
         <v-btn
+          v-if="userStore.user.is_curator"
           @click="emit('changeEditMode')"
           height=""
           rounded="pill"
@@ -66,7 +72,7 @@ const emit = defineEmits(["changeEditMode"]);
     </div>
     <div v-else-if="props.editMode" class="d-flex flex-column">
       <v-btn
-        @click="emit('changeEditMode')"
+        @click="emit('applyChanges')"
         rounded="lg"
         height="55"
         class="mt-4 text-body-1"
@@ -87,6 +93,7 @@ const emit = defineEmits(["changeEditMode"]);
 </template>
 
 <style scoped>
+
 .title-left {
   width: 320px;
   flex-shrink: 0;

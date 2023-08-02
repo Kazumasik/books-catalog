@@ -6,19 +6,41 @@ const password = reactive({
   new: "",
   repeat: "",
 });
-const changePass = () => {
-  form.value.validate();
-  userStore.changePassword(password.new);
+const passwordStatus = ref(false);
+const serverMsg = ref("");
+const changePass = async () => {
+  const { valid } = await form.value.validate();
+  if (!valid) {
+    return;
+  }
+  try {
+    const { msg } = await userStore.changePassword(password.new);
+    serverMsg.value = msg;
+    passwordStatus.value = true;
+    await form.value.reset();
+    await form.value.resetValidation();
+  } catch {}
 };
 const rules = {
   required: (v) => !!v || "Это обязательное поле",
-  minimum: (v) => v.length >= 4 || "Пароль должен содержать как минимум 4 символа",
+  minimum: (v) =>
+    v.length >= 6 || "Пароль должен содержать как минимум 6 символов",
   match: (v) => v === password.new || "Пароли должны совпадать",
 };
 console.log(rules);
 const form = ref(null);
 </script>
 <template>
+  <v-snackbar
+    offset="200px"
+    color="surface"
+    timeout="15000"
+    v-model="passwordStatus"
+    vertical
+  >
+    <v-icon icon="mdi-check-circle" color="success"></v-icon>
+    {{ serverMsg }}
+  </v-snackbar>
   <div class="profile-settings w-100 ml-8">
     <v-card variant="flat" class="pa-10">
       <v-card-title class="pa-0 text-h4"> Настройка аккаунта </v-card-title>

@@ -13,12 +13,12 @@
 .fa-vk {
   transform: translate(7%, -6%);
 }
+.fa-telegram {
+  transform: translate(2%, -6%);
+}
 a {
   text-decoration: none !important;
   color: initial !important;
-}
-.v-container {
-  max-width: 100%;
 }
 .gap {
   gap: 0.25rem;
@@ -27,11 +27,9 @@ a {
   gap: 1.35rem;
 }
 .v-container {
+  padding-top: 50px;
   max-width: 1280px;
   padding: 0;
-}
-@media (min-width: 1920px) {
-
 }
 @media (max-width: 599px) {
   .v-container {

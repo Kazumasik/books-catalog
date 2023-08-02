@@ -16,17 +16,13 @@ const notifications = ref([
 <template>
   <v-btn
     :to="`/user/${userStore.user.id}`"
+    active=""
     color="grey-lighten-1"
     class="pa-0"
     height="38px"
     width="38px"
   >
-    <VAvatar size="34" style="cursor: pointer">
-      <VImg
-        src="https://renovels.org/media/publishers/geas-novels/high_cover.jpg"
-      />
-      <!-- !SECTION -->
-    </VAvatar>
+      <v-icon icon="mdi-account-circle" size="25px"> </v-icon>
   </v-btn>
 </template>
 <style scoped>

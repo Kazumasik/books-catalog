@@ -133,7 +133,7 @@ export const useUserStore = defineStore({
       const payload = {
         password: newPass,
       };
-      await postData("/auth/change-password/", payload);
+      return await postData("/auth/change-password/", payload);
     },
   },
 });

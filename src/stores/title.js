@@ -12,5 +12,8 @@ export const useTitleStore = defineStore({
     async findBySlug(slug) {
       return await getData(`/titles/${slug}/`);
     },
+    async updateTitle(slug, payload) {
+      await editData(`/titles/${slug}/`, payload);
+    },
   },
 });

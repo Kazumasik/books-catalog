@@ -12,13 +12,14 @@ const props = defineProps({
     required: true,
   },
 });
+const localTitle = ref(props.title);
 const workers = ref();
 onMounted(async () => {
   workers.value = userStore.getWorkersColor(
     JSON.parse(JSON.stringify(props.title.workers))
   );
 });
-
+const languages = ref(["Японский", "Корейский", "Китайский", "Английский"]);
 const outputFormat = ref([
   "Ежедневник",
   "Еженедельник",
@@ -37,15 +38,15 @@ const daysWeek = ref([
 </script>
 <template>
   <div class="ml-0 ml-sm-14 flex-grow-1 title-right d-flex flex-column">
-    <h2 class="text-h3 mt-3 font-weight-bold">{{ props.title.name }}</h2>
+    <h2 class="text-h3 mt-3 font-weight-bold">{{ localTitle.name }}</h2>
     <div class="d-flex align-center mt-3">
       <p class="text-h5">
         最凶の支援職【話術士】である俺は世界最強クランを従える
       </p>
       <v-btn
-        v-if="props.title.raw"
+        v-if="localTitle.raw"
         target="_blank"
-        :href="props.title.raw"
+        :href="localTitle.raw"
         color=""
         height=""
         class="text-body-1 ml-4"
@@ -63,8 +64,11 @@ const daysWeek = ref([
         rounded="pill"
         variant="tonal"
         :to="worker.user?.id ? `/user/${worker.user.id}` : ''"
-        >{{ worker.user?.username ? worker.user.username : "" }}</v-btn
       >
+        <span class="text-body-1 text-white">
+          {{ worker.user?.username ? worker.user.username : "" }}
+        </span>
+      </v-btn>
     </div>
     <div v-if="!props.editMode">
       <v-tabs class="mt-4" v-model="tab">
@@ -197,20 +201,56 @@ const daysWeek = ref([
         <v-col cols="12">
           <p class="text-h5 font-weight-bold">Ссылки</p>
         </v-col>
-        <v-col cols="6">
-          <v-text-field label="Ссылки на оригинал" v-model="props.title.raw"></v-text-field>
-        </v-col>
-        <v-col cols="6">
-          <v-text-field label="Ссылки на решку"></v-text-field>
-        </v-col>
         <v-col cols="12">
-          <p class="text-h5 font-weight-bold">Формат выхода</p>
+          <v-text-field
+            label="Оригинал"
+            v-model="localTitle.raw"
+          ></v-text-field>
+          <v-text-field
+            v-model="localTitle.discord_channel"
+            class="mt-4"
+            label="Discord"
+          ></v-text-field>
         </v-col>
         <v-col cols="6">
+          <p class="text-h5 font-weight-bold">Выход на реманге</p>
+        </v-col>
+        <v-col cols="6">
+          <p class="text-h5 font-weight-bold">Выход на оригинале</p>
+        </v-col>
+        <v-col cols="3">
           <v-select :items="outputFormat" label="Формат выхода"></v-select>
         </v-col>
+        <v-col cols="3">
+          <v-text-field type="date" label="Дата выхода"></v-text-field>
+        </v-col>
+        <v-col cols="3">
+          <v-select :items="outputFormat" label="Формат выхода"></v-select>
+        </v-col>
+        <v-col cols="3">
+          <v-text-field type="date" label="Дата выхода"></v-text-field>
+        </v-col>
+        <v-col cols="12">
+          <p class="text-h5 font-weight-bold">Общее</p>
+        </v-col>
         <v-col cols="6">
-          <v-select :items="daysWeek" label="День выхода"></v-select>
+          <v-select :items="languages" label="Язык оригинала"></v-select>
+        </v-col>
+        <v-col cols="3">
+          <v-checkbox
+            hide-details=""
+            color="primary"
+            label="Постраничная оплата"
+            v-model="localTitle.workers[3].is_paid_by_pages"
+          ></v-checkbox>
+        </v-col>
+        <v-col cols="3">
+          <v-checkbox
+            hide-details=""
+            v-model="localTitle.is_active"
+            color="primary"
+            label="Активный тайтл"
+          ></v-checkbox>
         </v-col>
         <v-col cols="12">
           <p class="text-h5 font-weight-bold">Состав</p>
@@ -227,13 +267,25 @@ const daysWeek = ref([
             </v-btn>
           </v-col>
           <v-col cols="4">
-            <v-select item-title="user.username" label="Ник" v-model="props.title.workers[role.id]"></v-select>
+            <v-select
+              item-title="user.username"
+              label="Ник"
+              v-model="localTitle.workers[role.id]"
+            ></v-select>
           </v-col>
           <v-col cols="3">
-            <v-text-field type="number" label="Дней на главу" v-model="props.title.workers[role.id].days_for_work"></v-text-field>
+            <v-text-field
+              type="number"
+              label="Дней на главу"
+              v-model="localTitle.workers[role.id].days_for_work"
+            ></v-text-field>
           </v-col>
           <v-col cols="3">
-            <v-text-field type="number" label="Ставка" v-model="props.title.workers[role.id].rate"></v-text-field>
+            <v-text-field
+              type="number"
+              label="Ставка"
+              v-model="localTitle.workers[role.id].rate"
+            ></v-text-field>
           </v-col>
         </v-row>
       </v-row>

@@ -1,11 +1,14 @@
 <script setup>
 import { useUserStore } from "@/stores/user.js";
 import { onMounted } from "vue";
-
 const userStore = useUserStore();
 const props = defineProps({
   user: {
     type: Object,
+    required: true,
+  },
+  isYourProfile: {
+    type: Boolean,
     required: true,
   },
 });
@@ -24,13 +27,23 @@ const changeStatus = async (newStatus) => {
     width="320"
     class="d-flex justify-center flex-column align-center"
   >
-    <div class="w-100 profile-icons d-flex justify-space-between px-10">
+    <v-avatar color="surface" size="166">
+      <v-icon icon="mdi-account-circle" size="166"> </v-icon>
+    </v-avatar>
+    <div class="w-100 gap profile-icons d-flex justify-center">
       <v-btn
         :href="`https://vk.com/id${props.user.vk_id}/`"
         rounded="pill"
         color=""
         variant="text"
         icon="fa:fas fa-brands fa-vk"
+      ></v-btn>
+      <v-btn
+        :href="props.user.telegram"
+        rounded="pill"
+        color=""
+        variant="text"
+        icon="fa:fas fa-brands fa-telegram"
       ></v-btn>
       <v-btn
         :href="`https://discordapp.com/users/${props.user.discord_id}/`"
@@ -40,24 +53,19 @@ const changeStatus = async (newStatus) => {
         icon="fa:fas fa-brands fa-discord"
       ></v-btn>
     </div>
-
-    <v-avatar color="surface" size="166">
-      <v-icon icon="mdi-account-circle" size="166">
-
-      </v-icon>
-    </v-avatar>
-    <v-card-title class="pa-0 text-center mt-4 text-h4 font-weight-bold">
+    <v-card-title class="pa-0 text-center mt-2 text-h4 font-weight-bold">
       {{ props.user.username }}
     </v-card-title>
     <div class="d-flex gap mt-4">
-      <v-chip link rounded="pill" variant="tonal">
+      <v-chip v-if="props.isYourProfile" link rounded="pill" variant="tonal">
         {{ user.balance + " руб" }}
       </v-chip>
       <v-btn
         rounded="pill"
         variant="tonal"
         color="grey-lighten-2"
-        class="h-auto text text-capitalize"
+        height="32"
+        class="text text-capitalize"
       >
         <v-avatar
           :color="status?.color ? status.color : 'grey-lighten-2'"
@@ -66,7 +74,12 @@ const changeStatus = async (newStatus) => {
         >
         </v-avatar>
         {{ status?.name ? status.name : "Статус" }}
-        <v-menu offset="5px" location="bottom" activator="parent">
+        <v-menu
+          v-if="isYourProfile"
+          offset="5px"
+          location="bottom"
+          activator="parent"
+        >
           <v-list rounded="lg" bg-color="grey-darken-3" density="compact">
             <v-list-item
               @click="changeStatus(status)"

@@ -2,9 +2,13 @@
 // @click="emit('toggle', 'settings')"
 import { useUserStore } from "@/stores/user.js";
 import { onMounted } from "vue";
-const props = defineProps({});
 const emit = defineEmits(["toggle"]);
-
+const props = defineProps({
+  isYourProfile: {
+    type: Boolean,
+    required: true,
+  },
+});
 const changeSelection = (toggle, newSelection) => {
   toggle();
   emit("toggle", newSelection);
@@ -28,7 +32,7 @@ const changeSelection = (toggle, newSelection) => {
         <span class="text-left"> Тайтлы </span>
       </v-btn>
     </v-item>
-    <v-item v-slot="{ isSelected, toggle }">
+    <v-item v-if="props.isYourProfile" v-slot="{ isSelected, toggle }">
       <v-btn
         @click="changeSelection(toggle, 'settings')"
         :color="isSelected ? 'primary' : 'grey-lighten-1'"

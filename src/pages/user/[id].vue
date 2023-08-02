@@ -16,33 +16,34 @@ onMounted(async () => {
   const { content } = await userStore.findById(route.params.id);
   user.value = content;
   isLoading.value = false;
+  console.log("ONMOUNTED");
 });
 const changeSelection = (newSelection) => [(selection.value = newSelection)];
 </script>
 
 <template>
-  <v-container>
+  <v-container v-if="!isLoading">
     <div class="profile d-flex">
       <div class="profile-info d-flex flex-column">
-        <UserInfo v-if="!isLoading" :user="user"></UserInfo>
-        <UserMenuToggle @toggle="changeSelection"></UserMenuToggle>
+        <UserInfo :isYourProfile="isYourProfile" :user="user"></UserInfo>
+        <UserMenuToggle
+          :isYourProfile="isYourProfile"
+          @toggle="changeSelection"
+        ></UserMenuToggle>
       </div>
-      <UserTitles
-        v-if="!isLoading && selection == 'titles'"
-        :roles="user.roles"
-      />
-      <UserSettings v-if="!isLoading && selection == 'settings'" />
+      <UserTitles v-if="selection == 'titles'" :roles="user.roles" />
+      <UserSettings v-if="selection == 'settings'" />
     </div>
   </v-container>
 </template>
-
+<style>
+.v-container {
+  max-width: 1280px;
+}
+</style>
 <style scoped>
 .v-container {
   padding-top: 50px;
-}
-.v-container {
-  max-width: 1280px;
-  padding:50px 0 0 0;
 }
 </style>
 <route lang="yaml">

@@ -20,7 +20,9 @@ const newTitleDialog = ref(false);
 <template>
   <v-app id="inspire">
     <v-app-bar height="56" color="background" :order="1" flat>
-      <v-container class="fill-height pa-0 d-flex align-center header-container">
+      <v-container
+        class="fill-height pa-0 d-flex align-center header-container"
+      >
         <router-link to="/">
           <v-avatar
             v-ripple
@@ -43,7 +45,7 @@ const newTitleDialog = ref(false);
         <v-icon icon="mdi-cash-multiple"> </v-icon>
         <span class="ml-3"> 1233 руб </span>
 
-        <v-btn
+        <!-- <v-btn
           height="38px"
           width="38px"
           class="ml-6"
@@ -86,13 +88,50 @@ const newTitleDialog = ref(false);
               </VListItem>
             </VList>
           </VMenu>
+        </v-btn> -->
+        <v-btn
+          height="38px"
+          width="38px"
+          class="ml-6"
+          color=""
+          icon="mdi-plus-thick"
+        >
+          <v-icon size="28"> </v-icon>
+          <VMenu
+            activator="parent"
+            width="350"
+            location="bottom center"
+            offset="25px"
+          >
+            <VList rounded="lg" variant="tonal" class="pa-2">
+              <VListItem link="" rounded="lg" height="50px">
+                <template #prepend>
+                  <VIcon icon="mdi-account-plus" class="me-2" size="22" />
+                </template>
+
+                <VListItemTitle>Добавить сотрудника</VListItemTitle>
+              </VListItem>
+              <VListItem
+                to="/admin/create-title"
+                rounded="lg"
+                height="50px"
+                class="mt-2"
+              >
+                <template #prepend>
+                  <VIcon icon="mdi-book-plus" class="me-2" size="22" />
+                </template>
+
+                <VListItemTitle>Добавить тайтл</VListItemTitle>
+              </VListItem>
+            </VList>
+          </VMenu>
         </v-btn>
         <ProfileButton class="ml-6" />
       </v-container>
     </v-app-bar>
 
     <v-main style="padding-top: 56px">
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </v-main>
   </v-app>
   <v-dialog v-model="newTitleDialog" width="auto">
