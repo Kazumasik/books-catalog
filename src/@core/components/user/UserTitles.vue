@@ -49,6 +49,7 @@ const tabTitles = ref();
 <style lang="scss" scoped>
 .manga-title {
   line-clamp: 2;
+
 }
 .titles-wrapper {
   display: grid;

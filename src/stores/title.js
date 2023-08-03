@@ -15,5 +15,8 @@ export const useTitleStore = defineStore({
     async updateTitle(slug, payload) {
       await editData(`/titles/${slug}/`, payload);
     },
+    async createTitle(payload) {
+      await postData(`/titles/`, payload);
+    },
   },
 });

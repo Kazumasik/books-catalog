@@ -1,5 +1,7 @@
 <script setup>
 import { useUserStore } from "@/stores/user.js";
+import { createGlobalState } from "@vueuse/core";
+import { all } from "axios";
 const userStore = useUserStore();
 const tab = ref("ongoing");
 const props = defineProps({
@@ -14,7 +16,10 @@ const props = defineProps({
 });
 const localTitle = ref(props.title);
 const workers = ref();
+const allWorkers = ref();
 onMounted(async () => {
+  allWorkers.value = await userStore.getUsersByRoles();
+  console.log(allWorkers.value);
   workers.value = userStore.getWorkersColor(
     JSON.parse(JSON.stringify(props.title.workers))
   );
@@ -26,22 +31,13 @@ const outputFormat = ref([
   "Двунедельник",
   "Ежемесячник",
 ]);
-const daysWeek = ref([
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
-  "Воскресенье",
-]);
 </script>
 <template>
   <div class="ml-0 ml-sm-14 flex-grow-1 title-right d-flex flex-column">
     <h2 class="text-h3 mt-3 font-weight-bold">{{ localTitle.name }}</h2>
     <div class="d-flex align-center mt-3">
       <p class="text-h5">
-        最凶の支援職【話術士】である俺は世界最強クランを従える
+        {{ localTitle.raw_name }}
       </p>
       <v-btn
         v-if="localTitle.raw"
@@ -196,7 +192,7 @@ const daysWeek = ref([
         </v-window-item>
       </v-window>
     </div>
-    <v-sheet rounded="lg" v-else-if="props.editMode" class="mt-11 pa-6">
+    <v-sheet rounded="lg" v-else-if="props.editMode" class="mt-5 pa-6">
       <v-row>
         <v-col cols="12">
           <p class="text-h5 font-weight-bold">Ссылки</p>
@@ -255,39 +251,40 @@ const daysWeek = ref([
         <v-col cols="12">
           <p class="text-h5 font-weight-bold">Состав</p>
         </v-col>
-        <v-row v-for="role in userStore.roles" :key="role.name">
-          <v-col cols="2">
-            <v-btn
-              height="56px"
-              variant="tonal"
-              :color="role.color"
-              class="w-100"
-            >
-              <span class="text-body-1 text-white">{{ role.name }}</span>
-            </v-btn>
-          </v-col>
-          <v-col cols="4">
-            <v-select
-              item-title="user.username"
-              label="Ник"
-              v-model="localTitle.workers[role.id]"
-            ></v-select>
-          </v-col>
-          <v-col cols="3">
-            <v-text-field
-              type="number"
-              label="Дней на главу"
-              v-model="localTitle.workers[role.id].days_for_work"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3">
-            <v-text-field
-              type="number"
-              label="Ставка"
-              v-model="localTitle.workers[role.id].rate"
-            ></v-text-field>
-          </v-col>
-        </v-row>
+      </v-row>
+      <v-row v-for="role in userStore.roles" :key="role.name">
+        <v-col cols="2">
+          <v-btn
+            height="56px"
+            variant="tonal"
+            :color="role.color"
+            class="w-100"
+          >
+            <span class="text-body-1 text-white">{{ role.name }}</span>
+          </v-btn>
+        </v-col>
+        <v-col cols="4">
+          <v-select
+            item-title="username"
+            label="Ник"
+            v-model="localTitle.workers[role.id].user"
+            :items="allWorkers[role.id].users"
+          ></v-select>
+        </v-col>
+        <v-col cols="3">
+          <v-text-field
+            type="number"
+            label="Дней на главу"
+            v-model="localTitle.workers[role.id].days_for_work"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="3">
+          <v-text-field
+            type="number"
+            label="Ставка"
+            v-model="localTitle.workers[role.id].rate"
+          ></v-text-field>
+        </v-col>
       </v-row>
     </v-sheet>
   </div>

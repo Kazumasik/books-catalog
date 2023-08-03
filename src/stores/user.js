@@ -121,7 +121,8 @@ export const useUserStore = defineStore({
       return await getData("/statuses");
     },
     async getUsersByRoles() {
-      return await getData("/roles/");
+      const response = await getData("/roles/");
+      return response.content;
     },
     async changeStatus(statusId) {
       const payload = {
