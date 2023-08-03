@@ -135,9 +135,5 @@ export const useUserStore = defineStore({
       };
       return await postData("/auth/change-password/", payload);
     },
-    async getUsersByRoles() {
-      const response = await getData("/roles/");
-      return response.content;
-    },
   },
 });
