@@ -18,5 +18,8 @@ export const useBookStore = defineStore({
     async fetchNewBooks() {
       return await getData("book/new/");
     },
+    async fetchNewBooks() {
+      return await getData("book/new/");
+    },
   },
 });
