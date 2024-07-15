@@ -63,7 +63,7 @@ const chaptersTab = ref("coming");
                   </v-col>
                   <v-col cols="3">
                     <v-btn height="45" class="w-100 text-body-2">
-                      Відправити
+                      Відправити!
                     </v-btn>
                   </v-col>
                 </v-row>
